@@ -148,9 +148,9 @@
   --surface-neutral-low-hover: #e6ebeb;    /* surface.neutral.low-hover → neutral.light.100 */
   --surface-neutral-medium:    #ffffff;    /* surface.neutral.medium → neutral.light.white */
   --surface-neutral-high:      #e6ebeb;    /* surface.neutral.high → neutral.light.100 */
-  --surface-brand-solid:       #277777;    /* surface.brand.solid → brand.primary.500 */
-  --surface-brand-hover:       #1f5c5c;    /* surface.brand.solid-hover → brand.primary.700 */
-  --surface-brand-subtle:      #e6f0ef;    /* surface.brand.subtile → brand.primary.100 */
+  --surface-brand-solid:       #2563eb;    /* surface.brand.solid → brand.primary.500 */
+  --surface-brand-hover:       #1d4ed8;    /* surface.brand.solid-hover → brand.primary.700 */
+  --surface-brand-subtle:      #dbeafe;    /* surface.brand.subtile → brand.primary.100 */
   --surface-disabled:          #f5f7f7;    /* surface.disabled → neutral.light.50 */
   --surface-invert:            #ffffff;    /* surface.invert → neutral.light.white */
 
@@ -166,7 +166,7 @@
   --content-tertiary:   #6b7676;   /* content.tertiary → neutral.light.600 (new token) */
   --content-placeholder: #6b7676;  /* content.placeholder → neutral.light.600 */
   --content-disabled:   #9ca4a6;   /* content.disabled → neutral.light.400 ← was #adb4bd */
-  --content-brand:      #277777;   /* content.brand → brand.primary.500 */
+  --content-brand:      #2563eb;   /* content.brand → brand.primary.500 */
   --content-on-brand:   #ffffff;   /* content.on-brand → neutral.light.white */
   --content-invert:     #ffffff;   /* content.invert */
   --content-info:       #066076;   /* content.info → feedback.info.700 */
@@ -179,8 +179,8 @@
   --border-neutral-medium: #b4b7bc;   /* border.neutral.medium → neutral.light.300 ← was #c4cbcb */
   --border-neutral-high:   #859090;   /* border.neutral.high → neutral.light.500 (new) */
   --border-disabled:       #b4b7bc;   /* border.disabled → neutral.light.300 */
-  --border-brand-solid:    #277777;   /* border.brand.solid → brand.primary.500 */
-  --border-brand-subtle:   #1b4f4f;   /* border.brand.subtile → brand.primary.800 ← was #6ea2a2 */
+  --border-brand-solid:    #2563eb;   /* border.brand.solid → brand.primary.500 */
+  --border-brand-subtle:   #1e40af;   /* border.brand.subtile → brand.primary.800 ← was #6ea2a2 */
 
   /* Feedback borders */
   --border-info-subtle:    #75cae0;   /* border.info.subtile → feedback.info.300 */
@@ -193,7 +193,7 @@
   --border-neutral-mid: #b4b7bc;    /* = --border-neutral-medium */
 
   /* ── Focus ring (effect.styles) ──────────────────────── */
-  --focus-ring-outer: #277777;   /* surface.brand.solid */
+  --focus-ring-outer: #2563eb;   /* surface.brand.solid */
   --focus-ring-inner: #ffffff;   /* surface.page */
 
   /* ── Component aliases ────────────────────────────────── */
@@ -209,8 +209,8 @@
   --chip-warning-content: #b54708;   /* content.warning ← was #92400e */
 
   /* Button (applied.default › button) */
-  --btn-primary-bg:        #277777;   /* surface.brand.solid */
-  --btn-primary-border:    #1b4f4f;   /* border.brand.subtile ← was #6ea2a2 */
+  --btn-primary-bg:        #2563eb;   /* surface.brand.solid */
+  --btn-primary-border:    #1e40af;   /* border.brand.subtile ← was #6ea2a2 */
   --btn-primary-content:   #ffffff;   /* content.on-brand */
   --btn-secondary-bg:      #f5f7f7;   /* surface.neutral.low ← was #ffffff */
   --btn-secondary-border:  #859090;   /* border.neutral.high ← was #c4cbcb */
@@ -247,8 +247,8 @@
   --surface-neutral-low-hover: #1f242d;   /* surface.neutral.low-hover → neutral.dark.700 */
   --surface-neutral-medium:    #1f242d;   /* surface.neutral.medium → neutral.dark.700 */
   --surface-neutral-high:      #2a2f38;   /* surface.neutral.high → neutral.dark.600 */
-  --surface-brand-solid:       #277777;   /* surface.brand.solid → brand.primary.500 */
-  --surface-brand-hover:       #1f5c5c;   /* surface.brand.solid-hover → brand.primary.700 */
+  --surface-brand-solid:       #2563eb;   /* surface.brand.solid → brand.primary.500 */
+  --surface-brand-hover:       #1d4ed8;   /* surface.brand.solid-hover → brand.primary.700 */
   --surface-brand-subtle:      #121621;   /* surface.brand.subtile → neutral.dark.900 */
   --surface-disabled:          #1f242d;   /* surface.disabled → neutral.dark.700 */
   --surface-invert:            #121621;   /* surface.invert → neutral.dark.900 */
@@ -265,7 +265,7 @@
   --content-tertiary:   #9ca4a6;   /* content.tertiary → neutral.light.400 */
   --content-placeholder: #676d77;  /* content.placeholder → neutral.dark.400 */
   --content-disabled:   #676d77;   /* content.disabled → neutral.dark.400 */
-  --content-brand:      #91b9b9;   /* content.brand → brand.primary.300 */
+  --content-brand:      #93c5fd;   /* content.brand → brand.primary.300 */
   --content-on-brand:   #ffffff;   /* content.on-brand → neutral.light.white */
   --content-invert:     #121621;   /* content.invert */
   --content-info:       #47b2cd;   /* content.info → feedback.info.400 */
@@ -278,8 +278,8 @@
   --border-neutral-medium: #676d77;   /* border.neutral.medium → neutral.dark.400 */
   --border-neutral-high:   #bdc1cb;   /* border.neutral.high → neutral.dark.200 */
   --border-disabled:       #2a2f38;   /* border.disabled → neutral.dark.600 */
-  --border-brand-solid:    #277777;   /* border.brand.solid → brand.primary.500 */
-  --border-brand-subtle:   #6ea2a2;   /* border.brand.subtile → brand.primary.400 */
+  --border-brand-solid:    #2563eb;   /* border.brand.solid → brand.primary.500 */
+  --border-brand-subtle:   #60a5fa;   /* border.brand.subtile → brand.primary.400 */
 
   /* Feedback borders */
   --border-info-subtle:    #066076;   /* border.info.subtile → feedback.info.700 */
@@ -292,7 +292,7 @@
   --border-neutral-mid: #676d77;    /* = --border-neutral-medium */
 
   /* ── Focus ring ───────────────────────────────────────── */
-  --focus-ring-outer: #277777;
+  --focus-ring-outer: #2563eb;
   --focus-ring-inner: #121621;   /* surface.page dark */
 
   /* ── Component aliases ────────────────────────────────── */
@@ -308,13 +308,13 @@
   --chip-warning-content: #fdb022;   /* content.warning ← was #fbbf24 */
 
   /* Button */
-  --btn-primary-bg:        #277777;
-  --btn-primary-border:    #6ea2a2;   /* border.brand.subtile → brand.primary.400 */
+  --btn-primary-bg:        #2563eb;
+  --btn-primary-border:    #60a5fa;   /* border.brand.subtile → brand.primary.400 */
   --btn-primary-content:   #ffffff;
   --btn-secondary-bg:      #181d27;   /* surface.neutral.low */
   --btn-secondary-border:  #bdc1cb;   /* border.neutral.high → neutral.dark.200 */
   --btn-secondary-content: #e9ebef;   /* content.primary */
-  --btn-link-content:      #91b9b9;   /* content.brand dark ← was #91b9b9 (unchanged) */
+  --btn-link-content:      #93c5fd;   /* content.brand dark ← was #91b9b9 (unchanged) */
 
   /* Input */
   --input-error: #f97066;   /* content.error dark */
