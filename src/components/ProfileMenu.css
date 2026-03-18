@@ -31,12 +31,23 @@
   min-width: 200px;
 }
 
-/* Account info at bottom (non-clickable) */
+/* Account info at bottom (clickable) */
 .profile-menu__account-info-bottom {
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding: var(--spacing-sm, 6px) var(--spacing-md, 8px);
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--spacing-sm, 6px);
+  cursor: pointer;
+  transition: background-color 0.15s;
+  text-align: left;
+}
+
+.profile-menu__account-info-bottom:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
 }
 
 .profile-menu__account-name {
@@ -223,4 +234,8 @@
 [data-theme="dark"] .profile-menu__account-avatar {
   background-color: #2a3445;
   color: #e4eaee;
+}
+
+[data-theme="dark"] .profile-menu__account-info-bottom:hover {
+  background-color: #2a3445;
 }

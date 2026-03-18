@@ -30,22 +30,22 @@ const settingsSubItems = [
   { id: 'preferences', label: 'Preferences', group: 'personal' },
 ]
 
-const navItems: { id: string; label: string; icon: IconName }[] = [
-  { id: 'home',              label: 'Home',              icon: 'home' },
-  { id: 'sales',             label: 'Sales',             icon: 'receipt' },
-  { id: 'terminals',         label: 'Terminals',         icon: 'terminal' },
-  { id: 'create-payment',    label: 'Create payment',    icon: 'create-payment' },
-  { id: 'product-catalogue', label: 'Product catalogue', icon: 'catalogue' },
-  { id: 'my-business',       label: 'My business',       icon: 'business' },
+const navItems: { id: string; label: string; icon: IconName | string }[] = [
+  { id: 'home',              label: 'Home',              icon: '/assets/home.svg' },
+  { id: 'sales',             label: 'Sales',             icon: '/assets/sales.svg' },
+  { id: 'terminals',         label: 'Terminals',         icon: '/assets/terminal.svg' },
+  { id: 'create-payment',    label: 'Create payment',    icon: '/assets/create-payment.svg' },
+  { id: 'product-catalogue', label: 'Product catalogue', icon: '/assets/product-catalogue.svg' },
+  { id: 'my-business',       label: 'My business',       icon: '/assets/my-business.svg' },
   { id: 'card-issuing',      label: 'Card Issuing',      icon: 'card' },
   { id: 'cash-advance',      label: 'Cash advance',      icon: 'cash' },
 ]
 
-const bottomItems: { id: string; label: string; icon: IconName }[] = [
+const bottomItems: { id: string; label: string; icon: IconName | string }[] = [
   { id: 'settings',      label: 'Settings',      icon: 'settings' },
   { id: 'notifications', label: 'Notifications', icon: 'bell' },
   { id: 'help',          label: 'Help',           icon: 'help' },
-  { id: 'ai-assistant',  label: 'AI assistant',  icon: 'star' },
+  { id: 'ai-assistant',  label: 'AI assistant',  icon: '/assets/ai-assistant.svg' },
 ]
 
 interface SidebarProps {
@@ -55,6 +55,7 @@ interface SidebarProps {
   onSalesSubNavigate?: (id: string) => void
   activeSettingsSubItem?: string
   onSettingsSubNavigate?: (id: string) => void
+  onAIAssistantClick?: () => void
 }
 
 export default function Sidebar({
@@ -63,10 +64,15 @@ export default function Sidebar({
   activeSalesSubItem = 'transactions',
   onSalesSubNavigate,
   activeSettingsSubItem = 'overview',
-  onSettingsSubNavigate
+  onSettingsSubNavigate,
+  onAIAssistantClick
 }: SidebarProps) {
   const handleClick = (id: string) => {
-    onNavigate?.(id)
+    if (id === 'ai-assistant') {
+      onAIAssistantClick?.()
+    } else {
+      onNavigate?.(id)
+    }
   }
 
   const handleSalesSubClick = (id: string) => {
@@ -75,6 +81,13 @@ export default function Sidebar({
 
   const handleSettingsSubClick = (id: string) => {
     onSettingsSubNavigate?.(id)
+  }
+
+  const renderIcon = (icon: IconName | string, size: number) => {
+    if (typeof icon === 'string' && icon.startsWith('/assets/')) {
+      return <img src={icon} alt="" width={size} height={size} style={{ display: 'block' }} />
+    }
+    return <Icon name={icon as IconName} size={size} />
   }
 
   const isSalesActive = activeItem === 'sales'
@@ -103,7 +116,7 @@ export default function Sidebar({
                     onClick={() => handleClick(item.id)}
                     aria-current={activeItem === item.id ? 'page' : undefined}
                   >
-                    <Icon name={item.icon} size={20} />
+                    {renderIcon(item.icon, 20)}
                     <span>{item.label}</span>
                   </button>
                 </li>
@@ -124,7 +137,7 @@ export default function Sidebar({
                       aria-label={item.label}
                       aria-current={activeItem === item.id ? 'page' : undefined}
                     >
-                      <Icon name={item.icon} size={20} />
+                      {renderIcon(item.icon, 20)}
                     </button>
                   </Tooltip>
                 </li>
@@ -142,7 +155,7 @@ export default function Sidebar({
                   aria-label={item.label}
                   onClick={() => handleClick(item.id)}
                 >
-                  <Icon name={item.icon} size={20} />
+                  {renderIcon(item.icon, 20)}
                 </button>
               </Tooltip>
             ) : (
@@ -152,7 +165,7 @@ export default function Sidebar({
                 aria-label={item.label}
                 onClick={() => handleClick(item.id)}
               >
-                <Icon name={item.icon} size={20} />
+                {renderIcon(item.icon, 20)}
                 <span>{item.label}</span>
               </button>
             )

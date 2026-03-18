@@ -1,0 +1,168 @@
+.status-tracker {
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--spacing-2xl, 24px);
+  box-shadow: 0px 1px 2px rgba(10, 13, 18, 0.05);
+}
+
+.status-tracker__title {
+  font-family: var(--font-family-primary, 'Raleway', sans-serif);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--content-primary, #121621);
+  margin: 0 0 var(--spacing-2xl, 24px) 0;
+}
+
+.status-tracker__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.status-tracker__step-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.status-tracker__step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg, 12px);
+  padding: var(--spacing-md, 8px) 0;
+}
+
+.status-tracker__icon-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.status-tracker__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.status-tracker__icon--completed {
+  background-color: var(--accent-positive-base, #0e9f6e);
+  color: #ffffff;
+}
+
+.status-tracker__icon--current {
+  background-color: var(--accent-primary-base, #2c6764);
+  border: 2px solid var(--accent-primary-base, #2c6764);
+}
+
+.status-tracker__icon--upcoming {
+  background-color: var(--surface-secondary, #f6fafa);
+  border: 2px solid var(--border-neutral-medium, #cbd4d4);
+}
+
+.status-tracker__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.status-tracker__icon--upcoming .status-tracker__dot {
+  background-color: var(--content-tertiary, #6b7676);
+}
+
+.status-tracker__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.status-tracker__label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--content-primary, #121621);
+}
+
+.status-tracker__step--upcoming .status-tracker__label {
+  color: var(--content-tertiary, #6b7676);
+}
+
+.status-tracker__sublabel {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-secondary, #525d5d);
+}
+
+.status-tracker__step--upcoming .status-tracker__sublabel {
+  color: var(--content-tertiary, #6b7676);
+}
+
+.status-tracker__line {
+  width: 2px;
+  height: 20px;
+  margin-left: 11px;
+  transition: background-color 0.2s;
+}
+
+.status-tracker__line--completed {
+  background-color: var(--accent-positive-base, #0e9f6e);
+}
+
+.status-tracker__line--inactive {
+  background-color: var(--border-neutral-medium, #cbd4d4);
+}
+
+/* Dark mode */
+[data-theme="dark"] .status-tracker {
+  background-color: #181d27;
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .status-tracker__title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .status-tracker__icon--current {
+  background-color: var(--accent-primary-base, #2c6764);
+  border-color: var(--accent-primary-base, #2c6764);
+}
+
+[data-theme="dark"] .status-tracker__icon--upcoming {
+  background-color: #262e3d;
+  border-color: #3d4759;
+}
+
+[data-theme="dark"] .status-tracker__icon--upcoming .status-tracker__dot {
+  background-color: #6b7c8a;
+}
+
+[data-theme="dark"] .status-tracker__label {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .status-tracker__step--upcoming .status-tracker__label {
+  color: #a0aab8;
+}
+
+[data-theme="dark"] .status-tracker__sublabel {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .status-tracker__step--upcoming .status-tracker__sublabel {
+  color: #7c8794;
+}
+
+[data-theme="dark"] .status-tracker__line--inactive {
+  background-color: #3d4759;
+}

@@ -552,9 +552,6 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
             {terminal.model} | {terminal.model}
           </p>
         </div>
-        <Button hierarchy="primary" size="md" iconRight="chevron-down">
-          Actions
-        </Button>
       </div>
 
       {/* Hero Section */}

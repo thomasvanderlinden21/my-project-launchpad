@@ -24,7 +24,6 @@ interface TopToolbarProps {
   onAddAccount?: () => void
   onPersonalDetails?: () => void
   onPreferences?: () => void
-  onDocumentation?: () => void
   onSignOut?: () => void
   userInitials?: string
   onSearch?: () => void
@@ -41,7 +40,6 @@ export default function TopToolbar({
   onAddAccount,
   onPersonalDetails,
   onPreferences,
-  onDocumentation,
   onSignOut,
   userInitials = 'AU',
   onSearch,
@@ -158,7 +156,6 @@ export default function TopToolbar({
               onAddAccount={onAddAccount || (() => {})}
               onPersonalDetails={onPersonalDetails || (() => {})}
               onPreferences={onPreferences || (() => {})}
-              onDocumentation={onDocumentation || (() => {})}
               onSignOut={onSignOut || (() => {})}
               isOpen={isProfileMenuOpen}
               onClose={() => setIsProfileMenuOpen(false)}

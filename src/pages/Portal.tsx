@@ -4,7 +4,14 @@ import Sidebar from '../components/Sidebar'
 import TopToolbar from '../components/TopToolbar'
 import type { Breadcrumb } from '../components/TopToolbar'
 import SpotlightSearch from '../components/SpotlightSearch'
+import AIAssistantPanel from '../components/AIAssistantPanel'
+import StatusTracker from '../components/StatusTracker'
+import type { StatusStep } from '../components/StatusTracker'
 import SalesPage from './SalesPage'
+import OrdersPage from './OrdersPage'
+import InvoicesPage from './InvoicesPage'
+import ReportsPage from './ReportsPage'
+import DisputesPage from './DisputesPage'
 import TerminalsPage from './TerminalsPage'
 import TerminalDetailPage from './TerminalDetailPage'
 import SettingsPage from './SettingsPage'
@@ -50,6 +57,7 @@ export default function Portal() {
   const [activeSettingsSubItem, setActiveSettingsSubItem] = useState('overview')
   const [selectedTerminalId, setSelectedTerminalId] = useState<string | null>(null)
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false)
+  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false)
   const [selectedShopIds, setSelectedShopIds] = useState(['2'])
   const [currentAccountId, setCurrentAccountId] = useState('1')
   const { toggle } = useTheme()
@@ -62,7 +70,7 @@ export default function Portal() {
 
   const accounts = [
     { id: '1', name: 'Olivia Martinez', email: 'olivia@cycleshop.com' },
-    { id: '2', name: 'John Doe', email: 'john@example.com' }
+    { id: '2', name: 'Olivia Martinez', email: 'olivia@urbanbakery.com' }
   ]
 
   const currentAccount = accounts.find(acc => acc.id === currentAccountId) || accounts[0]
@@ -184,11 +192,6 @@ export default function Portal() {
     setActiveSettingsSubItem('preferences')
   }
 
-  const handleDocumentation = () => {
-    console.log('Documentation clicked')
-    // Could open external docs or navigate to help page
-  }
-
   const handleSignOut = () => {
     console.log('Sign out clicked')
     // Handle sign out logic
@@ -198,7 +201,39 @@ export default function Portal() {
     console.log('Add account clicked')
   }
 
+  const handleAIAssistantToggle = () => {
+    setIsAIAssistantOpen(prev => !prev)
+  }
+
   const currentPage = getCurrentPage()
+
+  // Terminal delivery status steps
+  const terminalStatusSteps: StatusStep[] = [
+    {
+      id: 'ordered',
+      label: 'Terminal ordered',
+      sublabel: 'March 10, 2026',
+      status: 'completed'
+    },
+    {
+      id: 'processing',
+      label: 'Order processing',
+      sublabel: 'March 11, 2026',
+      status: 'completed'
+    },
+    {
+      id: 'shipped',
+      label: 'Shipped',
+      sublabel: 'March 13, 2026',
+      status: 'completed'
+    },
+    {
+      id: 'delivered',
+      label: 'Delivered',
+      sublabel: 'Expected March 18, 2026',
+      status: 'current'
+    }
+  ]
 
   return (
     <div className="portal">
@@ -209,8 +244,9 @@ export default function Portal() {
         onSalesSubNavigate={setActiveSalesSubItem}
         activeSettingsSubItem={activeSettingsSubItem}
         onSettingsSubNavigate={setActiveSettingsSubItem}
+        onAIAssistantClick={handleAIAssistantToggle}
       />
-      <div className="portal__page">
+      <div className={`portal__page${isAIAssistantOpen ? ' portal__page--ai-open' : ''}`}>
         <TopToolbar
           breadcrumbs={getBreadcrumbs()}
           shops={shops}
@@ -222,14 +258,21 @@ export default function Portal() {
           onAddAccount={handleAddAccount}
           onPersonalDetails={handlePersonalDetails}
           onPreferences={handlePreferences}
-          onDocumentation={handleDocumentation}
           onSignOut={handleSignOut}
           userInitials="OM"
           onSearch={() => setIsSpotlightOpen(true)}
         />
         <main className="portal__main">
-          {activeNav === 'sales' ? (
+          {activeNav === 'sales' && activeSalesSubItem === 'transactions' ? (
             <SalesPage />
+          ) : activeNav === 'sales' && activeSalesSubItem === 'orders' ? (
+            <OrdersPage />
+          ) : activeNav === 'sales' && activeSalesSubItem === 'invoices' ? (
+            <InvoicesPage />
+          ) : activeNav === 'sales' && activeSalesSubItem === 'reports' ? (
+            <ReportsPage />
+          ) : activeNav === 'sales' && activeSalesSubItem === 'disputes' ? (
+            <DisputesPage />
           ) : activeNav === 'settings' ? (
             <SettingsPage activeSection={activeSettingsSubItem} onNavigate={setActiveSettingsSubItem} />
           ) : activeNav === 'terminals' && selectedTerminalId ? (
@@ -241,18 +284,28 @@ export default function Portal() {
             <TerminalsPage onTerminalClick={(id) => setSelectedTerminalId(id)} />
           ) : (
             <div className="portal__welcome">
-              <h1 className="portal__welcome-title">
-                {currentPage === 'home'
-                  ? 'Welcome back, Olivia'
-                  : navLabels[currentPage] || currentPage
-                }
-              </h1>
-              <p className="portal__welcome-subtitle">
-                {currentPage === 'home'
-                  ? 'Track, manage and forecast your customers and orders.'
-                  : `View and manage your ${navLabels[currentPage]?.toLowerCase() || currentPage}.`
-                }
-              </p>
+              <div className="portal__welcome-header">
+                <h1 className="portal__welcome-title">
+                  {currentPage === 'home'
+                    ? 'Welcome back, Olivia'
+                    : navLabels[currentPage] || currentPage
+                  }
+                </h1>
+                <p className="portal__welcome-subtitle">
+                  {currentPage === 'home'
+                    ? 'Track, manage and forecast your customers and orders.'
+                    : `View and manage your ${navLabels[currentPage]?.toLowerCase() || currentPage}.`
+                  }
+                </p>
+              </div>
+              {currentPage === 'home' && (
+                <div className="portal__status-section">
+                  <StatusTracker
+                    title="Terminal delivery status"
+                    steps={terminalStatusSteps}
+                  />
+                </div>
+              )}
             </div>
           )}
         </main>
@@ -260,6 +313,10 @@ export default function Portal() {
       <SpotlightSearch
         isOpen={isSpotlightOpen}
         onClose={() => setIsSpotlightOpen(false)}
+      />
+      <AIAssistantPanel
+        isOpen={isAIAssistantOpen}
+        onClose={() => setIsAIAssistantOpen(false)}
       />
     </div>
   )

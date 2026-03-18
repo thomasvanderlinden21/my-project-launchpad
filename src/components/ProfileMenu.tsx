@@ -15,7 +15,6 @@ export interface ProfileMenuProps {
   onAddAccount: () => void
   onPersonalDetails: () => void
   onPreferences: () => void
-  onDocumentation: () => void
   onSignOut: () => void
   isOpen: boolean
   onClose: () => void
@@ -29,7 +28,6 @@ export default function ProfileMenu({
   onAddAccount,
   onPersonalDetails,
   onPreferences,
-  onDocumentation,
   onSignOut,
   isOpen,
   onClose,
@@ -78,10 +76,13 @@ export default function ProfileMenu({
     <div className="profile-menu" ref={menuRef}>
       <div className="profile-menu__container">
         {/* Current account info at top */}
-        <div className="profile-menu__account-info-bottom">
+        <button
+          className="profile-menu__account-info-bottom"
+          onClick={() => handleMenuItemClick(onPersonalDetails)}
+        >
           <div className="profile-menu__account-name">{currentAccount.name}</div>
           <div className="profile-menu__account-email">{currentAccount.email}</div>
-        </div>
+        </button>
 
         <div className="profile-menu__divider" />
 
@@ -93,13 +94,6 @@ export default function ProfileMenu({
           >
             <Icon name="adjustments" size={20} />
             <span>Preferences</span>
-          </button>
-          <button
-            className="profile-menu__item"
-            onClick={() => handleMenuItemClick(onDocumentation)}
-          >
-            <Icon name="book" size={20} />
-            <span>Documentation</span>
           </button>
           <button
             className="profile-menu__item"

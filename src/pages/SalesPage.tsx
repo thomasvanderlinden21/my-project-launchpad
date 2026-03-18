@@ -291,180 +291,182 @@ export default function SalesPage() {
         className="sales-page__tabs"
       />
 
-      <div className="sales-page__toolbar">
-        <div className="sales-page__search-group">
-          <div className="sales-page__search">
-            <Icon name="search" size={20} />
-            <input
-              type="text"
-              className="sales-page__search-input"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              aria-label="Search transactions"
-            />
+      <>
+        <div className="sales-page__toolbar">
+          <div className="sales-page__search-group">
+            <div className="sales-page__search">
+              <Icon name="search" size={20} />
+              <input
+                type="text"
+                className="sales-page__search-input"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search transactions"
+              />
+            </div>
+            <button
+              className="sales-page__filter-btn"
+              onClick={handleOpenFilters}
+              aria-label="Open filters"
+            >
+              Filters
+              <Icon name="filter" size={20} />
+            </button>
           </div>
           <button
-            className="sales-page__filter-btn"
-            onClick={handleOpenFilters}
-            aria-label="Open filters"
+            className="sales-page__export-btn"
+            onClick={handleExport}
           >
-            Filters
-            <Icon name="filter" size={20} />
+            Export
+            <Icon name="download" size={24} />
           </button>
         </div>
-        <button
-          className="sales-page__export-btn"
-          onClick={handleExport}
-        >
-          Export
-          <Icon name="download" size={24} />
-        </button>
-      </div>
 
-      <div className="sales-page__table-wrapper">
-        <table className="sales-page__table">
-          <thead>
-            <tr>
-              <th className="sales-page__th sales-page__th--checkbox">
-                <input
-                  type="checkbox"
-                  checked={allSelected}
-                  ref={input => {
-                    if (input) {
-                      input.indeterminate = someSelected
-                    }
-                  }}
-                  onChange={handleSelectAll}
-                  aria-label="Select all"
-                />
-              </th>
-              {visibleColumns.map(col => {
-                if (col.id === 'date') {
+        <div className="sales-page__table-wrapper">
+          <table className="sales-page__table">
+            <thead>
+              <tr>
+                <th className="sales-page__th sales-page__th--checkbox">
+                  <input
+                    type="checkbox"
+                    checked={allSelected}
+                    ref={input => {
+                      if (input) {
+                        input.indeterminate = someSelected
+                      }
+                    }}
+                    onChange={handleSelectAll}
+                    aria-label="Select all"
+                  />
+                </th>
+                {visibleColumns.map(col => {
+                  if (col.id === 'date') {
+                    return (
+                      <th key={col.id} className="sales-page__th sales-page__th--sortable">
+                        <button
+                          className="sales-page__th-sort-btn"
+                          onClick={handleDateSort}
+                          aria-label="Sort by date"
+                        >
+                          <span>{col.label}</span>
+                          <Icon name="chevron-up-down-small" size={12} />
+                        </button>
+                      </th>
+                    )
+                  }
                   return (
-                    <th key={col.id} className="sales-page__th sales-page__th--sortable">
-                      <button
-                        className="sales-page__th-sort-btn"
-                        onClick={handleDateSort}
-                        aria-label="Sort by date"
-                      >
-                        <span>{col.label}</span>
-                        <Icon name="chevron-up-down-small" size={12} />
-                      </button>
+                    <th key={col.id} className="sales-page__th">
+                      {col.label}
                     </th>
                   )
-                }
+                })}
+                <th className="sales-page__th sales-page__th--actions">
+                  <button
+                    className="sales-page__column-btn"
+                    onClick={handleOpenColumnManagement}
+                    aria-label="Manage columns"
+                  >
+                    <Icon name="columns" size={24} />
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredTransactions.map(tx => {
+                const isSelected = selectedRows.has(tx.id)
+
                 return (
-                  <th key={col.id} className="sales-page__th">
-                    {col.label}
-                  </th>
+                  <tr
+                    key={tx.id}
+                    className={`sales-page__row${isSelected ? ' sales-page__row--selected' : ''}`}
+                  >
+                    <TableCell checkbox>
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => handleSelectRow(tx.id)}
+                        aria-label={`Select ${tx.id}`}
+                      />
+                    </TableCell>
+
+                    {visibleColumns.map(col => {
+                      switch (col.id) {
+                        case 'id':
+                          return (
+                            <TableCell
+                              key={col.id}
+                              className="sales-page__td--id"
+                              onClick={() => handleRowClick(tx.id)}
+                            >
+                              {tx.id}
+                            </TableCell>
+                          )
+                        case 'card':
+                          return (
+                            <TableCell
+                              key={col.id}
+                              paymentMethod={{
+                                cardNumber: tx.card,
+                                type: 'visa',
+                              }}
+                              onClick={() => handleRowClick(tx.id)}
+                            />
+                          )
+                        case 'status':
+                          return (
+                            <TableCell
+                              key={col.id}
+                              chip={{
+                                label: tx.status,
+                                variant: statusToChipVariant[tx.status],
+                              }}
+                              onClick={() => handleRowClick(tx.id)}
+                            />
+                          )
+                        case 'merchantId':
+                          return (
+                            <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
+                              {tx.merchantId}
+                            </TableCell>
+                          )
+                        case 'orderId':
+                          return (
+                            <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
+                              {tx.orderId}
+                            </TableCell>
+                          )
+                        case 'amount':
+                          return (
+                            <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
+                              {tx.amount}
+                            </TableCell>
+                          )
+                        case 'date':
+                          return (
+                            <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
+                              {tx.date}
+                            </TableCell>
+                          )
+                        default:
+                          return null
+                      }
+                    })}
+
+                    <TableCell
+                      actions
+                      onActionClick={(e) => {
+                        e.stopPropagation()
+                        console.log('Actions for', tx.id)
+                      }}
+                    />
+                  </tr>
                 )
               })}
-              <th className="sales-page__th sales-page__th--actions">
-                <button
-                  className="sales-page__column-btn"
-                  onClick={handleOpenColumnManagement}
-                  aria-label="Manage columns"
-                >
-                  <Icon name="columns" size={24} />
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTransactions.map(tx => {
-              const isSelected = selectedRows.has(tx.id)
-
-              return (
-                <tr
-                  key={tx.id}
-                  className={`sales-page__row${isSelected ? ' sales-page__row--selected' : ''}`}
-                >
-                  <TableCell checkbox>
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => handleSelectRow(tx.id)}
-                      aria-label={`Select ${tx.id}`}
-                    />
-                  </TableCell>
-
-                  {visibleColumns.map(col => {
-                    switch (col.id) {
-                      case 'id':
-                        return (
-                          <TableCell
-                            key={col.id}
-                            className="sales-page__td--id"
-                            onClick={() => handleRowClick(tx.id)}
-                          >
-                            {tx.id}
-                          </TableCell>
-                        )
-                      case 'card':
-                        return (
-                          <TableCell
-                            key={col.id}
-                            paymentMethod={{
-                              cardNumber: tx.card,
-                              type: 'visa',
-                            }}
-                            onClick={() => handleRowClick(tx.id)}
-                          />
-                        )
-                      case 'status':
-                        return (
-                          <TableCell
-                            key={col.id}
-                            chip={{
-                              label: tx.status,
-                              variant: statusToChipVariant[tx.status],
-                            }}
-                            onClick={() => handleRowClick(tx.id)}
-                          />
-                        )
-                      case 'merchantId':
-                        return (
-                          <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                            {tx.merchantId}
-                          </TableCell>
-                        )
-                      case 'orderId':
-                        return (
-                          <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                            {tx.orderId}
-                          </TableCell>
-                        )
-                      case 'amount':
-                        return (
-                          <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                            {tx.amount}
-                          </TableCell>
-                        )
-                      case 'date':
-                        return (
-                          <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                            {tx.date}
-                          </TableCell>
-                        )
-                      default:
-                        return null
-                    }
-                  })}
-
-                  <TableCell
-                    actions
-                    onActionClick={(e) => {
-                      e.stopPropagation()
-                      console.log('Actions for', tx.id)
-                    }}
-                  />
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
+      </>
 
       <SideModal
         isOpen={isFiltersOpen}
