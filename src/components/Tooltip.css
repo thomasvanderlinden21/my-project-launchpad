@@ -1,0 +1,82 @@
+.tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  animation: tooltip-fade-in 0.12s ease;
+}
+
+/* Arrow */
+.tooltip::before {
+  content: '';
+  position: absolute;
+  border: 5px solid transparent;
+}
+
+/* right: tooltip to the right of element, arrow points left */
+.tooltip--right {
+  transform: translateY(-50%);
+}
+
+.tooltip--right::before {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-right-color: #1a1a1a;
+}
+
+/* left: tooltip to the left of element, arrow points right */
+.tooltip--left {
+  transform: translate(-100%, -50%);
+}
+
+.tooltip--left::before {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left-color: #1a1a1a;
+}
+
+/* top: tooltip above element, arrow points down */
+.tooltip--top {
+  transform: translate(-50%, -100%);
+}
+
+.tooltip--top::before {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: #1a1a1a;
+}
+
+/* bottom: tooltip below element, arrow points up */
+.tooltip--bottom {
+  transform: translateX(-50%);
+}
+
+.tooltip--bottom::before {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: #1a1a1a;
+}
+
+@keyframes tooltip-fade-in {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}

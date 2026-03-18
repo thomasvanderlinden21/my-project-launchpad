@@ -1,0 +1,536 @@
+/* ── Light mode tokens (default) ─────────────── */
+:root, [data-theme="light"] {
+  --bg-page: #ffffff;
+  --bg-neutral-low: #f5f7f7;
+  --bg-neutral-medium: #ffffff;
+  --border-neutral-low: #e6ebeb;
+  --content-primary: #121621;
+  --content-secondary: #676d77;
+  --content-disabled: #adb4bd;
+  --brand-solid: #277777;
+  --brand-hover: #1f5c5c;
+  --success-bg: #d3f8e0;
+  --success-content: #0a5c35;
+  --info-bg: #e0f2f1;
+  --info-content: #1a6b6b;
+  --neutral-chip-bg: #e6ebeb;
+  --neutral-chip-content: #676d77;
+  --header-icon-hover: rgba(0, 0, 0, 0.06);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --font-primary: 'Raleway', sans-serif;
+  --font-secondary: 'Inter', sans-serif;
+}
+
+/* ── Dark mode tokens ────────────────────────── */
+[data-theme="dark"] {
+  --bg-page: #121621;
+  --bg-neutral-low: #181d27;
+  --bg-neutral-medium: #1f242d;
+  --border-neutral-low: #2a2f38;
+  --content-primary: #e9ebef;
+  --content-secondary: #9da3b0;
+  --content-disabled: #676d77;
+  --brand-solid: #277777;
+  --brand-hover: #1f5c5c;
+  --success-bg: #053321;
+  --success-content: #47cd89;
+  --info-bg: #052a33;
+  --info-content: #47b2cd;
+  --neutral-chip-bg: #2a2f38;
+  --neutral-chip-content: #9da3b0;
+  --header-icon-hover: rgba(255, 255, 255, 0.08);
+  --card-shadow: none;
+}
+
+/* ── Page layout ─────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--bg-neutral-low);
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s;
+}
+
+.page-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  left: -100px;
+  top: -200px;
+  background: radial-gradient(ellipse at center, rgba(39, 119, 119, 0.08) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-neutral-low);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+  z-index: 100;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Equal-width left and right sides keep logo perfectly centered */
+.header-side {
+  display: flex;
+  align-items: center;
+  min-width: 72px;
+}
+
+.header-side--left {
+  justify-content: flex-start;
+}
+
+.header-side--right {
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.header-logo-inner {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--content-primary);
+}
+
+.logo-wordmark {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--content-primary);
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.logo-wave {
+  color: var(--content-primary);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.header-icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--content-secondary);
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  transition: background 0.15s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.header-icon-btn:hover {
+  background: var(--header-icon-hover);
+  color: var(--content-primary);
+}
+
+/* ── Main content ────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ── Hero ────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-title {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  color: var(--content-primary);
+  letter-spacing: 0;
+  transition: color 0.2s;
+}
+
+.hero-subtitle {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+/* ── Onboarding card ─────────────────────────── */
+.onboarding-card {
+  background: var(--bg-neutral-medium);
+  border: 1px solid var(--border-neutral-low);
+  border-radius: 8px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.onboarding-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.onboarding-card-title {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--content-primary);
+  transition: color 0.2s;
+}
+
+.onboarding-card-subtitle {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+/* ── Stepper ─────────────────────────────────── */
+.stepper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each row: icon-column on the left, content on the right */
+.step {
+  display: flex;
+  gap: 8px;             /* matches Figma's --spacing/xs */
+  align-items: flex-start;
+}
+
+/*
+ * Connector column — fixed 24px to match icon diameter.
+ * self-stretch so it grows to the full height of the step row,
+ * letting the line fill the space below the icon.
+ * isolation: isolate keeps z-index stacking local.
+ */
+.step-connector-col {
+  width: 24px;
+  flex-shrink: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  isolation: isolate;
+  padding-bottom: 4px;  /* Figma: pb-[var(--spacing-xs,4px)] */
+}
+
+/* Last step has no line, so no bottom padding needed */
+.step-connector-col--last {
+  padding-bottom: 0;
+}
+
+/* Step icons */
+.step-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;           /* sits above connector line */
+}
+
+.step-icon--complete {
+  background: var(--brand-solid);
+}
+
+.step-icon--current {
+  background: transparent;
+}
+
+.step-icon--incomplete {
+  background: var(--bg-neutral-low);
+  border: 1px solid var(--content-disabled);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Current step: radio-button style */
+.step-radio {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(39, 119, 119, 0.12);
+  box-shadow: 0 0 0 2px var(--bg-neutral-medium), 0 0 0 4px var(--brand-solid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-radio-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand-solid);
+}
+
+/* Incomplete step: inner dot */
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--content-disabled);
+}
+
+/*
+ * Connector line — flex:1 grows to fill all remaining height
+ * in the connector column after the icon.
+ * 4px top margin matches Figma's gap-[var(--spacing-xs,4px)].
+ */
+.step-line {
+  flex: 1;
+  width: 1.5px;
+  margin-top: 4px;
+  background: var(--border-neutral-low);
+  border-radius: 1px;
+  z-index: 1;
+  transition: background-color 0.2s;
+}
+
+.step-line--complete {
+  background: var(--brand-solid);
+}
+
+/* Content area beside connector column */
+.step-body {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px;
+  min-width: 0;
+  padding-bottom: 24px;  /* Figma: pb-[var(--spacing/xl,24px)] */
+}
+
+.step-content--last {
+  padding-bottom: 0;
+}
+
+.step-title {
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--content-primary);
+  transition: color 0.2s;
+}
+
+.step-description {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+.step-date {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+/* ── Chips ───────────────────────────────────── */
+.chip {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 2px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.chip--success {
+  background: var(--success-bg);
+  color: var(--success-content);
+}
+
+.chip--info {
+  background: var(--info-bg);
+  color: var(--info-content);
+}
+
+.chip--neutral {
+  background: var(--neutral-chip-bg);
+  color: var(--neutral-chip-content);
+}
+
+/* ── Primary button ──────────────────────────── */
+.btn-primary {
+  width: 100%;
+  height: 48px;
+  background: var(--brand-solid);
+  border: 1px solid rgba(39, 119, 119, 0.5);
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover  { background: var(--brand-hover); }
+.btn-primary:active { background: var(--brand-hover); transform: scale(0.99); }
+
+/* ── Help card ───────────────────────────────── */
+.help-card {
+  background: var(--bg-neutral-medium);
+  border: 1px solid var(--border-neutral-low);
+  border-radius: 8px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.help-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.help-card-title {
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--content-primary);
+  transition: color 0.2s;
+}
+
+.help-card-desc {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+.help-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--content-primary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-link:hover { opacity: 0.7; }
+
+.btn-link-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--content-secondary);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+/* ── Footer ──────────────────────────────────── */
+.footer {
+  background: var(--bg-page);
+  border-top: 1px solid var(--border-neutral-low);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--content-secondary);
+  position: relative;
+  z-index: 10;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.footer-sep { color: var(--border-neutral-low); }
+.footer a   { color: var(--content-secondary); }
+.footer a:hover { color: var(--content-primary); }

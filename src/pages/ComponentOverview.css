@@ -1,0 +1,94 @@
+/* ── ComponentOverview page extras ──────────── */
+
+/* Card grid layouts used in the overview showcase */
+.overview-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 400px;
+  gap: var(--spacing-md);
+}
+
+.overview-card-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 100%;
+}
+
+/* Body text used inside card previews */
+.overview-card-body-text {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-4xs);    /* 14px */
+  line-height: var(--line-height-4xs); /* 18px */
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+/* Responsive: stack 3-col grid on narrow viewports */
+@media (max-width: 480px) {
+  .overview-card-grid--3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Alert stack — full-width column */
+.overview-alert-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+/* Input grid — 2 columns, each field capped at 300px */
+.overview-input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 300px));
+  gap: var(--spacing-xl) var(--spacing-2xl);
+  align-items: start;
+}
+
+@media (max-width: 540px) {
+  .overview-input-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tabs showcase helpers */
+.overview-tab-body {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-3xs);
+  line-height: var(--line-height-3xs);
+  color: var(--content-secondary);
+}
+
+.overview-tab-stats {
+  display: flex;
+  gap: var(--spacing-2xl);
+  margin-top: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.overview-tab-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.overview-tab-stat-value {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-2xs);
+  color: var(--content-primary);
+}
+
+.overview-tab-stat-label {
+  font-size: var(--font-size-4xs);
+  color: var(--content-secondary);
+}
+
+.overview-tab-doc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-4xs);
+  color: var(--content-secondary);
+}

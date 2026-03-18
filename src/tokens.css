@@ -1,0 +1,410 @@
+/*
+ * ============================================================
+ *  Aurora Design System — Official Design Tokens
+ *  Worldline brand · converted from JSON sources
+ *
+ *  Sources (design-tokens/):
+ *    brand.worldline.tokens.json   — colour palette + radius
+ *    theme.light.tokens.json       — light-mode semantic tokens
+ *    theme.dark.tokens.json        — dark-mode semantic tokens
+ *    typography.all.tokens.json    — type scale
+ *    dimensions.all.tokens.json    — dimension scale
+ *    effect.styles.tokens.json     — shadows / focus ring
+ *    applied.default.tokens.json   — component-level token spec
+ *
+ *  All {curly.brace} references have been fully resolved to
+ *  literal values. Section numbers match the layer hierarchy:
+ *    1. Primitives (theme-independent)
+ *    2. Semantic — light mode
+ *    3. Semantic — dark mode
+ *    4. Composite text-style tokens
+ * ============================================================
+ */
+
+
+/* ── 1. PRIMITIVE TOKENS ──────────────────────────────────── */
+
+:root {
+
+  /* Typography — Family (brand.worldline › typography) */
+  --font-family-primary:   'Raleway', sans-serif;   /* typography.font-family.primary */
+  --font-family-secondary: 'Inter',   sans-serif;   /* typography.font-family.secondary */
+
+  /* Typography — Weight (typography.all › font-weight) */
+  --font-weight-light:    300;   /* font-weight.light */
+  --font-weight-regular:  400;   /* font-weight.regular */
+  --font-weight-medium:   500;   /* font-weight.medium */
+  --font-weight-semibold: 600;   /* font-weight.semibold */
+  --font-weight-bold:     700;   /* font-weight.bold */
+
+  /* Typography — Size (typography.all › font-size) */
+  --font-size-6xs: 12px;   /* font-size.6xs */
+  --font-size-5xs: 13px;   /* font-size.5xs  ← was 12px in prev tokens */
+  --font-size-4xs: 14px;   /* font-size.4xs */
+  --font-size-3xs: 16px;   /* font-size.3xs */
+  --font-size-2xs: 17px;   /* font-size.2xs  (new) */
+  --font-size-xs:  18px;   /* font-size.xs   ← was --font-size-sm */
+  --font-size-sm:  19px;   /* font-size.sm   (new) */
+  --font-size-md:  20px;   /* font-size.md */
+  --font-size-lg:  22px;   /* font-size.lg */
+  --font-size-xl:  24px;   /* font-size.xl */
+  --font-size-2xl: 28px;   /* font-size.2xl  ← was 32px */
+  --font-size-3xl: 32px;   /* font-size.3xl  ← was 48px */
+  --font-size-4xl: 34px;   /* font-size.4xl  (new) */
+  --font-size-5xl: 40px;   /* font-size.5xl */
+  --font-size-6xl: 44px;   /* font-size.6xl  (new) */
+  --font-size-7xl: 48px;   /* font-size.7xl  ← old --font-size-3xl value */
+  --font-size-8xl: 52px;   /* font-size.8xl  (new) */
+  --font-size-9xl: 56px;   /* font-size.9xl  (new) */
+
+  /* Typography — Line Height (typography.all › line-height) */
+  --line-height-6xs: 14px;   /* line-height.6xs (new) */
+  --line-height-5xs: 16px;   /* line-height.5xs (new) */
+  --line-height-4xs: 18px;   /* line-height.4xs */
+  --line-height-3xs: 22px;   /* line-height.3xs */
+  --line-height-2xs: 24px;   /* line-height.2xs */
+  --line-height-xs:  26px;   /* line-height.xs  (new) */
+  --line-height-sm:  28px;   /* line-height.sm  (new) */
+  --line-height-md:  30px;   /* line-height.md  (new) */
+  --line-height-lg:  32px;   /* line-height.lg */
+  --line-height-xl:  36px;   /* line-height.xl  ← was 48px */
+  --line-height-2xl: 40px;   /* line-height.2xl ← was 56px */
+  --line-height-3xl: 48px;   /* line-height.3xl ← was 64px */
+  --line-height-4xl: 56px;   /* line-height.4xl (new, was old 2xl value) */
+  --line-height-5xl: 64px;   /* line-height.5xl (new, was old 3xl value) */
+
+  /* Typography — Letter Spacing */
+  --letter-spacing-none: 0px;
+
+  /* Dimension scale (dimensions.all) */
+  --dimension-0:    0px;
+  --dimension-1:    1px;
+  --dimension-2:    2px;
+  --dimension-4:    4px;
+  --dimension-8:    8px;
+  --dimension-12:  12px;
+  --dimension-16:  16px;
+  --dimension-20:  20px;
+  --dimension-24:  24px;
+  --dimension-32:  32px;
+  --dimension-40:  40px;
+  --dimension-48:  48px;
+  --dimension-52:  52px;
+  --dimension-56:  56px;
+  --dimension-64:  64px;
+  --dimension-72:  72px;
+  --dimension-80:  80px;
+  --dimension-88:  88px;
+  --dimension-96:  96px;
+  --dimension-128: 128px;
+  --dimension-max: 9999px;
+
+  /* Spacing (maps to dimension scale) */
+  --spacing-3xs:   2px;    /* dimensions.2  */
+  --spacing-2xs:   4px;    /* dimensions.4  */
+  --spacing-xs:    8px;    /* dimensions.8  */
+  --spacing-sm:   12px;    /* dimensions.12 */
+  --spacing-md:   16px;    /* dimensions.16 */
+  --spacing-lg:   20px;    /* dimensions.20 */
+  --spacing-xl:   24px;    /* dimensions.24 */
+  --spacing-2xl:  32px;    /* dimensions.32 */
+  --spacing-3xl:  40px;    /* dimensions.40 */
+  --spacing-4xl:  48px;    /* dimensions.48 */
+  --spacing-5xl:  64px;    /* dimensions.64 */
+  --spacing-10xl: 96px;    /* dimensions.96 */
+  --spacing-11xl: 128px;   /* dimensions.128 */
+
+  /* Border Width */
+  --border-width-thin:   1px;   /* dimensions.1 */
+  --border-width-medium: 2px;   /* dimensions.2 */
+  --border-width-thick:  4px;   /* dimensions.4 */
+
+  /* Border Radius (brand.worldline › radius → dimensions) */
+  --radius-none:    0px;      /* radius.none  → dimensions.0 */
+  --radius-2xs:     2px;      /* radius.2xs   → dimensions.2 */
+  --radius-xs:      4px;      /* radius.xs    → dimensions.4 */
+  --radius-sm:      8px;      /* radius.sm    → dimensions.8  ← was 6px */
+  --radius-md:     12px;      /* radius.md    → dimensions.12 ← was 8px */
+  --radius-lg:     16px;      /* radius.lg    → dimensions.16 ← was 12px */
+  --radius-xl:     20px;      /* radius.xl    → dimensions.20 ← was 16px */
+  --radius-2xl:    24px;      /* radius.2xl   → dimensions.24 (new) */
+  --radius-rounded: 9999px;   /* radius.rounded → dimensions.max */
+
+  /* Sizing */
+  --size-height-header: 72px;
+  --size-height-footer: 52px;
+}
+
+
+/* ── 2. SEMANTIC TOKENS — Light mode ──────────────────────── */
+/*    Resolved from theme.light.tokens.json + brand.worldline  */
+
+:root,
+[data-theme="light"] {
+
+  /* ── Surface ──────────────────────────────────────────── */
+  --surface-page:              #ffffff;    /* surface.page → neutral.light.white */
+  --surface-neutral-low:       #f5f7f7;    /* surface.neutral.low → neutral.light.50 */
+  --surface-neutral-low-hover: #e6ebeb;    /* surface.neutral.low-hover → neutral.light.100 */
+  --surface-neutral-medium:    #ffffff;    /* surface.neutral.medium → neutral.light.white */
+  --surface-neutral-high:      #e6ebeb;    /* surface.neutral.high → neutral.light.100 */
+  --surface-brand-solid:       #277777;    /* surface.brand.solid → brand.primary.500 */
+  --surface-brand-hover:       #1f5c5c;    /* surface.brand.solid-hover → brand.primary.700 */
+  --surface-brand-subtle:      #e6f0ef;    /* surface.brand.subtile → brand.primary.100 */
+  --surface-disabled:          #f5f7f7;    /* surface.disabled → neutral.light.50 */
+  --surface-invert:            #ffffff;    /* surface.invert → neutral.light.white */
+
+  /* Feedback surfaces */
+  --surface-info-subtle:    #dcf4fa;    /* surface.info.subtile → feedback.info.100 */
+  --surface-success-subtle: #dcfae6;    /* surface.success.subtile → feedback.success.100 */
+  --surface-warning-subtle: #fef0c7;    /* surface.warning.subtile → feedback.warning.100 */
+  --surface-error-subtle:   #fee4e2;    /* surface.error.subtile → feedback.error.100 */
+
+  /* ── Content ──────────────────────────────────────────── */
+  --content-primary:    #121621;   /* content.primary → neutral.dark.900 */
+  --content-secondary:  #525d5d;   /* content.secondary → neutral.light.700 ← was #676d77 */
+  --content-tertiary:   #6b7676;   /* content.tertiary → neutral.light.600 (new token) */
+  --content-placeholder: #6b7676;  /* content.placeholder → neutral.light.600 */
+  --content-disabled:   #9ca4a6;   /* content.disabled → neutral.light.400 ← was #adb4bd */
+  --content-brand:      #277777;   /* content.brand → brand.primary.500 */
+  --content-on-brand:   #ffffff;   /* content.on-brand → neutral.light.white */
+  --content-invert:     #ffffff;   /* content.invert */
+  --content-info:       #066076;   /* content.info → feedback.info.700 */
+  --content-success:    #067647;   /* content.success → feedback.success.700 */
+  --content-warning:    #b54708;   /* content.warning → feedback.warning.700 ← was #92400e */
+  --content-error:      #b42318;   /* content.error → feedback.error.700 */
+
+  /* ── Border ───────────────────────────────────────────── */
+  --border-neutral-low:    #e6ebeb;   /* border.neutral.low → neutral.light.100 */
+  --border-neutral-medium: #b4b7bc;   /* border.neutral.medium → neutral.light.300 ← was #c4cbcb */
+  --border-neutral-high:   #859090;   /* border.neutral.high → neutral.light.500 (new) */
+  --border-disabled:       #b4b7bc;   /* border.disabled → neutral.light.300 */
+  --border-brand-solid:    #277777;   /* border.brand.solid → brand.primary.500 */
+  --border-brand-subtle:   #1b4f4f;   /* border.brand.subtile → brand.primary.800 ← was #6ea2a2 */
+
+  /* Feedback borders */
+  --border-info-subtle:    #75cae0;   /* border.info.subtile → feedback.info.300 */
+  --border-success-subtle: #75e0a7;   /* border.success.subtile → feedback.success.300 */
+  --border-warning-subtle: #fec84b;   /* border.warning.subtile → feedback.warning.300 */
+  --border-error-subtle:   #ffa9a3;   /* border.error.subtile → feedback.error.300 */
+  --border-error-solid:    #b42318;   /* border.error.solid → feedback.error.700 */
+
+  /* ── Backward-compat alias ────────────────────────────── */
+  --border-neutral-mid: #b4b7bc;    /* = --border-neutral-medium */
+
+  /* ── Focus ring (effect.styles) ──────────────────────── */
+  --focus-ring-outer: #277777;   /* surface.brand.solid */
+  --focus-ring-inner: #ffffff;   /* surface.page */
+
+  /* ── Component aliases ────────────────────────────────── */
+
+  /* Chip (applied.default › chip) */
+  --chip-success-bg:      #dcfae6;   /* surface.success.subtle */
+  --chip-success-content: #067647;   /* content.success */
+  --chip-info-bg:         #dcf4fa;   /* surface.info.subtle */
+  --chip-info-content:    #066076;   /* content.info */
+  --chip-neutral-bg:      #e6ebeb;   /* surface.neutral.high */
+  --chip-neutral-content: #525d5d;   /* content.secondary */
+  --chip-warning-bg:      #fef0c7;   /* surface.warning.subtle ← was #fef3c7 */
+  --chip-warning-content: #b54708;   /* content.warning ← was #92400e */
+
+  /* Button (applied.default › button) */
+  --btn-primary-bg:        #277777;   /* surface.brand.solid */
+  --btn-primary-border:    #1b4f4f;   /* border.brand.subtile ← was #6ea2a2 */
+  --btn-primary-content:   #ffffff;   /* content.on-brand */
+  --btn-secondary-bg:      #f5f7f7;   /* surface.neutral.low ← was #ffffff */
+  --btn-secondary-border:  #859090;   /* border.neutral.high ← was #c4cbcb */
+  --btn-secondary-content: #121621;   /* content.primary */
+  --btn-link-content:      #121621;   /* content.primary ← was #277777 (teal) */
+
+  /* Input */
+  --input-error: #b42318;   /* border.error.solid / content.error ← was #d92d20 */
+
+  /* Alert */
+  --alert-info-bg:         #dcf4fa;   /* surface.info.subtle */
+  --alert-info-border:     #75cae0;   /* border.info.subtle */
+  --alert-info-content:    #066076;   /* content.info */
+  --alert-success-bg:      #dcfae6;   /* surface.success.subtle */
+  --alert-success-border:  #75e0a7;   /* border.success.subtle */
+  --alert-success-content: #067647;   /* content.success */
+  --alert-warning-bg:      #fef0c7;   /* surface.warning.subtle ← was #fffbeb */
+  --alert-warning-border:  #fec84b;   /* border.warning.subtle */
+  --alert-warning-content: #b54708;   /* content.warning ← was #92400e */
+  --alert-error-bg:        #fee4e2;   /* surface.error.subtle ← was #fef2f2 */
+  --alert-error-border:    #ffa9a3;   /* border.error.subtle */
+  --alert-error-content:   #b42318;   /* content.error ← was #b91c1c */
+}
+
+
+/* ── 3. SEMANTIC TOKENS — Dark mode ───────────────────────── */
+/*    Resolved from theme.dark.tokens.json + brand.worldline   */
+
+[data-theme="dark"] {
+
+  /* ── Surface ──────────────────────────────────────────── */
+  --surface-page:              #121621;   /* surface.page → neutral.dark.900 */
+  --surface-neutral-low:       #181d27;   /* surface.neutral.low → neutral.dark.800 */
+  --surface-neutral-low-hover: #1f242d;   /* surface.neutral.low-hover → neutral.dark.700 */
+  --surface-neutral-medium:    #1f242d;   /* surface.neutral.medium → neutral.dark.700 */
+  --surface-neutral-high:      #2a2f38;   /* surface.neutral.high → neutral.dark.600 */
+  --surface-brand-solid:       #277777;   /* surface.brand.solid → brand.primary.500 */
+  --surface-brand-hover:       #1f5c5c;   /* surface.brand.solid-hover → brand.primary.700 */
+  --surface-brand-subtle:      #121621;   /* surface.brand.subtile → neutral.dark.900 */
+  --surface-disabled:          #1f242d;   /* surface.disabled → neutral.dark.700 */
+  --surface-invert:            #121621;   /* surface.invert → neutral.dark.900 */
+
+  /* Feedback surfaces */
+  --surface-info-subtle:    #052a33;    /* surface.info.subtile → feedback.info.900 */
+  --surface-success-subtle: #053321;    /* surface.success.subtile → feedback.success.900 */
+  --surface-warning-subtle: #4e1d09;    /* surface.warning.subtile → feedback.warning.900 */
+  --surface-error-subtle:   #55160c;    /* surface.error.subtile → feedback.error.900 */
+
+  /* ── Content ──────────────────────────────────────────── */
+  --content-primary:    #e9ebef;   /* content.primary → neutral.dark.50 */
+  --content-secondary:  #9da3b0;   /* content.secondary → neutral.dark.300 */
+  --content-tertiary:   #9ca4a6;   /* content.tertiary → neutral.light.400 */
+  --content-placeholder: #676d77;  /* content.placeholder → neutral.dark.400 */
+  --content-disabled:   #676d77;   /* content.disabled → neutral.dark.400 */
+  --content-brand:      #91b9b9;   /* content.brand → brand.primary.300 */
+  --content-on-brand:   #ffffff;   /* content.on-brand → neutral.light.white */
+  --content-invert:     #121621;   /* content.invert */
+  --content-info:       #47b2cd;   /* content.info → feedback.info.400 */
+  --content-success:    #47cd89;   /* content.success → feedback.success.400 */
+  --content-warning:    #fdb022;   /* content.warning → feedback.warning.400 */
+  --content-error:      #f97066;   /* content.error → feedback.error.400 */
+
+  /* ── Border ───────────────────────────────────────────── */
+  --border-neutral-low:    #2a2f38;   /* border.neutral.low → neutral.dark.600 */
+  --border-neutral-medium: #676d77;   /* border.neutral.medium → neutral.dark.400 */
+  --border-neutral-high:   #bdc1cb;   /* border.neutral.high → neutral.dark.200 */
+  --border-disabled:       #2a2f38;   /* border.disabled → neutral.dark.600 */
+  --border-brand-solid:    #277777;   /* border.brand.solid → brand.primary.500 */
+  --border-brand-subtle:   #6ea2a2;   /* border.brand.subtile → brand.primary.400 */
+
+  /* Feedback borders */
+  --border-info-subtle:    #066076;   /* border.info.subtile → feedback.info.700 */
+  --border-success-subtle: #067647;   /* border.success.subtile → feedback.success.700 */
+  --border-warning-subtle: #b54708;   /* border.warning.subtile → feedback.warning.700 */
+  --border-error-subtle:   #b42318;   /* border.error.subtile → feedback.error.700 */
+  --border-error-solid:    #f97066;   /* border.error.solid → feedback.error.400 (dark inverts) */
+
+  /* ── Backward-compat alias ────────────────────────────── */
+  --border-neutral-mid: #676d77;    /* = --border-neutral-medium */
+
+  /* ── Focus ring ───────────────────────────────────────── */
+  --focus-ring-outer: #277777;
+  --focus-ring-inner: #121621;   /* surface.page dark */
+
+  /* ── Component aliases ────────────────────────────────── */
+
+  /* Chip */
+  --chip-success-bg:      #053321;   /* surface.success.subtle */
+  --chip-success-content: #47cd89;   /* content.success */
+  --chip-info-bg:         #052a33;   /* surface.info.subtle */
+  --chip-info-content:    #47b2cd;   /* content.info */
+  --chip-neutral-bg:      #2a2f38;   /* surface.neutral.high */
+  --chip-neutral-content: #9da3b0;   /* content.secondary */
+  --chip-warning-bg:      #4e1d09;   /* surface.warning.subtle ← was #451a03 */
+  --chip-warning-content: #fdb022;   /* content.warning ← was #fbbf24 */
+
+  /* Button */
+  --btn-primary-bg:        #277777;
+  --btn-primary-border:    #6ea2a2;   /* border.brand.subtile → brand.primary.400 */
+  --btn-primary-content:   #ffffff;
+  --btn-secondary-bg:      #181d27;   /* surface.neutral.low */
+  --btn-secondary-border:  #bdc1cb;   /* border.neutral.high → neutral.dark.200 */
+  --btn-secondary-content: #e9ebef;   /* content.primary */
+  --btn-link-content:      #91b9b9;   /* content.brand dark ← was #91b9b9 (unchanged) */
+
+  /* Input */
+  --input-error: #f97066;   /* content.error dark */
+
+  /* Alert */
+  --alert-info-bg:         #052a33;   /* surface.info.subtle */
+  --alert-info-border:     #066076;   /* border.info.subtle */
+  --alert-info-content:    #47b2cd;   /* content.info */
+  --alert-success-bg:      #053321;   /* surface.success.subtle */
+  --alert-success-border:  #067647;   /* border.success.subtle */
+  --alert-success-content: #47cd89;   /* content.success */
+  --alert-warning-bg:      #4e1d09;   /* surface.warning.subtle ← was #451a03 */
+  --alert-warning-border:  #b54708;   /* border.warning.subtle */
+  --alert-warning-content: #fdb022;   /* content.warning ← was #fbbf24 */
+  --alert-error-bg:        #55160c;   /* surface.error.subtle ← was #450a0a */
+  --alert-error-border:    #b42318;   /* border.error.subtle */
+  --alert-error-content:   #f97066;   /* content.error */
+}
+
+
+/* ── 4. COMPOSITE TEXT-STYLE TOKENS ──────────────────────── */
+/*    Theme-independent; map role names to the type scale.    */
+/*    Based on text.styles.tokens.json typescale hierarchy.   */
+
+:root {
+
+  /* hero — display cover (Raleway, medium, largest) */
+  --text-hero-family:  var(--font-family-primary);
+  --text-hero-weight:  var(--font-weight-medium);
+  --text-hero-size:    var(--font-size-7xl);    /* 48px */
+  --text-hero-lh:      var(--line-height-5xl);  /* 64px */
+
+  /* display.lg — page-level hero headings (Raleway, medium) */
+  --text-display-lg-family: var(--font-family-primary);
+  --text-display-lg-weight: var(--font-weight-medium);
+  --text-display-lg-size:   var(--font-size-5xl);   /* 40px */
+  --text-display-lg-lh:     var(--line-height-3xl);  /* 48px */
+
+  /* display.md (Raleway, medium) */
+  --text-display-md-family: var(--font-family-primary);
+  --text-display-md-weight: var(--font-weight-medium);
+  --text-display-md-size:   var(--font-size-3xl);   /* 32px */
+  --text-display-md-lh:     var(--line-height-2xl);  /* 40px */
+
+  /* display.sm — card / section headings (Raleway, medium) */
+  --text-display-sm-family: var(--font-family-primary);
+  --text-display-sm-weight: var(--font-weight-medium);
+  --text-display-sm-size:   var(--font-size-xl);    /* 24px */
+  --text-display-sm-lh:     var(--line-height-lg);  /* 32px */
+
+  /* Backward-compat alias used by display headings */
+  --text-display-2xl-family: var(--font-family-primary);
+  --text-display-2xl-weight: var(--font-weight-regular);
+  --text-display-2xl-size:   var(--font-size-7xl);   /* 48px */
+  --text-display-2xl-lh:     var(--line-height-5xl); /* 64px */
+  --text-display-2xl-ls:     var(--letter-spacing-none);
+
+  /* title.lg — section titles (Inter, medium) */
+  --text-title-lg-family: var(--font-family-secondary);
+  --text-title-lg-weight: var(--font-weight-medium);
+  --text-title-lg-size:   var(--font-size-xl);    /* 24px */
+  --text-title-lg-lh:     var(--line-height-2xs); /* 24px */
+
+  /* title.md — sub-section titles */
+  --text-title-md-family: var(--font-family-secondary);
+  --text-title-md-weight: var(--font-weight-medium);
+  --text-title-md-size:   var(--font-size-lg);    /* 22px */
+  --text-title-md-lh:     var(--line-height-lg);  /* 32px */
+
+  /* title.sm / text-lg — card row titles */
+  --text-lg-family: var(--font-family-secondary);
+  --text-lg-weight: var(--font-weight-medium);
+  --text-lg-size:   var(--font-size-md);    /* 20px */
+  --text-lg-lh:     var(--line-height-2xs); /* 24px */
+
+  /* body.md / text-md — body copy (Inter, regular) */
+  --text-md-family: var(--font-family-secondary);
+  --text-md-weight: var(--font-weight-regular);
+  --text-md-size:   var(--font-size-3xs);   /* 16px */
+  --text-md-lh:     var(--line-height-3xs); /* 22px */
+
+  /* label.md / text-md medium — labels, buttons */
+  --text-md-medium-family: var(--font-family-secondary);
+  --text-md-medium-weight: var(--font-weight-medium);
+  --text-md-medium-size:   var(--font-size-3xs);   /* 16px */
+  --text-md-medium-lh:     var(--line-height-3xs); /* 22px */
+
+  /* caption / text-sm — helper text, dates, metadata */
+  --text-sm-family: var(--font-family-secondary);
+  --text-sm-weight: var(--font-weight-regular);
+  --text-sm-size:   var(--font-size-4xs);   /* 14px */
+  --text-sm-lh:     var(--line-height-4xs); /* 18px */
+}

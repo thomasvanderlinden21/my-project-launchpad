@@ -1,0 +1,39 @@
+<svg width="180" height="200" viewBox="0 0 180 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Terminal device body -->
+  <rect x="30" y="20" width="120" height="140" rx="8" fill="#2C3E50" stroke="#1A252F" stroke-width="2"/>
+
+  <!-- Screen -->
+  <rect x="40" y="30" width="100" height="60" rx="4" fill="#34495E"/>
+  <rect x="45" y="35" width="90" height="50" rx="2" fill="#1ABC9C" opacity="0.3"/>
+
+  <!-- Keypad area -->
+  <g opacity="0.6">
+    <!-- Row 1 -->
+    <circle cx="60" cy="110" r="6" fill="#95A5A6"/>
+    <circle cx="90" cy="110" r="6" fill="#95A5A6"/>
+    <circle cx="120" cy="110" r="6" fill="#95A5A6"/>
+
+    <!-- Row 2 -->
+    <circle cx="60" cy="130" r="6" fill="#95A5A6"/>
+    <circle cx="90" cy="130" r="6" fill="#95A5A6"/>
+    <circle cx="120" cy="130" r="6" fill="#95A5A6"/>
+
+    <!-- Row 3 -->
+    <circle cx="60" cy="150" r="6" fill="#95A5A6"/>
+    <circle cx="90" cy="150" r="6" fill="#95A5A6"/>
+    <circle cx="120" cy="150" r="6" fill="#95A5A6"/>
+  </g>
+
+  <!-- Contactless symbol -->
+  <g transform="translate(85, 40)">
+    <path d="M0 8 Q4 8 4 12 Q4 16 0 16" stroke="white" stroke-width="1.5" fill="none" opacity="0.8"/>
+    <path d="M6 6 Q12 6 12 14 Q12 22 6 22" stroke="white" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M12 4 Q20 4 20 16 Q20 28 12 28" stroke="white" stroke-width="1.5" fill="none" opacity="0.4"/>
+  </g>
+
+  <!-- Brand/logo area -->
+  <rect x="60" y="165" width="60" height="8" rx="2" fill="#95A5A6" opacity="0.5"/>
+
+  <!-- Base/stand -->
+  <path d="M 50 160 L 40 180 L 140 180 L 130 160 Z" fill="#1A252F" opacity="0.6"/>
+</svg>

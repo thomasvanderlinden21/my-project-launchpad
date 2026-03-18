@@ -1,0 +1,186 @@
+/* ── Stepper / Step component ────────────────── */
+
+/* ── Container ────────────────────────────────── */
+
+.stepper--horizontal {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.stepper--vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════════════════════
+   HORIZONTAL STEP
+   Each step is flex: 1 so all slots are equal.
+   Track = [left-line][indicator][right-line]
+   Body  = centered label + description
+   ══════════════════════════════════════════════ */
+
+.step--horizontal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Track row */
+.step-h-track {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Each half-line takes all remaining space */
+.step-h-line {
+  flex: 1;
+  height: 2px;
+  transition: background 0.3s;
+}
+
+.step-h-line--hidden {
+  background: transparent;
+}
+
+/* Body: label + desc centered below the indicator */
+.step-h-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: var(--spacing-xs);   /* 8px gap below circle */
+  padding-left: var(--spacing-2xs);
+  padding-right: var(--spacing-2xs);
+  gap: var(--spacing-3xs);
+}
+
+/* ══════════════════════════════════════════════
+   VERTICAL STEP
+   Track column = [indicator] + [vertical line]
+   Body sits to the right of the track.
+   ══════════════════════════════════════════════ */
+
+.step--vertical {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-sm);   /* 12px between track and body */
+}
+
+/* Track column */
+.step-v-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Vertical connector line below the indicator */
+.step-v-connector {
+  width: 2px;
+  flex: 1;
+  min-height: 28px;   /* room for at least one line of body text */
+  margin: var(--spacing-3xs) 0;
+  transition: background 0.3s;
+}
+
+/* Body: label + desc aligned left */
+.step-v-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3xs);
+  padding-top: 6px;           /* optical align with circle centre */
+  padding-bottom: var(--spacing-xl);
+}
+
+/* Last vertical step: no bottom padding (no connector below) */
+.step--vertical:last-child .step-v-body {
+  padding-bottom: 0;
+}
+
+/* ══════════════════════════════════════════════
+   STEP INDICATOR CIRCLE
+   Shared by both orientations
+   ══════════════════════════════════════════════ */
+
+.step-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-rounded);
+  border: var(--border-width-medium) solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Completed & active: filled brand circle */
+.step--completed .step-indicator,
+.step--active    .step-indicator {
+  background: var(--surface-brand-solid);
+  border-color: var(--surface-brand-solid);
+  color: var(--content-on-brand);
+}
+
+/* Upcoming: outlined circle */
+.step--upcoming .step-indicator {
+  background: var(--surface-page);
+  border-color: var(--border-neutral-mid);
+  color: var(--content-secondary);
+}
+
+/* Step number text inside the indicator */
+.step-number {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-6xs);   /* 12px */
+  line-height: 1;
+  user-select: none;
+}
+
+/* ══════════════════════════════════════════════
+   CONNECTOR LINE STATES (shared by H + V)
+   ══════════════════════════════════════════════ */
+
+.step-connector--brand {
+  background: var(--surface-brand-solid);
+}
+
+.step-connector--neutral {
+  background: var(--border-neutral-low);
+}
+
+/* ══════════════════════════════════════════════
+   STEP LABEL & DESCRIPTION (shared)
+   ══════════════════════════════════════════════ */
+
+.step-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs);     /* 14px */
+  line-height: var(--line-height-4xs); /* 18px */
+  transition: color 0.2s, font-weight 0.2s;
+}
+
+.step--completed .step-label,
+.step--active    .step-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+}
+
+.step--upcoming .step-label {
+  font-weight: var(--font-weight-regular);
+  color: var(--content-secondary);
+}
+
+.step-desc {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-5xs);     /* 12px */
+  line-height: var(--line-height-4xs); /* 18px */
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}

@@ -1,0 +1,34 @@
+{
+  "focus-ring": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "0px",
+        "blur": "0px",
+        "spread": "{border-width.thick}",
+        "color": "{surface.brand.solid}"
+      },
+      {
+        "offsetX": "0px",
+        "offsetY": "0px",
+        "blur": "0px",
+        "spread": "{border-width.medium}",
+        "color": "{surface.page}"
+      }
+    ]
+  },
+  "button-primary-shadow": {
+    "$type": "shadow",
+    "$value": [
+      {
+        "offsetX": "0px",
+        "offsetY": "-2px",
+        "blur": "0px",
+        "spread": "0px",
+        "color": "#0a0d120d",
+        "inset": true
+      }
+    ]
+  }
+}

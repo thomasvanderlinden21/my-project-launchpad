@@ -1,0 +1,119 @@
+/* ── Button component ────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-3xs);   /* 16px */
+  line-height: var(--line-height-3xs); /* 22px */
+  cursor: pointer;
+  border: var(--border-width-thin) solid transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, opacity 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+  min-height: 44px; /* WCAG 2.5.5 min touch target */
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--focus-ring-outer);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--focus-ring-inner), 0 0 0 6px var(--focus-ring-outer);
+}
+
+/* ── Sizes ───────────────────────────────────── */
+
+.btn--md {
+  height: 48px;
+  padding: 0 var(--spacing-sm);  /* 12px */
+  gap: var(--spacing-xs);        /* 8px */
+}
+
+.btn--sm {
+  height: 40px;
+  padding: 0 var(--spacing-xs);  /* 8px */
+  gap: var(--spacing-2xs);       /* 4px */
+}
+
+/* Icon-only: square, no horizontal padding */
+.btn--icon-only {
+  padding: 0;
+}
+
+.btn--icon-only.btn--md { width: 48px; }
+.btn--icon-only.btn--sm { width: 40px; }
+
+/* ── Hierarchies ─────────────────────────────── */
+
+/* Primary */
+.btn--primary {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
+  color: var(--btn-primary-content);
+  box-shadow: inset 0px -2px 0px 0px rgba(10, 13, 18, 0.05);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--surface-brand-hover);
+  border-color: var(--surface-brand-hover);
+}
+
+.btn--primary:active:not(:disabled) {
+  background: var(--surface-brand-hover);
+  transform: scale(0.99);
+}
+
+/* Secondary */
+.btn--secondary {
+  background: var(--btn-secondary-bg);
+  border-color: var(--btn-secondary-border);
+  color: var(--btn-secondary-content);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--surface-neutral-low);
+}
+
+.btn--secondary:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+/* Tertiary (link/ghost) */
+.btn--tertiary {
+  background: transparent;
+  border-color: transparent;
+  color: var(--btn-link-content);
+  border-radius: var(--radius-xs);
+}
+
+.btn--tertiary:hover:not(:disabled) {
+  opacity: 0.75;
+}
+
+.btn--tertiary:active:not(:disabled) {
+  opacity: 0.6;
+}
+
+/* ── Disabled ─────────────────────────────────── */
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Icon slot ────────────────────────────────── */
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Full-width utility */
+.btn--full {
+  width: 100%;
+}

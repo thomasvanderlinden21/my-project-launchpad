@@ -1,0 +1,47 @@
+/* ── Chip component ──────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);          /* 4px */
+  padding: var(--spacing-3xs) var(--spacing-xs); /* 2px 8px */
+  border-radius: var(--radius-xs);  /* 4px */
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-6xs);  /* 12px */
+  line-height: var(--line-height-4xs); /* 18px */
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* ── Variants ────────────────────────────────── */
+
+.chip--success {
+  background: var(--chip-success-bg);
+  color: var(--chip-success-content);
+}
+
+.chip--info {
+  background: var(--chip-info-bg);
+  color: var(--chip-info-content);
+}
+
+.chip--neutral {
+  background: var(--chip-neutral-bg);
+  color: var(--chip-neutral-content);
+}
+
+.chip--warning {
+  background: var(--chip-warning-bg);
+  color: var(--chip-warning-content);
+}
+
+/* ── Icon slot ───────────────────────────────── */
+
+.chip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

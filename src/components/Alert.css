@@ -1,0 +1,110 @@
+/* ── Alert / Banner component ────────────────── */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+/* ── Content row (icon + body) ────────────────── */
+
+.alert-content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);   /* 8px */
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;   /* optical alignment with first text line */
+}
+
+/* ── Text body ────────────────────────────────── */
+
+.alert-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3xs);   /* 2px between title and message */
+}
+
+.alert-title {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-3xs);     /* 16px */
+  line-height: var(--line-height-3xs); /* 22px */
+}
+
+.alert-message {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-4xs);     /* 14px */
+  line-height: var(--line-height-4xs); /* 18px */
+  opacity: 0.85;
+}
+
+/* ── Dismiss button ───────────────────────────── */
+
+.alert-dismiss {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.alert-dismiss:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .alert-dismiss:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Variants ─────────────────────────────────── */
+
+.alert--info {
+  background: var(--alert-info-bg);
+  border-color: var(--alert-info-border);
+  color: var(--alert-info-content);
+}
+
+.alert--success {
+  background: var(--alert-success-bg);
+  border-color: var(--alert-success-border);
+  color: var(--alert-success-content);
+}
+
+.alert--warning {
+  background: var(--alert-warning-bg);
+  border-color: var(--alert-warning-border);
+  color: var(--alert-warning-content);
+}
+
+.alert--error {
+  background: var(--alert-error-bg);
+  border-color: var(--alert-error-border);
+  color: var(--alert-error-content);
+}

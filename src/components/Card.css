@@ -1,0 +1,87 @@
+/* ── Card component ──────────────────────────── */
+
+.card {
+  background: var(--surface-neutral-medium);
+  border: var(--border-width-thin) solid var(--border-neutral-low);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ── Elevation ───────────────────────────────── */
+
+.card--elevated {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .card--elevated {
+  box-shadow: none;
+}
+
+.card--flat {
+  box-shadow: none;
+}
+
+/* ── Padding sizes ───────────────────────────── */
+
+.card--pad-sm  { gap: var(--spacing-md);  padding: var(--spacing-md); }
+.card--pad-md  { gap: var(--spacing-xl);  padding: var(--spacing-lg) var(--spacing-md); }
+.card--pad-lg  { gap: var(--spacing-2xl); padding: var(--spacing-2xl); }
+.card--pad-none { gap: 0; padding: 0; }
+
+/* ── Sections ────────────────────────────────── */
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.card-title {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-display-sm-size);   /* 24px */
+  line-height: var(--text-display-sm-lh);   /* 32px */
+  color: var(--content-primary);
+  transition: color 0.2s;
+}
+
+.card-subtitle {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-4xs);          /* 14px */
+  line-height: var(--line-height-4xs);      /* 18px */
+  color: var(--content-secondary);
+  transition: color 0.2s;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* ── Interactive variant ─────────────────────── */
+
+.card--interactive {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card--interactive:hover {
+  border-color: var(--border-neutral-mid);
+  background: var(--surface-neutral-low);
+}
+
+.card--interactive:focus-visible {
+  outline: 2px solid var(--focus-ring-outer);
+  outline-offset: 2px;
+}

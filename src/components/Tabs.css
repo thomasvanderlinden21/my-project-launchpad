@@ -1,0 +1,92 @@
+/* ── Tabs component ──────────────────────────── */
+
+/* ── Tab strip ───────────────────────────────── */
+
+.tabs-list {
+  display: flex;
+  border-bottom: var(--border-width-thin) solid var(--border-neutral-low);
+  /* No gap — triggers sit flush; spacing is internal padding */
+}
+
+/* ── Tab trigger ─────────────────────────────── */
+
+.tab-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);         /* 8px — icon ↔ label */
+  padding: var(--spacing-sm, 12px) var(--spacing-lg, 12px);   /* 12px vertical, 12px horizontal */
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs, 14px);      /* 14px */
+  line-height: var(--line-height-4xs, 18px);  /* 18px */
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--content-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+
+/* Active indicator — sits on top of the list border */
+.tab-trigger::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  border-radius: var(--radius-2xs) var(--radius-2xs) 0 0;
+  transition: background 0.2s;
+}
+
+/* Active state */
+.tab-trigger--active {
+  color: var(--content-primary);
+}
+
+.tab-trigger--active::after {
+  background: var(--surface-brand-solid);
+}
+
+/* Hover — only non-active, non-disabled */
+.tab-trigger:not(.tab-trigger--active):not(.tab-trigger--disabled):hover {
+  color: var(--content-primary);
+}
+
+/* Disabled */
+.tab-trigger--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Focus ring — inset so it doesn't spill outside the strip */
+.tab-trigger:focus-visible {
+  outline: 2px solid var(--focus-ring-outer);
+  outline-offset: -2px;
+  border-radius: var(--radius-2xs);
+}
+
+/* ── Tab icon slot ────────────────────────────── */
+
+.tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Tab panel ───────────────────────────────── */
+
+.tab-panel {
+  padding-top: var(--spacing-xl);   /* 24px */
+  outline: none;
+}
+
+.tab-panel:focus-visible {
+  outline: 2px solid var(--focus-ring-outer);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}

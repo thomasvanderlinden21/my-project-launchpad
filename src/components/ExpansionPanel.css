@@ -1,0 +1,94 @@
+.expansion-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-xs, 4px);
+  background-color: var(--surface-primary, #ffffff);
+  overflow: hidden;
+}
+
+.expansion-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-xl, 16px);
+  width: 100%;
+  padding: var(--spacing-xl, 16px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.15s;
+}
+
+.expansion-panel__header:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
+}
+
+.expansion-panel__header:focus-visible {
+  outline: 2px solid var(--focus-ring-outer, #277777);
+  outline-offset: -2px;
+}
+
+.expansion-panel__header-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs, 6px);
+  flex: 1;
+}
+
+.expansion-panel__title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-3xs, 16px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-3xs, 22px);
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.expansion-panel__description {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-4xs, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-4xs, 18px);
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+}
+
+.expansion-panel__icon {
+  flex-shrink: 0;
+  color: var(--content-secondary, #525d5d);
+  transition: transform 0.2s ease;
+}
+
+.expansion-panel__icon--expanded {
+  transform: rotate(180deg);
+}
+
+.expansion-panel__content {
+  padding: var(--spacing-xl, 16px);
+  padding-top: 0;
+}
+
+/* Dark mode */
+[data-theme="dark"] .expansion-panel {
+  background-color: #1e2534;
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .expansion-panel__header:hover {
+  background-color: rgba(39, 119, 119, 0.1);
+}
+
+[data-theme="dark"] .expansion-panel__title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .expansion-panel__description {
+  color: #6b7c8a;
+}
+
+[data-theme="dark"] .expansion-panel__icon {
+  color: #6b7c8a;
+}

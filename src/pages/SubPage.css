@@ -1,0 +1,139 @@
+/* ── Shared sub-page shell ───────────────────── */
+/*    Used by ComponentOverview, ComponentDetail   */
+
+.subpage {
+  min-height: 100dvh;
+  background: var(--surface-neutral-low);
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.2s;
+}
+
+/* Header */
+.subpage-header {
+  background: var(--surface-page);
+  border-bottom: 1px solid var(--border-neutral-low);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-2xl);
+  gap: var(--spacing-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.subpage-back {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-4xs);   /* 14px */
+  color: var(--content-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.subpage-back:hover {
+  color: var(--content-primary);
+}
+
+.subpage-header-title {
+  flex: 1;
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-3xs);   /* 16px */
+  color: var(--content-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+
+.subpage-theme-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--content-secondary);
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.2s;
+}
+
+.subpage-theme-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--content-primary);
+}
+
+[data-theme="dark"] .subpage-theme-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Main */
+.subpage-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-4xl) var(--spacing-md) var(--spacing-5xl);
+}
+
+.subpage-content {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4xl);
+}
+
+/* Sections */
+.subpage-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.subpage-section-title {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xl);    /* 24px */
+  line-height: var(--line-height-lg); /* 32px */
+  color: var(--content-primary);
+  border-bottom: 1px solid var(--border-neutral-low);
+  padding-bottom: var(--spacing-sm);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+/* Variant groups within a section */
+.subpage-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.subpage-group-label {
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-4xs);   /* 14px */
+  color: var(--content-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+
+.subpage-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
