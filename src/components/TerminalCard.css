@@ -24,7 +24,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: var(--spacing-xl, 16px);
+  padding: 12px 16px;
   gap: var(--spacing-md, 8px);
   background-color: var(--surface-primary, #ffffff);
   position: relative;

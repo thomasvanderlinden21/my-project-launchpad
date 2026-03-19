@@ -1,0 +1,750 @@
+.fraud-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fraud-modal-fade-in 0.2s ease-out;
+}
+
+@keyframes fraud-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fraud-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 460px;
+  background-color: var(--surface-primary, #ffffff);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  animation: fraud-modal-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fraud-modal-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Header */
+.fraud-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-lg, 12px);
+  padding: var(--spacing-2xl, 24px);
+  border-bottom: 1px solid var(--border-neutral-low, #e6ebeb);
+}
+
+.fraud-modal__header-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 12px);
+  flex: 1;
+}
+
+.fraud-modal__title {
+  font-family: var(--font-family-primary, 'Raleway', sans-serif);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.fraud-modal__steps {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-modal__step {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  color: var(--content-tertiary, #8a9494);
+  transition: all 0.2s;
+}
+
+.fraud-modal__step--active {
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+}
+
+.fraud-modal__step-line {
+  width: 32px;
+  height: 2px;
+  background-color: var(--border-neutral-low, #e6ebeb);
+  transition: background-color 0.2s;
+}
+
+.fraud-modal__step-line--active {
+  background-color: var(--surface-brand-high, #2c6764);
+}
+
+.fraud-modal__close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: var(--radius-xs, 4px);
+  color: var(--content-secondary, #525d5d);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.fraud-modal__close:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  color: var(--content-primary, #121621);
+}
+
+/* Content */
+.fraud-modal__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-2xl, 24px);
+}
+
+.fraud-modal__step-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl, 24px);
+}
+
+.fraud-modal__step-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 4px);
+}
+
+.fraud-modal__step-title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.fraud-modal__step-description {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+}
+
+/* Step 1: Rule Types */
+.fraud-modal__rule-types {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-modal__rule-type {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+  padding: var(--spacing-xl, 16px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-sm, 6px);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.fraud-modal__rule-type:hover {
+  border-color: var(--border-neutral-mid, #d5d7da);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+}
+
+.fraud-modal__rule-type--selected {
+  border-color: var(--border-brand-solid, #277777);
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+}
+
+.fraud-modal__rule-type--selected:hover {
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+}
+
+.fraud-modal__rule-type-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-xs, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  color: var(--content-secondary, #525d5d);
+  transition: all 0.15s;
+}
+
+.fraud-modal__rule-type--selected .fraud-modal__rule-type-icon {
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+}
+
+.fraud-modal__rule-type-label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__rule-type-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Step 2: Inputs */
+.fraud-modal__input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-modal__input-wrapper {
+  display: flex;
+  gap: var(--spacing-md, 8px);
+  align-items: center;
+  position: relative;
+}
+
+.fraud-modal__input {
+  flex: 1;
+  height: 40px;
+  padding: 0 var(--spacing-lg, 12px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  transition: border-color 0.15s;
+}
+
+.fraud-modal__input:focus {
+  outline: none;
+  border-color: var(--border-brand-solid, #277777);
+}
+
+.fraud-modal__input::placeholder {
+  color: var(--content-tertiary, #8a9494);
+}
+
+.fraud-modal__input--amount {
+  padding-left: 32px;
+}
+
+.fraud-modal__input-prefix {
+  position: absolute;
+  left: 12px;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--content-secondary, #525d5d);
+  pointer-events: none;
+}
+
+.fraud-modal__select {
+  height: 40px;
+  padding: 0 var(--spacing-lg, 12px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.fraud-modal__select:focus {
+  outline: none;
+  border-color: var(--border-brand-solid, #277777);
+}
+
+.fraud-modal__amount-inputs {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-modal__amount-separator {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--content-secondary, #525d5d);
+}
+
+/* Dropdown */
+.fraud-modal__dropdown {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fraud-modal__dropdown-item {
+  width: 100%;
+  padding: var(--spacing-md, 8px) var(--spacing-lg, 12px);
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.fraud-modal__dropdown-item:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
+}
+
+.fraud-modal__dropdown-empty {
+  padding: var(--spacing-lg, 12px);
+  text-align: center;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--content-tertiary, #8a9494);
+}
+
+/* Entry tags */
+.fraud-modal__entries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-modal__entries-label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__entries-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-modal__entry-tag {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 4px);
+  padding: var(--spacing-2xs, 4px) var(--spacing-md, 8px);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__entry-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--content-secondary, #525d5d);
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.fraud-modal__entry-remove:hover {
+  opacity: 1;
+}
+
+/* Step 3: Review */
+.fraud-modal__review-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl, 16px);
+  padding: var(--spacing-xl, 16px);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-sm, 6px);
+}
+
+.fraud-modal__review-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-modal__review-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-xs, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.fraud-modal__review-title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__review-subtitle {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-secondary, #525d5d);
+}
+
+.fraud-modal__review-entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-modal__review-entry {
+  padding: var(--spacing-2xs, 4px) var(--spacing-md, 8px);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__review-shops {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-modal__label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__shops-dropdown {
+  position: relative;
+}
+
+.fraud-modal__shops-trigger {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--spacing-lg, 12px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.15s;
+}
+
+.fraud-modal__shops-trigger:hover {
+  border-color: var(--border-brand-solid, #277777);
+}
+
+.fraud-modal__shops-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: var(--spacing-xs, 4px);
+  z-index: 10;
+  display: none;
+}
+
+.fraud-modal__shops-dropdown:hover .fraud-modal__shops-list,
+.fraud-modal__shops-trigger:focus + .fraud-modal__shops-list {
+  display: block;
+}
+
+.fraud-modal__shop-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+  padding: var(--spacing-md, 8px);
+  cursor: pointer;
+  border-radius: var(--radius-xs, 4px);
+  transition: background-color 0.15s;
+}
+
+.fraud-modal__shop-checkbox:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
+}
+
+.fraud-modal__shop-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--surface-brand-high, #2c6764);
+}
+
+.fraud-modal__shop-checkbox span {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-modal__review-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+  padding: var(--spacing-lg, 12px);
+  background-color: var(--chip-success-bg, #d4f4f1);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: var(--chip-success-content, #0e9f6e);
+}
+
+.fraud-modal__review-notice svg,
+.fraud-modal__review-notice .icon {
+  color: var(--chip-success-content, #0e9f6e);
+  flex-shrink: 0;
+}
+
+/* Footer */
+.fraud-modal__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-lg, 12px);
+  padding: var(--spacing-2xl, 24px);
+  border-top: 1px solid var(--border-neutral-low, #e6ebeb);
+}
+
+.fraud-modal__footer-actions {
+  display: flex;
+  gap: var(--spacing-md, 8px);
+  margin-left: auto;
+}
+
+.fraud-modal__publish-btn {
+  background-color: var(--surface-brand-high, #2c6764);
+}
+
+.fraud-modal__publish-btn:hover {
+  background-color: #245854;
+}
+
+/* Dark mode */
+[data-theme="dark"] .fraud-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .fraud-modal {
+  background-color: #1e2430;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .fraud-modal__header {
+  border-color: #2a2f38;
+}
+
+[data-theme="dark"] .fraud-modal__title,
+[data-theme="dark"] .fraud-modal__step-title,
+[data-theme="dark"] .fraud-modal__entries-label,
+[data-theme="dark"] .fraud-modal__label,
+[data-theme="dark"] .fraud-modal__review-title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-modal__step-description,
+[data-theme="dark"] .fraud-modal__review-subtitle {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-modal__step {
+  background-color: #2a2f38;
+  color: #6b7280;
+}
+
+[data-theme="dark"] .fraud-modal__step-line {
+  background-color: #2a2f38;
+}
+
+[data-theme="dark"] .fraud-modal__close {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-modal__close:hover {
+  background-color: #2a2f38;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-modal__rule-type {
+  background-color: #1e2430;
+  border-color: #2a2f38;
+}
+
+[data-theme="dark"] .fraud-modal__rule-type:hover {
+  border-color: #3d4759;
+  background-color: #2a2f38;
+}
+
+[data-theme="dark"] .fraud-modal__rule-type-icon {
+  background-color: #2a2f38;
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-modal__rule-type--selected {
+  border-color: #277777;
+  background-color: rgba(39, 119, 119, 0.2);
+}
+
+[data-theme="dark"] .fraud-modal__rule-type--selected .fraud-modal__rule-type-icon {
+  background-color: #277777;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .fraud-modal__rule-type-label,
+[data-theme="dark"] .fraud-modal__shop-checkbox span {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-modal__input,
+[data-theme="dark"] .fraud-modal__select,
+[data-theme="dark"] .fraud-modal__shops-trigger {
+  background-color: #1e2430;
+  border-color: #2a2f38;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-modal__input:focus,
+[data-theme="dark"] .fraud-modal__select:focus {
+  border-color: #277777;
+}
+
+[data-theme="dark"] .fraud-modal__input::placeholder {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .fraud-modal__dropdown,
+[data-theme="dark"] .fraud-modal__shops-list {
+  background-color: #1e2430;
+  border-color: #2a2f38;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .fraud-modal__dropdown-item {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-modal__dropdown-item:hover,
+[data-theme="dark"] .fraud-modal__shop-checkbox:hover {
+  background-color: #2a2f38;
+}
+
+[data-theme="dark"] .fraud-modal__dropdown-empty {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .fraud-modal__review-card {
+  background-color: #2a2f38;
+  border-color: #3d4759;
+}
+
+[data-theme="dark"] .fraud-modal__footer {
+  border-color: #2a2f38;
+}
+
+[data-theme="dark"] .fraud-modal__amount-separator,
+[data-theme="dark"] .fraud-modal__input-prefix {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-modal__entry-tag,
+[data-theme="dark"] .fraud-modal__review-entry {
+  background-color: #2a2f38;
+  border-color: #3d4759;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-modal__entry-remove {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-modal__review-icon {
+  background-color: #277777;
+}

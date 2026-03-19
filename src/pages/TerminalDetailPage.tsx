@@ -4,6 +4,7 @@ import type { TabItem } from '../components/Tabs'
 import Chip from '../components/Chip'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
+import Spinner from '../components/Spinner'
 import './TerminalDetailPage.css'
 
 interface TerminalDetail {
@@ -512,6 +513,7 @@ export interface TerminalDetailPageProps {
 
 export default function TerminalDetailPage({ terminalId = '1', onBack }: TerminalDetailPageProps) {
   const [activeTab, setActiveTab] = useState('identification')
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const terminal = terminalId ? mockTerminals[terminalId] : null
 
@@ -526,6 +528,17 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
         </div>
       </div>
     )
+  }
+
+  const hasUpdateAvailable = terminal.statusChips.some(chip => chip.label === 'Update available')
+
+  const handleUpdateTerminal = () => {
+    setIsUpdating(true)
+    // Simulate update process
+    setTimeout(() => {
+      setIsUpdating(false)
+      alert('Terminal updated successfully!')
+    }, 2000)
   }
 
   const tabItems: TabItem[] = [
@@ -552,6 +565,17 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
             {terminal.model} | {terminal.model}
           </p>
         </div>
+        {hasUpdateAvailable && (
+          <Button
+            hierarchy="primary"
+            size="md"
+            onClick={handleUpdateTerminal}
+            disabled={isUpdating}
+            leadingIcon={isUpdating ? <Spinner size={20} /> : undefined}
+          >
+            {isUpdating ? 'Updating...' : 'Update terminal'}
+          </Button>
+        )}
       </div>
 
       {/* Hero Section */}

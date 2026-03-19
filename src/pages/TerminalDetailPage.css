@@ -170,6 +170,20 @@
   border-radius: 4px;
 }
 
+.terminal-detail-page__action-item--update {
+  color: var(--surface-brand-high, #2c6764);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.terminal-detail-page__action-item--update:hover {
+  color: #245854;
+}
+
+.terminal-detail-page__action-item--update:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Tabs Section */
 .terminal-detail-page__tabs {
   max-width: 1280px;
@@ -437,6 +451,14 @@
 
 [data-theme="dark"] .terminal-detail-page__action-item:hover {
   color: #e4eaee;
+}
+
+[data-theme="dark"] .terminal-detail-page__action-item--update {
+  color: #2c9d96;
+}
+
+[data-theme="dark"] .terminal-detail-page__action-item--update:hover {
+  color: #3fbeb5;
 }
 
 [data-theme="dark"] .terminal-detail-page__subtitle,

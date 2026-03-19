@@ -4,6 +4,7 @@ import Checkbox from '../components/Checkbox'
 import ExpansionPanel from '../components/ExpansionPanel'
 import SettingsDetailPage from './SettingsDetailPage'
 import UsersPage from './UsersPage'
+import FraudPage from './FraudPage'
 import EmptyState from '../components/EmptyState'
 import { useTheme } from '../context/ThemeContext'
 import Icon from '../components/Icon'
@@ -776,16 +777,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
 
   // Fraud settings
   if (activeSection === 'fraud') {
-    return (
-      <div className="settings-page">
-        <EmptyState
-          icon="shield-question"
-          title="Fraud protection settings coming soon"
-          description="Monitor suspicious activity, configure fraud detection rules, set risk thresholds, and manage blocked transactions. This feature will be available in an upcoming release."
-          variant="left-aligned"
-        />
-      </div>
-    )
+    return <FraudPage />
   }
 
   // Branding settings

@@ -6,8 +6,8 @@ import TopToolbar from '../components/TopToolbar'
 import type { Breadcrumb } from '../components/TopToolbar'
 import SpotlightSearch from '../components/SpotlightSearch'
 import AIAssistantPanel from '../components/AIAssistantPanel'
-import StatusTracker from '../components/StatusTracker'
-import type { StatusStep } from '../components/StatusTracker'
+import ProgressStepper from '../components/ProgressStepper'
+import type { ProgressStep } from '../components/ProgressStepper'
 import EmptyState from '../components/EmptyState'
 import Icon from '../components/Icon'
 import Chip from '../components/Chip'
@@ -242,30 +242,27 @@ export default function Portal() {
   ]
 
   // Terminal delivery status steps
-  const terminalStatusSteps: StatusStep[] = [
+  const terminalStatusSteps: ProgressStep[] = [
     {
       id: 'ordered',
-      label: 'Terminal ordered',
-      sublabel: 'March 10, 2026',
-      status: 'completed'
-    },
-    {
-      id: 'processing',
-      label: 'Order processing',
-      sublabel: 'March 11, 2026',
-      status: 'completed'
+      title: 'Terminal ordered',
+      description: 'Order confirmed and payment processed',
+      date: '10 March 2025',
+      status: 'complete'
     },
     {
       id: 'shipped',
-      label: 'Shipped',
-      sublabel: 'March 13, 2026',
-      status: 'completed'
+      title: 'Shipped',
+      description: 'Package is on the way to your location',
+      date: '13 March 2025',
+      status: 'in-progress'
     },
     {
       id: 'delivered',
-      label: 'Delivered',
-      sublabel: 'Expected March 18, 2026',
-      status: 'current'
+      title: 'Delivered',
+      description: 'Expected arrival at your address',
+      date: '18 March 2025',
+      status: 'to-do'
     }
   ]
 
@@ -438,7 +435,7 @@ export default function Portal() {
                     <div className="portal__metric-value">3,399</div>
                     <Chip
                       label="3.2%"
-                      variant="warning"
+                      variant="error"
                       icon={<Icon name="arrow-down" size={16} />}
                     />
                   </div>
@@ -479,7 +476,7 @@ export default function Portal() {
                 </div>
               </div>
 
-              <div className="portal__charts">
+              <div className="portal__charts portal__charts--main">
                 <div className="portal__chart-card portal__chart-card--large">
                   <div className="portal__chart-header">
                     <h3 className="portal__chart-title">Performance overview</h3>
@@ -487,23 +484,8 @@ export default function Portal() {
                       <option>Year</option>
                     </select>
                   </div>
-                  <div className="portal__chart-content" style={{ position: 'relative' }}>
-                    <svg viewBox="0 0 600 220" className="portal__line-chart">
-                      <defs>
-                        <filter id="teal-glow">
-                          <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
-                          <feComponentTransfer>
-                            <feFuncA type="linear" slope="0.5" />
-                          </feComponentTransfer>
-                        </filter>
-                        <filter id="orange-glow">
-                          <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
-                          <feComponentTransfer>
-                            <feFuncA type="linear" slope="0.5" />
-                          </feComponentTransfer>
-                        </filter>
-                      </defs>
-
+                  <div className="portal__chart-content" style={{ width: '100%', minWidth: 0 }}>
+                    <svg viewBox="0 0 600 220" className="portal__line-chart" style={{ width: '100%', minWidth: 0 }}>
                       {/* Background grid lines */}
                       <line x1="0" y1="40" x2="600" y2="40" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
                       <line x1="0" y1="80" x2="600" y2="80" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
@@ -511,80 +493,19 @@ export default function Portal() {
                       <line x1="0" y1="160" x2="600" y2="160" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
                       <line x1="0" y1="200" x2="600" y2="200" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
 
-                      {/* Glow effect for teal line */}
-                      <path d="M 0 155 C 50 150, 100 145, 150 130 S 250 105, 300 100 S 450 85, 500 65 S 550 45, 600 35"
-                        stroke="#2c9d96" strokeWidth="2" fill="none" filter="url(#teal-glow)" opacity="0.6" />
-
-                      {/* Glow effect for orange line */}
-                      <path d="M 0 175 C 50 170, 100 168, 150 160 S 250 150, 300 145 S 450 125, 500 110 S 550 90, 600 80"
-                        stroke="#d89d3f" strokeWidth="2" fill="none" filter="url(#orange-glow)" opacity="0.6" />
-
-                      {/* Main teal line */}
-                      <path d="M 0 155 C 50 150, 100 145, 150 130 S 250 105, 300 100 S 450 85, 500 65 S 550 45, 600 35"
+                      {/* Main teal line - aligned with months */}
+                      <path d="M 0 160 L 54.5 155 L 109 150 L 163.6 135 L 218.2 120 L 272.7 110 L 327.3 105 L 381.8 95 L 436.4 80 L 491 65 L 545.5 50 L 600 40"
                         stroke="#2c9d96" strokeWidth="2" fill="none" />
 
-                      {/* Main orange line */}
-                      <path d="M 0 175 C 50 170, 100 168, 150 160 S 250 150, 300 145 S 450 125, 500 110 S 550 90, 600 80"
+                      {/* Main orange line - aligned with months */}
+                      <path d="M 0 180 L 54.5 178 L 109 175 L 163.6 170 L 218.2 165 L 272.7 160 L 327.3 155 L 381.8 145 L 436.4 135 L 491 120 L 545.5 105 L 600 90"
                         stroke="#d89d3f" strokeWidth="2" fill="none" />
-
-                      {/* Hover zones */}
-                      {chartData.map((data, i) => {
-                        const x = (i / 11) * 600
-                        const successY = 200 - (data.success * 2)
-                        const volumeY = 200 - (data.volume * 2)
-                        return (
-                          <g key={data.month}>
-                            <rect
-                              x={i === 0 ? 0 : x - 25}
-                              y={0}
-                              width={i === 0 || i === 11 ? 25 : 50}
-                              height={220}
-                              fill="transparent"
-                              style={{ cursor: 'pointer' }}
-                              onMouseEnter={(e) => {
-                                const rect = e.currentTarget.getBoundingClientRect()
-                                setChartTooltip({
-                                  x: rect.left + rect.width / 2,
-                                  y: rect.top,
-                                  month: data.month,
-                                  success: data.success,
-                                  volume: data.volume
-                                })
-                              }}
-                              onMouseLeave={() => setChartTooltip(null)}
-                            />
-                          </g>
-                        )
-                      })}
                     </svg>
                     <div className="portal__chart-months">
                       {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
                         <span key={month} className="portal__chart-month">{month}</span>
                       ))}
                     </div>
-                    {chartTooltip && (
-                      <div
-                        className="portal__chart-tooltip"
-                        style={{
-                          position: 'fixed',
-                          left: chartTooltip.x,
-                          top: chartTooltip.y - 10,
-                          transform: 'translate(-50%, -100%)',
-                        }}
-                      >
-                        <div className="portal__chart-tooltip-month">{chartTooltip.month}</div>
-                        <div className="portal__chart-tooltip-row">
-                          <span className="portal__chart-tooltip-dot portal__chart-tooltip-dot--teal"></span>
-                          <span className="portal__chart-tooltip-label">Success rate:</span>
-                          <span className="portal__chart-tooltip-value">{chartTooltip.success}%</span>
-                        </div>
-                        <div className="portal__chart-tooltip-row">
-                          <span className="portal__chart-tooltip-dot portal__chart-tooltip-dot--orange"></span>
-                          <span className="portal__chart-tooltip-label">Transaction volume:</span>
-                          <span className="portal__chart-tooltip-value">{chartTooltip.volume}%</span>
-                        </div>
-                      </div>
-                    )}
                   </div>
                   <div className="portal__chart-legend">
                     <div className="portal__legend-item">
@@ -598,6 +519,15 @@ export default function Portal() {
                   </div>
                 </div>
 
+                <div className="portal__chart-card">
+                  <h3 className="portal__chart-title portal__chart-title--stepper">Terminal delivery status</h3>
+                  <ProgressStepper
+                    steps={terminalStatusSteps}
+                  />
+                </div>
+              </div>
+
+              <div className="portal__bottom-section">
                 <div className="portal__chart-card">
                   <div className="portal__chart-header">
                     <button className="portal__chart-nav" aria-label="Previous">
@@ -666,11 +596,10 @@ export default function Portal() {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="portal__notifications">
-                <h3 className="portal__notifications-title">Notifications</h3>
-                <div className="portal__notifications-grid">
+                <div className="portal__notifications-container">
+                  <h3 className="portal__notifications-title">Notifications</h3>
+                  <div className="portal__notifications-list">
                   <div className="portal__notification-card">
                     <div className="portal__notification-icon portal__notification-icon--success">
                       <Icon name="check-circle" size={20} />
@@ -700,6 +629,7 @@ export default function Portal() {
                       <p className="portal__notification-text">Scheduled maintenance tonight at 2 AM UTC.</p>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </div>

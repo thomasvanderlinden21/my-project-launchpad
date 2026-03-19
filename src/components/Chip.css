@@ -37,6 +37,11 @@
   color: var(--chip-warning-content);
 }
 
+.chip--error {
+  background: var(--chip-error-bg);
+  color: var(--chip-error-content);
+}
+
 /* ── Icon slot ───────────────────────────────── */
 
 .chip-icon {

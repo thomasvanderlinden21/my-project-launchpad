@@ -1,0 +1,18 @@
+.spinner {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.spinner__circle {
+  animation: spinner-rotate 1s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

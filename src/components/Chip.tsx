@@ -1,7 +1,7 @@
 import React from 'react'
 import './Chip.css'
 
-export type ChipVariant = 'success' | 'info' | 'neutral' | 'warning'
+export type ChipVariant = 'success' | 'info' | 'neutral' | 'warning' | 'error'
 
 export interface ChipProps {
   /** Visible label text */

@@ -207,6 +207,8 @@
   --chip-neutral-content: #525d5d;   /* content.secondary */
   --chip-warning-bg:      #fef0c7;   /* surface.warning.subtle ← was #fef3c7 */
   --chip-warning-content: #b54708;   /* content.warning ← was #92400e */
+  --chip-error-bg:        #fee4e2;   /* surface.error.subtle */
+  --chip-error-content:   #b42318;   /* content.error */
 
   /* Button (applied.default › button) */
   --btn-primary-bg:        #277777;   /* surface.brand.solid */
@@ -306,6 +308,8 @@
   --chip-neutral-content: #9da3b0;   /* content.secondary */
   --chip-warning-bg:      #4e1d09;   /* surface.warning.subtle ← was #451a03 */
   --chip-warning-content: #fdb022;   /* content.warning ← was #fbbf24 */
+  --chip-error-bg:        #55160c;   /* surface.error.subtle */
+  --chip-error-content:   #f97066;   /* content.error */
 
   /* Button */
   --btn-primary-bg:        #277777;
