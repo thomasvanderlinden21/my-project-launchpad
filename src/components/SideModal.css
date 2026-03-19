@@ -12,6 +12,26 @@
   align-items: center;
   padding: 12px 12px 12px 0;
   animation: fadeIn 0.2s ease-out;
+  transition: padding-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When AI assistant is open, shift modal to the left */
+.side-modal-overlay--ai-open {
+  padding-right: 484px; /* 460px panel + 12px spacing + 12px margin */
+}
+
+/* On smaller screens, reduce the offset */
+@media (max-width: 1279px) {
+  .side-modal-overlay--ai-open {
+    padding-right: 424px; /* 400px panel + 12px spacing + 12px margin */
+  }
+}
+
+/* On mobile, no offset needed as AI assistant is full screen overlay */
+@media (max-width: 1023px) {
+  .side-modal-overlay--ai-open {
+    padding-right: 12px;
+  }
 }
 
 @keyframes fadeIn {
@@ -34,6 +54,7 @@
   border-radius: var(--radius-sm, 6px);
   position: relative;
   animation: slideInFromRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideInFromRight {

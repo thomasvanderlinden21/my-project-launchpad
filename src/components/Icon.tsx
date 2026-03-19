@@ -56,6 +56,8 @@ export type IconName =
   | 'bolt'
   | 'replay'
   | 'add'
+  | 'plus'
+  | 'sparkle'
   | 'hardware'
   | 'adjustments'
   | 'book'
@@ -329,6 +331,17 @@ const icons: Record<IconName, (size: number) => React.ReactNode> = {
   'add': (s) => (
     <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  'plus': (s) => (
+    <svg width={s} height={s} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  'sparkle': (s) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 3l1.5 5.5L19 10l-5.5 1.5L12 17l-1.5-5.5L5 10l5.5-1.5L12 3z" fill="currentColor" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M19 3l.75 2.25L22 6l-2.25.75L19 9l-.75-2.25L16 6l2.25-.75L19 3zM7 17l.5 1.5L9 19l-1.5.5L7 21l-.5-1.5L5 19l1.5-.5L7 17z" fill="currentColor" />
     </svg>
   ),
   'hardware': (s) => (

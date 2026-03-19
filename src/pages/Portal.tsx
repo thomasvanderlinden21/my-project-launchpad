@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext'
+import { useAIAssistant } from '../context/AIAssistantContext'
 import Sidebar from '../components/Sidebar'
 import TopToolbar from '../components/TopToolbar'
 import type { Breadcrumb } from '../components/TopToolbar'
@@ -57,10 +58,10 @@ export default function Portal() {
   const [activeSettingsSubItem, setActiveSettingsSubItem] = useState('overview')
   const [selectedTerminalId, setSelectedTerminalId] = useState<string | null>(null)
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false)
-  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false)
   const [selectedShopIds, setSelectedShopIds] = useState(['2'])
   const [currentAccountId, setCurrentAccountId] = useState('1')
   const { toggle } = useTheme()
+  const { isOpen: isAIAssistantOpen, togglePanel, updateContext } = useAIAssistant()
 
   const shops = [
     { id: '1', name: 'Cycle shop #1' },
@@ -202,8 +203,21 @@ export default function Portal() {
   }
 
   const handleAIAssistantToggle = () => {
-    setIsAIAssistantOpen(prev => !prev)
+    togglePanel()
   }
+
+  // Update AI context when page changes
+  useEffect(() => {
+    const currentPage = getCurrentPage()
+    const pageTitle = navLabels[currentPage] || 'Home'
+
+    updateContext({
+      page: currentPage,
+      pageTitle,
+      pageData: {},
+      availableActions: [],
+    })
+  }, [activeNav, activeSalesSubItem, activeSettingsSubItem, updateContext])
 
   const currentPage = getCurrentPage()
 
@@ -316,7 +330,7 @@ export default function Portal() {
       />
       <AIAssistantPanel
         isOpen={isAIAssistantOpen}
-        onClose={() => setIsAIAssistantOpen(false)}
+        onClose={togglePanel}
       />
     </div>
   )

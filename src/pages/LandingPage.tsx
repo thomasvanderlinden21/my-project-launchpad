@@ -12,7 +12,7 @@ const navCards = [
   {
     title: 'Merchant Portal',
     desc: 'Preview the Worldline merchant onboarding experience',
-    to: '/portal',
+    to: '/',
   },
 ]
 

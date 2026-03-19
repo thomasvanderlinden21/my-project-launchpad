@@ -14,11 +14,11 @@ export interface TerminalCardProps {
   onClick?: () => void
 }
 
-const statusToChipVariant: Record<TerminalCardProps['status'], 'success' | 'info' | 'neutral' | 'warning'> = {
+const statusToChipVariant: Record<TerminalCardProps['status'], 'success' | 'info' | 'error' | 'warning'> = {
   'active': 'success',
   'new-update': 'warning',
   'shipped': 'info',
-  'inactive': 'neutral',
+  'inactive': 'error',
 }
 
 const statusToLabel: Record<TerminalCardProps['status'], string> = {
@@ -52,6 +52,7 @@ export default function TerminalCard({
     <div
       className={`terminal-card ${isSelected ? 'terminal-card--selected' : ''}`}
       onClick={handleCardClick}
+      data-status={status}
     >
       {/* Header */}
       <div className="terminal-card__header">

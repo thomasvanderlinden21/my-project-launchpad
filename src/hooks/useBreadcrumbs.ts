@@ -12,24 +12,21 @@ export function useBreadcrumbs(): Breadcrumb[] {
   const location = useLocation()
   const path = location.pathname
 
-  // Landing page has no breadcrumbs
+  // Portal (home) has no breadcrumbs
   if (path === '/') {
     return []
   }
 
-  // Portal route
-  if (path.startsWith('/portal')) {
-    return [
-      { label: 'Home', href: '/' },
-      { label: 'Portal' },
-    ]
+  // Menu/Landing page has no breadcrumbs
+  if (path === '/menu') {
+    return []
   }
 
   // Component routes
   if (path.startsWith('/components')) {
     if (path === '/components') {
       return [
-        { label: 'Home', href: '/' },
+        { label: 'Menu', href: '/menu' },
         { label: 'Components' },
       ]
     }
@@ -42,7 +39,7 @@ export function useBreadcrumbs(): Breadcrumb[] {
       .join(' ')
 
     return [
-      { label: 'Home', href: '/' },
+      { label: 'Menu', href: '/menu' },
       { label: 'Components', href: '/components' },
       { label: formattedName },
     ]
@@ -50,6 +47,6 @@ export function useBreadcrumbs(): Breadcrumb[] {
 
   // Fallback for unknown routes
   return [
-    { label: 'Home', href: '/' },
+    { label: 'Menu', href: '/menu' },
   ]
 }

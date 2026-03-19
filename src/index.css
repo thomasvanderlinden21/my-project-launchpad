@@ -12,6 +12,8 @@ html, body {
 
 body {
   background-color: #2c6764;
+  background-image: url('/assets/grain-light.svg');
+  background-repeat: repeat;
   transition: background-color 0.2s;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,6 +21,7 @@ body {
 
 [data-theme="dark"] body {
   background-color: #121621;
+  background-image: url('/assets/grain-dark.svg');
 }
 
 #root {

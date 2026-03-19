@@ -99,7 +99,7 @@ export default function Sidebar({
     <nav className={`sidebar${hasSubPanel ? ' sidebar--sub-active' : ''}`} aria-label="Main navigation">
       {/* Main navigation — always on the left */}
       <div className={`sidebar__main${hasSubPanel ? ' sidebar__main--collapsed' : ''}`}>
-        <Link to="/" className="sidebar__logo" aria-label="Go to overview">
+        <Link to="/menu" className="sidebar__logo" aria-label="Go to menu">
           {hasSubPanel
             ? <WorldlineIconSvg aria-label="Worldline" className="sidebar__logo-icon" />
             : <WorldlineLogoSvg aria-label="Worldline" className="sidebar__logo-svg" />

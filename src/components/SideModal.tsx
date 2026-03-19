@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAIAssistant } from '../context/AIAssistantContext'
 import Icon from './Icon'
 import './SideModal.css'
 
@@ -27,6 +28,7 @@ export default function SideModal({
 }: SideModalProps) {
   const [isClosing, setIsClosing] = useState(false)
   const [shouldRender, setShouldRender] = useState(isOpen)
+  const { isOpen: isAIAssistantOpen } = useAIAssistant()
 
   // Handle opening and closing animations
   useEffect(() => {
@@ -74,7 +76,7 @@ export default function SideModal({
 
   return (
     <div
-      className={`side-modal-overlay ${isClosing ? 'side-modal-overlay--closing' : ''}`}
+      className={`side-modal-overlay ${isClosing ? 'side-modal-overlay--closing' : ''} ${isAIAssistantOpen ? 'side-modal-overlay--ai-open' : ''}`}
       onClick={onClose}
     >
       <div

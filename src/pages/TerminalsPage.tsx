@@ -5,34 +5,16 @@ import TerminalCard from '../components/TerminalCard'
 import TableCell from '../components/TableCell'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
+import { mockTerminals, type Terminal } from '../data/mockData'
 import './TerminalsPage.css'
 
-type Terminal = {
-  id: string
-  name: string
-  serialNumber: string
-  imageSrc?: string
-  locationLabel: 'Location' | 'Tracking number'
-  locationValue: string
-  status: 'active' | 'new-update' | 'shipped' | 'inactive'
-  category: 'terminals' | 'accessories'
-}
+const terminals = mockTerminals
 
-const terminals: Terminal[] = [
-  { id: '1', name: 'Outside #1', serialNumber: '#98465342', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Cycle shop 2', status: 'active', category: 'terminals' },
-  { id: '2', name: 'Inside #1', serialNumber: '#98465343', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Main counter', status: 'new-update', category: 'terminals' },
-  { id: '3', name: 'Mobile #1', serialNumber: '#98465344', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Delivery van', status: 'active', category: 'terminals' },
-  { id: '4', name: 'Terminal #4', serialNumber: '#98465345', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Tracking number', locationValue: 'TRK123456789', status: 'shipped', category: 'terminals' },
-  { id: '5', name: 'Terminal #5', serialNumber: '#98465346', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Storage', status: 'inactive', category: 'terminals' },
-  { id: '6', name: 'Card Reader #1', serialNumber: '#98465347', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Cycle shop 2', status: 'active', category: 'accessories' },
-  { id: '7', name: 'Receipt Printer #1', serialNumber: '#98465348', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Main counter', status: 'active', category: 'accessories' },
-]
-
-const statusToChipVariant: Record<Terminal['status'], 'success' | 'info' | 'neutral' | 'warning'> = {
+const statusToChipVariant: Record<Terminal['status'], 'success' | 'info' | 'error' | 'warning'> = {
   'active': 'success',
   'new-update': 'warning',
   'shipped': 'info',
-  'inactive': 'neutral',
+  'inactive': 'error',
 }
 
 const statusToLabel: Record<Terminal['status'], string> = {
