@@ -4,6 +4,7 @@ import Checkbox from '../components/Checkbox'
 import ExpansionPanel from '../components/ExpansionPanel'
 import SettingsDetailPage from './SettingsDetailPage'
 import UsersPage from './UsersPage'
+import EmptyState from '../components/EmptyState'
 import { useTheme } from '../context/ThemeContext'
 import Icon from '../components/Icon'
 import type { IconName } from '../components/Icon'
@@ -632,22 +633,92 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
     return <UsersPage />
   }
 
-  // Placeholder for other settings sections
+  // E-commerce settings
+  if (activeSection === 'ecommerce') {
+    return (
+      <div className="settings-page">
+        <EmptyState
+          icon="shopping-basket"
+          title="E-commerce settings coming soon"
+          description="Configure your online store settings, payment integrations, checkout options, and shipping methods. This feature will be available in an upcoming release."
+        />
+      </div>
+    )
+  }
+
+  // Terminals settings
+  if (activeSection === 'terminals-settings') {
+    return (
+      <div className="settings-page">
+        <EmptyState
+          icon="storefront"
+          title="Terminal settings coming soon"
+          description="Manage terminal configurations, receipt settings, payment options, and device preferences. This feature will be available in an upcoming release."
+        />
+      </div>
+    )
+  }
+
+  // Fraud settings
+  if (activeSection === 'fraud') {
+    return (
+      <div className="settings-page">
+        <EmptyState
+          icon="shield-question"
+          title="Fraud protection settings coming soon"
+          description="Monitor suspicious activity, configure fraud detection rules, set risk thresholds, and manage blocked transactions. This feature will be available in an upcoming release."
+        />
+      </div>
+    )
+  }
+
+  // Branding settings
+  if (activeSection === 'branding') {
+    return (
+      <div className="settings-page">
+        <EmptyState
+          icon="palette"
+          title="Branding settings coming soon"
+          description="Customize your payment pages, invoices, and receipts with your brand colors, logo, and custom messaging. This feature will be available in an upcoming release."
+        />
+      </div>
+    )
+  }
+
+  // Bank accounts settings
+  if (activeSection === 'bank-accounts') {
+    return (
+      <div className="settings-page">
+        <EmptyState
+          icon="bank"
+          title="Bank account settings coming soon"
+          description="Add and manage bank accounts for payouts, configure settlement schedules, and view payout history. This feature will be available in an upcoming release."
+        />
+      </div>
+    )
+  }
+
+  // Contracts settings
+  if (activeSection === 'contracts') {
+    return (
+      <div className="settings-page">
+        <EmptyState
+          icon="document"
+          title="Contracts coming soon"
+          description="View and download your merchant agreements, terms and conditions, and other legal documents. This feature will be available in an upcoming release."
+        />
+      </div>
+    )
+  }
+
+  // Fallback for any other unhandled sections
   return (
-    <SettingsDetailPage
-      sections={[
-        {
-          title: activeSection.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-          description: `Configure your ${activeSection.replace('-', ' ')} settings.`,
-          content: (
-            <div className="settings-page__placeholder">
-              <p>Settings content for {activeSection} will be displayed here.</p>
-            </div>
-          )
-        }
-      ]}
-      onCancel={() => onNavigate?.('overview')}
-      onSave={() => console.log('Save changes')}
-    />
+    <div className="settings-page">
+      <EmptyState
+        icon="settings"
+        title="Settings page in development"
+        description="This settings page is currently under development and will be available soon."
+      />
+    </div>
   )
 }

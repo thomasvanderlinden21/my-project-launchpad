@@ -20,6 +20,7 @@ export interface Terminal {
   locationValue: string
   status: 'active' | 'new-update' | 'shipped' | 'inactive'
   category: 'terminals' | 'accessories'
+  batteryLevel?: number
 }
 
 export interface MerchantInfo {
@@ -60,13 +61,13 @@ export const mockTransactions: Transaction[] = [
 ]
 
 export const mockTerminals: Terminal[] = [
-  { id: '1', name: 'Outside #1', serialNumber: '#98465342', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Cycle shop 2', status: 'active', category: 'terminals' },
-  { id: '2', name: 'Inside #1', serialNumber: '#98465343', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Main counter', status: 'new-update', category: 'terminals' },
-  { id: '3', name: 'Mobile #1', serialNumber: '#98465344', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Delivery van', status: 'active', category: 'terminals' },
-  { id: '4', name: 'Terminal #4', serialNumber: '#98465345', imageSrc: '/assets/terminal image.png', locationLabel: 'Tracking number', locationValue: 'TRK123456789', status: 'shipped', category: 'terminals' },
-  { id: '5', name: 'Terminal #5', serialNumber: '#98465346', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Storage', status: 'inactive', category: 'terminals' },
-  { id: '6', name: 'Card Reader #1', serialNumber: '#98465347', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Cycle shop 2', status: 'active', category: 'accessories' },
-  { id: '7', name: 'Receipt Printer #1', serialNumber: '#98465348', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Main counter', status: 'active', category: 'accessories' },
+  { id: '1', name: 'Main Counter', serialNumber: '#TRM-8742-2195', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Cycle shop 2', status: 'active', category: 'terminals', batteryLevel: 95 },
+  { id: '2', name: 'Workshop Desk', serialNumber: '#TRM-5631-8904', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Repair area', status: 'new-update', category: 'terminals', batteryLevel: 78 },
+  { id: '3', name: 'Mobile Sales Unit', serialNumber: '#TRM-3298-4567', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Delivery van', status: 'active', category: 'terminals', batteryLevel: 62 },
+  { id: '4', name: 'Express Checkout', serialNumber: '#TRM-9124-7483', imageSrc: '/assets/terminal image.png', locationLabel: 'Tracking number', locationValue: 'TRK123456789', status: 'shipped', category: 'terminals', batteryLevel: 100 },
+  { id: '5', name: 'Back Office', serialNumber: '#TRM-6745-1029', imageSrc: '/assets/terminal image.png', locationLabel: 'Location', locationValue: 'Storage', status: 'inactive', category: 'terminals', batteryLevel: 23 },
+  { id: '6', name: 'Card Reader', serialNumber: '#ACC-4812-3376', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Cycle shop 2', status: 'active', category: 'accessories' },
+  { id: '7', name: 'Receipt Printer', serialNumber: '#ACC-7293-5648', imageSrc: '/assets/terminal-placeholder.svg', locationLabel: 'Location', locationValue: 'Main counter', status: 'active', category: 'accessories' },
 ]
 
 // Computed statistics

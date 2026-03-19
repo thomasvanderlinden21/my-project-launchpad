@@ -8,6 +8,7 @@ import SpotlightSearch from '../components/SpotlightSearch'
 import AIAssistantPanel from '../components/AIAssistantPanel'
 import StatusTracker from '../components/StatusTracker'
 import type { StatusStep } from '../components/StatusTracker'
+import EmptyState from '../components/EmptyState'
 import SalesPage from './SalesPage'
 import OrdersPage from './OrdersPage'
 import InvoicesPage from './InvoicesPage'
@@ -280,13 +281,13 @@ export default function Portal() {
           {activeNav === 'sales' && activeSalesSubItem === 'transactions' ? (
             <SalesPage />
           ) : activeNav === 'sales' && activeSalesSubItem === 'orders' ? (
-            <OrdersPage />
+            <OrdersPage onNavigateHome={() => setActiveNav('home')} />
           ) : activeNav === 'sales' && activeSalesSubItem === 'invoices' ? (
-            <InvoicesPage />
+            <InvoicesPage onNavigateHome={() => setActiveNav('home')} />
           ) : activeNav === 'sales' && activeSalesSubItem === 'reports' ? (
-            <ReportsPage />
+            <ReportsPage onNavigateHome={() => setActiveNav('home')} />
           ) : activeNav === 'sales' && activeSalesSubItem === 'disputes' ? (
-            <DisputesPage />
+            <DisputesPage onNavigateHome={() => setActiveNav('home')} />
           ) : activeNav === 'settings' ? (
             <SettingsPage activeSection={activeSettingsSubItem} onNavigate={setActiveSettingsSubItem} />
           ) : activeNav === 'terminals' && selectedTerminalId ? (
@@ -295,31 +296,79 @@ export default function Portal() {
               onBack={() => setSelectedTerminalId(null)}
             />
           ) : activeNav === 'terminals' ? (
-            <TerminalsPage onTerminalClick={(id) => setSelectedTerminalId(id)} />
+            <TerminalsPage
+              onTerminalClick={(id) => setSelectedTerminalId(id)}
+              onOpenSettings={() => {
+                setActiveNav('settings')
+                setActiveSettingsSubItem('terminals-settings')
+              }}
+            />
+          ) : activeNav === 'create-payment' ? (
+            <EmptyState
+              icon="credit-card"
+              title="Create payment coming soon"
+              description="Generate payment links, create invoices, and send payment requests to customers. This feature will be available in an upcoming release."
+              action={{
+                label: 'Go to Home',
+                onClick: () => setActiveNav('home')
+              }}
+            />
+          ) : activeNav === 'product-catalogue' ? (
+            <EmptyState
+              icon="shopping-basket"
+              title="Product catalogue coming soon"
+              description="Manage your product inventory, set pricing, add product descriptions and images, and organize items into categories. This feature will be available in an upcoming release."
+              action={{
+                label: 'Go to Home',
+                onClick: () => setActiveNav('home')
+              }}
+            />
+          ) : activeNav === 'my-business' ? (
+            <EmptyState
+              icon="apartment"
+              title="My business coming soon"
+              description="View business insights, track performance metrics, manage locations, and access key business analytics. This feature will be available in an upcoming release."
+              action={{
+                label: 'Go to Home',
+                onClick: () => setActiveNav('home')
+              }}
+            />
+          ) : activeNav === 'card-issuing' ? (
+            <EmptyState
+              icon="card"
+              title="Card issuing coming soon"
+              description="Issue virtual and physical cards, manage card spending limits, track card transactions, and configure card controls. This feature will be available in an upcoming release."
+              action={{
+                label: 'Go to Home',
+                onClick: () => setActiveNav('home')
+              }}
+            />
+          ) : activeNav === 'cash-advance' ? (
+            <EmptyState
+              icon="cash"
+              title="Cash advance coming soon"
+              description="Access flexible funding options, view advance offers, manage repayment schedules, and track outstanding balances. This feature will be available in an upcoming release."
+              action={{
+                label: 'Go to Home',
+                onClick: () => setActiveNav('home')
+              }}
+            />
           ) : (
             <div className="portal__welcome">
               <div className="portal__welcome-header">
                 <h1 className="portal__welcome-title">
-                  {currentPage === 'home'
-                    ? 'Welcome back, Olivia'
-                    : navLabels[currentPage] || currentPage
-                  }
+                  Welcome back, Olivia
                 </h1>
                 <p className="portal__welcome-subtitle">
-                  {currentPage === 'home'
-                    ? 'Track, manage and forecast your customers and orders.'
-                    : `View and manage your ${navLabels[currentPage]?.toLowerCase() || currentPage}.`
-                  }
+                  Track, manage and forecast your customers and orders.
                 </p>
               </div>
-              {currentPage === 'home' && (
-                <div className="portal__status-section">
-                  <StatusTracker
-                    title="Terminal delivery status"
-                    steps={terminalStatusSteps}
-                  />
-                </div>
-              )}
+              <div className="portal__status-section">
+                <StatusTracker
+                  title="Terminal delivery status"
+                  steps={terminalStatusSteps}
+                />
+              </div>
             </div>
           )}
         </main>

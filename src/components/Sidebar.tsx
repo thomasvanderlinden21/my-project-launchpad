@@ -44,7 +44,7 @@ const navItems: { id: string; label: string; icon: IconName | string }[] = [
 const bottomItems: { id: string; label: string; icon: IconName | string }[] = [
   { id: 'settings',      label: 'Settings',      icon: 'settings' },
   { id: 'notifications', label: 'Notifications', icon: 'bell' },
-  { id: 'help',          label: 'Help',           icon: 'help' },
+  // { id: 'help',          label: 'Help',           icon: 'help' }, // Hidden for now, can be re-enabled in the future
   { id: 'ai-assistant',  label: 'AI assistant',  icon: '/assets/ai-assistant.svg' },
 ]
 

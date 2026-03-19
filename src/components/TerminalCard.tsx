@@ -58,7 +58,9 @@ export default function TerminalCard({
       <div className="terminal-card__header">
         <div className="terminal-card__info">
           <div className="terminal-card__name-row">
-            <Icon name="battery-full" className="terminal-card__battery-icon" />
+            {status !== 'inactive' && status !== 'shipped' && (
+              <Icon name="battery-full" className="terminal-card__battery-icon" />
+            )}
             <h3 className="terminal-card__name">{name}</h3>
           </div>
           <p className="terminal-card__serial">{serialNumber}</p>

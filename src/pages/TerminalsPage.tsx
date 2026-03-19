@@ -3,7 +3,6 @@ import Tabs from '../components/Tabs'
 import type { TabItem } from '../components/Tabs'
 import TerminalCard from '../components/TerminalCard'
 import TableCell from '../components/TableCell'
-import Button from '../components/Button'
 import Icon from '../components/Icon'
 import { mockTerminals, type Terminal } from '../data/mockData'
 import './TerminalsPage.css'
@@ -26,9 +25,10 @@ const statusToLabel: Record<Terminal['status'], string> = {
 
 export interface TerminalsPageProps {
   onTerminalClick?: (id: string) => void
+  onOpenSettings?: () => void
 }
 
-export default function TerminalsPage({ onTerminalClick }: TerminalsPageProps) {
+export default function TerminalsPage({ onTerminalClick, onOpenSettings }: TerminalsPageProps) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
   const [activeTab, setActiveTab] = useState('terminals')
   const [searchQuery, setSearchQuery] = useState('')
@@ -82,7 +82,7 @@ export default function TerminalsPage({ onTerminalClick }: TerminalsPageProps) {
   }
 
   const handleOpenSettings = () => {
-    console.log('Open settings')
+    onOpenSettings?.()
   }
 
   const handleOrderTerminal = () => {
@@ -141,32 +141,30 @@ export default function TerminalsPage({ onTerminalClick }: TerminalsPageProps) {
               onClick={() => setViewMode('list')}
               aria-label="List view"
             >
-              <Icon name="view-list" size={20} />
+              <Icon name="view-list" size={17} />
             </button>
             <button
               className={`terminals-page__view-btn ${viewMode === 'grid' ? 'terminals-page__view-btn--active' : ''}`}
               onClick={() => setViewMode('grid')}
               aria-label="Grid view"
             >
-              <Icon name="view-grid" size={20} />
+              <Icon name="view-grid" size={17} />
             </button>
           </div>
 
-          <Button
-            hierarchy="secondary"
-            size="sm"
+          <button
+            className="terminals-page__settings-btn"
             onClick={handleOpenSettings}
           >
             Settings
-          </Button>
+          </button>
 
-          <Button
-            hierarchy="primary"
-            size="sm"
+          <button
+            className="terminals-page__order-btn"
             onClick={handleOrderTerminal}
           >
             Order terminal
-          </Button>
+          </button>
         </div>
       </div>
 
@@ -206,6 +204,7 @@ export default function TerminalsPage({ onTerminalClick }: TerminalsPageProps) {
                   />
                 </th>
                 <th className="terminals-page__th">Name</th>
+                <th className="terminals-page__th">Battery</th>
                 <th className="terminals-page__th">Serial number</th>
                 <th className="terminals-page__th">Location</th>
                 <th className="terminals-page__th">Status</th>
@@ -234,10 +233,18 @@ export default function TerminalsPage({ onTerminalClick }: TerminalsPageProps) {
                       className="terminals-page__td--name"
                       onClick={() => handleRowClick(terminal.id)}
                     >
-                      <div className="terminals-page__name-cell">
-                        <Icon name="battery-full" className="terminals-page__battery-icon" />
-                        <span>{terminal.name}</span>
-                      </div>
+                      {terminal.name}
+                    </TableCell>
+
+                    <TableCell onClick={() => handleRowClick(terminal.id)}>
+                      {terminal.batteryLevel !== undefined && terminal.status !== 'inactive' && terminal.status !== 'shipped' ? (
+                        <div className="terminals-page__battery-cell">
+                          <Icon name="battery-full" className="terminals-page__battery-icon" />
+                          <span>{terminal.batteryLevel}%</span>
+                        </div>
+                      ) : (
+                        <span>—</span>
+                      )}
                     </TableCell>
 
                     <TableCell onClick={() => handleRowClick(terminal.id)}>
