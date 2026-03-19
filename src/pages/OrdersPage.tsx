@@ -12,6 +12,7 @@ export default function OrdersPage({ onNavigateHome }: OrdersPageProps) {
         icon="shopping-basket"
         title="Orders coming soon"
         description="Track and manage customer orders, view order history, update fulfillment status, and process returns. This feature will be available in an upcoming release."
+        variant="left-aligned"
         action={onNavigateHome ? {
           label: 'Go to Home',
           onClick: onNavigateHome

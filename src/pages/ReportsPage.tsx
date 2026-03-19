@@ -12,6 +12,7 @@ export default function ReportsPage({ onNavigateHome }: ReportsPageProps) {
         icon="chart-line"
         title="Reports coming soon"
         description="Access detailed analytics, generate custom reports, view sales trends, and export data for analysis. This feature will be available in an upcoming release."
+        variant="left-aligned"
         action={onNavigateHome ? {
           label: 'Go to Home',
           onClick: onNavigateHome

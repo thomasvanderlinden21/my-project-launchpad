@@ -10,11 +10,12 @@ export interface EmptyStateProps {
     label: string
     onClick: () => void
   }
+  variant?: 'centered' | 'left-aligned'
 }
 
-export default function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+export default function EmptyState({ icon, title, description, action, variant = 'centered' }: EmptyStateProps) {
   return (
-    <div className="empty-state">
+    <div className={`empty-state${variant === 'left-aligned' ? ' empty-state--left-aligned' : ''}`}>
       {icon && (
         <div className="empty-state__icon">
           <Icon name={icon} size={48} />

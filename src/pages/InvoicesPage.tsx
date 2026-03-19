@@ -12,6 +12,7 @@ export default function InvoicesPage({ onNavigateHome }: InvoicesPageProps) {
         icon="document"
         title="Invoices coming soon"
         description="View and manage your payment invoices, download statements, track payment status, and configure billing preferences. This feature will be available in an upcoming release."
+        variant="left-aligned"
         action={onNavigateHome ? {
           label: 'Go to Home',
           onClick: onNavigateHome

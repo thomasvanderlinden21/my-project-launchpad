@@ -8,7 +8,7 @@ import './UsersPage.css'
 
 type UserRole = 'Admin' | 'Manager' | 'User'
 type AccessLevel = 'Full access' | 'Limited access' | 'View only'
-type UserStatus = 'Active' | 'Pending' | 'Inactive'
+type UserStatus = 'Active' | 'Invited' | 'Inactive'
 
 interface User {
   id: string
@@ -20,38 +20,43 @@ interface User {
   status: UserStatus
 }
 
-const users: User[] = [
+const initialUsers: User[] = [
   { id: '1', name: 'Olivia Rhye', initials: 'OR', email: 'olivia.rhye@icloud.com', role: 'Admin', accessLevel: 'Full access', status: 'Active' },
   { id: '2', name: 'Phoenix Baker', initials: 'PH', email: 'phoenix.baker@example.com', role: 'Manager', accessLevel: 'Limited access', status: 'Active' },
-  { id: '3', name: 'Lana Steiner', initials: 'LS', email: 'lana.steiner@example.com', role: 'User', accessLevel: 'View only', status: 'Pending' },
+  { id: '3', name: 'Lana Steiner', initials: 'LS', email: 'lana.steiner@example.com', role: 'User', accessLevel: 'View only', status: 'Active' },
   { id: '4', name: 'Demi Wilkinson', initials: 'DW', email: 'demi.wilkinson@example.com', role: 'Manager', accessLevel: 'Limited access', status: 'Active' },
-  { id: '5', name: 'Candice Wu', initials: 'CW', email: 'candice.wu@example.com', role: 'User', accessLevel: 'View only', status: 'Inactive' },
-  { id: '6', name: 'Natali Craig', initials: 'NC', email: 'natali.craig@example.com', role: 'Admin', accessLevel: 'Full access', status: 'Active' },
-  { id: '7', name: 'Drew Cano', initials: 'DC', email: 'drew.cano@example.com', role: 'Manager', accessLevel: 'Limited access', status: 'Active' },
-  { id: '8', name: 'Orlando Diggs', initials: 'OD', email: 'orlando.diggs@example.com', role: 'User', accessLevel: 'View only', status: 'Pending' },
+  { id: '5', name: 'Candice Wu', initials: 'CW', email: 'candice.wu@example.com', role: 'User', accessLevel: 'View only', status: 'Active' },
 ]
 
 const statusToChipVariant: Record<UserStatus, 'success' | 'warning' | 'neutral'> = {
   Active: 'success',
-  Pending: 'warning',
+  Invited: 'warning',
   Inactive: 'neutral',
 }
 
 export default function UsersPage() {
+  const [users, setUsers] = useState<User[]>(initialUsers)
   const [searchQuery, setSearchQuery] = useState('')
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserDetails | null>(null)
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false)
 
-  const filteredUsers = users.filter(user => {
-    if (!searchQuery) return true
-    const query = searchQuery.toLowerCase()
-    return (
-      user.name.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query) ||
-      user.role.toLowerCase().includes(query)
-    )
-  })
+  const filteredUsers = users
+    .filter(user => {
+      if (!searchQuery) return true
+      const query = searchQuery.toLowerCase()
+      return (
+        user.name.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.role.toLowerCase().includes(query)
+      )
+    })
+    .sort((a, b) => {
+      // Sort invited users to the top
+      if (a.status === 'Invited' && b.status !== 'Invited') return -1
+      if (a.status !== 'Invited' && b.status === 'Invited') return 1
+      return 0
+    })
 
   const handleRowClick = (userId: string) => {
     const user = users.find(u => u.id === userId)
@@ -69,6 +74,29 @@ export default function UsersPage() {
 
     setSelectedUser(userDetails)
     setIsDetailsModalOpen(true)
+  }
+
+  const generateInitials = (name: string): string => {
+    const parts = name.trim().split(' ')
+    if (parts.length === 1) {
+      return parts[0].substring(0, 2).toUpperCase()
+    }
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+  }
+
+  const handleSendInvite = (email: string, name: string, role: UserRole, accessLevel: AccessLevel) => {
+    const newUser: User = {
+      id: String(users.length + 1),
+      name,
+      initials: generateInitials(name),
+      email,
+      role,
+      accessLevel,
+      status: 'Invited',
+    }
+
+    setUsers([...users, newUser])
+    setIsInviteModalOpen(false)
   }
 
   return (
@@ -135,7 +163,7 @@ export default function UsersPage() {
 
                   <TableCell>
                     <button className="users-page__action-btn" aria-label="More actions">
-                      <Icon name="more-vertical" size={20} />
+                      <Icon name="dots-vertical" size={20} />
                     </button>
                   </TableCell>
                 </tr>
@@ -154,15 +182,17 @@ export default function UsersPage() {
           // Here you would implement the actual save logic
           // e.g., call an API to update the user
         }}
+        onResendInvite={(userId) => {
+          console.log('Resend invitation to user:', userId)
+          // Here you would implement the actual resend invitation logic
+          // e.g., call an API to resend the invitation email
+        }}
       />
 
       <InviteUserModal
         isOpen={isInviteModalOpen}
         onClose={() => setIsInviteModalOpen(false)}
-        onSendInvite={(email, name, role, accessLevel) => {
-          console.log('Send invite to:', { email, name, role, accessLevel })
-          // Handle sending invitation here
-        }}
+        onSendInvite={handleSendInvite}
       />
     </div>
   )

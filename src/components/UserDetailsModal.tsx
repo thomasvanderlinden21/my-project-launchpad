@@ -11,7 +11,7 @@ export interface UserDetails {
   email: string
   role: 'Admin' | 'Manager' | 'User'
   accessLevel: 'Full access' | 'Limited access' | 'View only'
-  status: 'Active' | 'Pending' | 'Inactive'
+  status: 'Active' | 'Invited' | 'Inactive'
 }
 
 export interface UserDetailsModalProps {
@@ -23,6 +23,8 @@ export interface UserDetailsModalProps {
   user: UserDetails | null
   /** Called when changes are saved */
   onSave?: (userId: string, updates: Partial<UserDetails>) => void
+  /** Called when resend invitation is clicked */
+  onResendInvite?: (userId: string) => void
 }
 
 export default function UserDetailsModal({
@@ -30,13 +32,14 @@ export default function UserDetailsModal({
   onClose,
   user,
   onSave,
+  onResendInvite,
 }: UserDetailsModalProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editedName, setEditedName] = useState('')
   const [editedEmail, setEditedEmail] = useState('')
   const [editedRole, setEditedRole] = useState<'Admin' | 'Manager' | 'User'>('User')
   const [editedAccessLevel, setEditedAccessLevel] = useState<'Full access' | 'Limited access' | 'View only'>('View only')
-  const [editedStatus, setEditedStatus] = useState<'Active' | 'Pending' | 'Inactive'>('Active')
+  const [editedStatus, setEditedStatus] = useState<'Active' | 'Invited' | 'Inactive'>('Active')
 
   // Reset form when user changes or modal opens
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function UserDetailsModal({
 
   if (!user) return null
 
-  const statusVariant = editedStatus === 'Active' ? 'success' : editedStatus === 'Pending' ? 'warning' : 'neutral'
+  const statusVariant = editedStatus === 'Active' ? 'success' : editedStatus === 'Invited' ? 'warning' : 'neutral'
 
   const handleSave = () => {
     if (onSave) {
@@ -207,16 +210,29 @@ export default function UserDetailsModal({
                   id="edit-status"
                   className="user-details__form-select"
                   value={editedStatus}
-                  onChange={(e) => setEditedStatus(e.target.value as 'Active' | 'Pending' | 'Inactive')}
+                  onChange={(e) => setEditedStatus(e.target.value as 'Active' | 'Invited' | 'Inactive')}
+                  disabled={editedStatus === 'Invited'}
                 >
                   <option value="Active">Active</option>
-                  <option value="Pending">Pending</option>
+                  {editedStatus === 'Invited' && <option value="Invited">Invited</option>}
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
             </div>
           )}
         </div>
+
+        {/* Resend invitation button (only show for invited users when not editing) */}
+        {!isEditing && user.status === 'Invited' && onResendInvite && (
+          <Button
+            hierarchy="secondary"
+            size="sm"
+            fullWidth
+            onClick={() => onResendInvite(user.id)}
+          >
+            Resend invitation
+          </Button>
+        )}
       </div>
     </SideModal>
   )

@@ -97,18 +97,10 @@ const settingsCards: SettingCard[] = [
 ]
 
 export default function SettingsPage({ activeSection = 'overview', onNavigate }: SettingsPageProps) {
-  const { isDark, toggle } = useTheme()
-  const [themePreference, setThemePreference] = useState<'system' | 'light' | 'dark'>(isDark ? 'dark' : 'light')
+  const { mode, setMode } = useTheme()
 
   const handleThemeChange = (value: 'system' | 'light' | 'dark') => {
-    setThemePreference(value)
-    // For now, we'll just toggle between light and dark
-    // System preference would require additional logic to detect OS theme
-    if (value === 'dark' && !isDark) {
-      toggle()
-    } else if (value === 'light' && isDark) {
-      toggle()
-    }
+    setMode(value)
   }
 
   if (activeSection === 'overview') {
@@ -210,11 +202,45 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                     type="radio"
                     name="theme"
                     value="system"
-                    checked={themePreference === 'system'}
+                    checked={mode === 'system'}
                     onChange={(e) => handleThemeChange(e.target.value as 'system')}
                     className="settings-detail__theme-radio"
                   />
-                  <div className="settings-detail__theme-preview settings-detail__theme-preview--system" />
+                  <div className="settings-detail__theme-preview settings-detail__theme-preview--system">
+                    <div className="settings-detail__theme-preview-check"></div>
+
+                    <div className="settings-detail__theme-preview-window settings-detail__theme-preview-window--system">
+                      {/* Light half (left) */}
+                      <div className="settings-detail__theme-preview-window--system-half settings-detail__theme-preview-window--system-half--light">
+                        <div className="settings-detail__theme-preview-sidebar settings-detail__theme-preview-sidebar--brand">
+                          <div className="settings-detail__theme-preview-simple-bar"></div>
+                          <div className="settings-detail__theme-preview-simple-bar"></div>
+                          <div className="settings-detail__theme-preview-simple-bar"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-main-simple settings-detail__theme-preview-main-simple--light">
+                          <div className="settings-detail__theme-preview-simple-bar settings-detail__theme-preview-simple-bar--short"></div>
+                          <div className="settings-detail__theme-preview-simple-chart">
+                            <div className="settings-detail__theme-preview-chart-unified">
+                              <img src="/assets/059b4858e5fbfef69074182c7e1f36b68a98c09a.svg" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Dark half (right) */}
+                      <div className="settings-detail__theme-preview-window--system-half settings-detail__theme-preview-window--system-half--dark">
+                        <div className="settings-detail__theme-preview-main-simple settings-detail__theme-preview-main-simple--dark">
+                          <div className="settings-detail__theme-preview-simple-bar settings-detail__theme-preview-simple-bar--dark"></div>
+                          <div className="settings-detail__theme-preview-simple-bar settings-detail__theme-preview-simple-bar--dark settings-detail__theme-preview-simple-bar--short"></div>
+                          <div className="settings-detail__theme-preview-simple-chart settings-detail__theme-preview-simple-chart--dark">
+                            <div className="settings-detail__theme-preview-chart-unified">
+                              <img src="/assets/360d61a275801cda7d857414f40df074e9295622.svg" alt="" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <span className="settings-detail__theme-label">System preference</span>
                 </label>
                 <label className="settings-detail__theme-card">
@@ -222,11 +248,48 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                     type="radio"
                     name="theme"
                     value="light"
-                    checked={themePreference === 'light'}
+                    checked={mode === 'light'}
                     onChange={(e) => handleThemeChange(e.target.value as 'light')}
                     className="settings-detail__theme-radio"
                   />
-                  <div className="settings-detail__theme-preview settings-detail__theme-preview--light" />
+                  <div className="settings-detail__theme-preview settings-detail__theme-preview--light">
+                    <div className="settings-detail__theme-preview-check"></div>
+
+                    <div className="settings-detail__theme-preview-window settings-detail__theme-preview-window--light">
+                      <div className="settings-detail__theme-preview-topbar settings-detail__theme-preview-topbar--light"></div>
+                      <div className="settings-detail__theme-preview-sidebar settings-detail__theme-preview-sidebar--brand">
+                        <div className="settings-detail__theme-preview-sidebar-top">
+                          <div className="settings-detail__theme-preview-sidebar-icon"></div>
+                          <div className="settings-detail__theme-preview-sidebar-text"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-sidebar-menu">
+                          <div className="settings-detail__theme-preview-sidebar-menu-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-sidebar-bottom">
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item"></div>
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item"></div>
+                        </div>
+                      </div>
+                      <div className="settings-detail__theme-preview-main">
+                        <div className="settings-detail__theme-preview-actions">
+                          <div className="settings-detail__theme-preview-action"></div>
+                          <div className="settings-detail__theme-preview-action settings-detail__theme-preview-action--active"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-subtitle"></div>
+                        <div className="settings-detail__theme-preview-chart-area">
+                          <div className="settings-detail__theme-preview-chart">
+                            <img src="/assets/059b4858e5fbfef69074182c7e1f36b68a98c09a.svg" alt="" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <span className="settings-detail__theme-label">Light mode</span>
                 </label>
                 <label className="settings-detail__theme-card">
@@ -234,11 +297,48 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                     type="radio"
                     name="theme"
                     value="dark"
-                    checked={themePreference === 'dark'}
+                    checked={mode === 'dark'}
                     onChange={(e) => handleThemeChange(e.target.value as 'dark')}
                     className="settings-detail__theme-radio"
                   />
-                  <div className="settings-detail__theme-preview settings-detail__theme-preview--dark" />
+                  <div className="settings-detail__theme-preview settings-detail__theme-preview--dark">
+                    <div className="settings-detail__theme-preview-check"></div>
+
+                    <div className="settings-detail__theme-preview-window settings-detail__theme-preview-window--dark">
+                      <div className="settings-detail__theme-preview-topbar settings-detail__theme-preview-topbar--dark"></div>
+                      <div className="settings-detail__theme-preview-sidebar settings-detail__theme-preview-sidebar--dark">
+                        <div className="settings-detail__theme-preview-sidebar-top">
+                          <div className="settings-detail__theme-preview-sidebar-icon settings-detail__theme-preview-sidebar-icon--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-text settings-detail__theme-preview-sidebar-text--dark"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-sidebar-menu">
+                          <div className="settings-detail__theme-preview-sidebar-menu-item settings-detail__theme-preview-sidebar-menu-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item settings-detail__theme-preview-sidebar-menu-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item settings-detail__theme-preview-sidebar-menu-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item settings-detail__theme-preview-sidebar-menu-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-menu-item settings-detail__theme-preview-sidebar-menu-item--dark"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-sidebar-bottom">
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item settings-detail__theme-preview-sidebar-bottom-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item settings-detail__theme-preview-sidebar-bottom-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item settings-detail__theme-preview-sidebar-bottom-item--dark"></div>
+                          <div className="settings-detail__theme-preview-sidebar-bottom-item settings-detail__theme-preview-sidebar-bottom-item--dark"></div>
+                        </div>
+                      </div>
+                      <div className="settings-detail__theme-preview-main settings-detail__theme-preview-main--dark">
+                        <div className="settings-detail__theme-preview-actions">
+                          <div className="settings-detail__theme-preview-action settings-detail__theme-preview-action--dark"></div>
+                          <div className="settings-detail__theme-preview-action settings-detail__theme-preview-action--active"></div>
+                        </div>
+                        <div className="settings-detail__theme-preview-subtitle settings-detail__theme-preview-subtitle--dark"></div>
+                        <div className="settings-detail__theme-preview-chart-area settings-detail__theme-preview-chart-area--dark">
+                          <div className="settings-detail__theme-preview-chart">
+                            <img src="/assets/360d61a275801cda7d857414f40df074e9295622.svg" alt="" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <span className="settings-detail__theme-label">Dark mode</span>
                 </label>
               </div>
@@ -296,36 +396,40 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                   <label className="settings-detail__label">Company name</label>
                   <input
                     type="text"
-                    className="settings-detail__input"
+                    className="settings-detail__input settings-detail__input--readonly"
                     defaultValue="Cycle Shop BV"
                     placeholder="Enter company name"
+                    readOnly
                   />
                 </div>
                 <div className="settings-detail__form-field">
                   <label className="settings-detail__label">Legal form</label>
                   <input
                     type="text"
-                    className="settings-detail__input"
+                    className="settings-detail__input settings-detail__input--readonly"
                     defaultValue="BV"
                     placeholder="Enter legal form"
+                    readOnly
                   />
                 </div>
                 <div className="settings-detail__form-field">
                   <label className="settings-detail__label">Registration number</label>
                   <input
                     type="text"
-                    className="settings-detail__input"
+                    className="settings-detail__input settings-detail__input--readonly"
                     defaultValue="12345678"
                     placeholder="Enter registration number"
+                    readOnly
                   />
                 </div>
                 <div className="settings-detail__form-field">
                   <label className="settings-detail__label">VAT number</label>
                   <input
                     type="text"
-                    className="settings-detail__input"
+                    className="settings-detail__input settings-detail__input--readonly"
                     defaultValue="NL123456789B01"
                     placeholder="Enter VAT number"
+                    readOnly
                   />
                 </div>
                 <div className="settings-detail__form-field">
@@ -382,27 +486,30 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                       <label className="settings-detail__label">Street address</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="Damrak 123"
                         placeholder="Enter street address"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
                       <label className="settings-detail__label">Postal code</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="1012 AB"
                         placeholder="Enter postal code"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
                       <label className="settings-detail__label">City</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="Amsterdam"
                         placeholder="Enter city"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
@@ -444,27 +551,30 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                       <label className="settings-detail__label">Street address</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="Kalverstraat 45"
                         placeholder="Enter street address"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
                       <label className="settings-detail__label">Postal code</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="1012 PX"
                         placeholder="Enter postal code"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
                       <label className="settings-detail__label">City</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="Amsterdam"
                         placeholder="Enter city"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
@@ -506,27 +616,30 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
                       <label className="settings-detail__label">Street address</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="Haarlemmerstraat 78"
                         placeholder="Enter street address"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
                       <label className="settings-detail__label">Postal code</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="1013 EV"
                         placeholder="Enter postal code"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
                       <label className="settings-detail__label">City</label>
                       <input
                         type="text"
-                        className="settings-detail__input"
+                        className="settings-detail__input settings-detail__input--readonly"
                         defaultValue="Amsterdam"
                         placeholder="Enter city"
+                        readOnly
                       />
                     </div>
                     <div className="settings-detail__form-field">
@@ -641,6 +754,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
           icon="shopping-basket"
           title="E-commerce settings coming soon"
           description="Configure your online store settings, payment integrations, checkout options, and shipping methods. This feature will be available in an upcoming release."
+          variant="left-aligned"
         />
       </div>
     )
@@ -654,6 +768,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
           icon="storefront"
           title="Terminal settings coming soon"
           description="Manage terminal configurations, receipt settings, payment options, and device preferences. This feature will be available in an upcoming release."
+          variant="left-aligned"
         />
       </div>
     )
@@ -667,6 +782,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
           icon="shield-question"
           title="Fraud protection settings coming soon"
           description="Monitor suspicious activity, configure fraud detection rules, set risk thresholds, and manage blocked transactions. This feature will be available in an upcoming release."
+          variant="left-aligned"
         />
       </div>
     )
@@ -680,6 +796,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
           icon="palette"
           title="Branding settings coming soon"
           description="Customize your payment pages, invoices, and receipts with your brand colors, logo, and custom messaging. This feature will be available in an upcoming release."
+          variant="left-aligned"
         />
       </div>
     )
@@ -693,6 +810,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
           icon="bank"
           title="Bank account settings coming soon"
           description="Add and manage bank accounts for payouts, configure settlement schedules, and view payout history. This feature will be available in an upcoming release."
+          variant="left-aligned"
         />
       </div>
     )
@@ -706,6 +824,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
           icon="document"
           title="Contracts coming soon"
           description="View and download your merchant agreements, terms and conditions, and other legal documents. This feature will be available in an upcoming release."
+          variant="left-aligned"
         />
       </div>
     )
@@ -718,6 +837,7 @@ export default function SettingsPage({ activeSection = 'overview', onNavigate }:
         icon="settings"
         title="Settings page in development"
         description="This settings page is currently under development and will be available soon."
+        variant="left-aligned"
       />
     </div>
   )
