@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Tabs from '../components/Tabs'
 import type { TabItem } from '../components/Tabs'
 import TableCell from '../components/TableCell'
@@ -12,6 +12,7 @@ import type { ColumnConfig } from '../components/ColumnManagementModal'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
 import Snackbar from '../components/Snackbar'
+import Pagination from '../components/Pagination'
 import './SalesPage.css'
 
 type Status = 'Paid' | 'Pending' | 'Completed' | 'Failed' | 'Refunded'
@@ -300,6 +301,13 @@ export default function SalesPage() {
     { id: 'date', label: 'Date / Time', visible: true, order: 6 },
   ])
   const [appliedColumns, setAppliedColumns] = useState<ColumnConfig[]>(columns)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+
+  // Reset to first page when filters or search change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [appliedFilters, searchQuery, activeTab, showLastMonth])
 
   // Get visible columns in order
   const visibleColumns = appliedColumns.filter(c => c.visible).sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -422,17 +430,32 @@ export default function SalesPage() {
       return 0
     })
 
-  const allSelected = filteredTransactions.length > 0 &&
-    filteredTransactions.every(tx => selectedRows.has(tx.id))
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / pageSize))
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex)
 
-  const someSelected = filteredTransactions.some(tx => selectedRows.has(tx.id)) && !allSelected
+  const allSelected = paginatedTransactions.length > 0 &&
+    paginatedTransactions.every(tx => selectedRows.has(tx.id))
+
+  const someSelected = paginatedTransactions.some(tx => selectedRows.has(tx.id)) && !allSelected
 
   const handleSelectAll = () => {
     if (allSelected) {
       setSelectedRows(new Set())
     } else {
-      setSelectedRows(new Set(filteredTransactions.map(tx => tx.id)))
+      setSelectedRows(new Set(paginatedTransactions.map(tx => tx.id)))
     }
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setPageSize(newPageSize)
+    setCurrentPage(1) // Reset to first page when page size changes
   }
 
   const handleSelectRow = (id: string) => {
@@ -561,6 +584,14 @@ export default function SalesPage() {
         acquirerCountry: 'United Kingdom',
         batchNumber: 'BATCH-' + transaction.id.replace('#', ''),
         batchDate: transaction.date.split(',')[0],
+      }),
+
+      // Fraud Detection (add fraud data for flagged transactions)
+      ...(transaction.fraudFlagged && {
+        fraudStatus: 'Under Investigation',
+        fraudScore: 75,
+        fraudReason: 'Unusual transaction pattern detected',
+        fraudNotes: 'Need to be investigated still!\n\nMultiple high-value transactions from different locations within short time period. Customer verification recommended.',
       }),
     }
 
@@ -783,7 +814,7 @@ export default function SalesPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredTransactions.map(tx => {
+              {paginatedTransactions.map(tx => {
                 const isSelected = selectedRows.has(tx.id)
 
                 return (
@@ -876,6 +907,14 @@ export default function SalesPage() {
             </tbody>
           </table>
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
       </>
 
       <SideModal

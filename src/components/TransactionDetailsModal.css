@@ -1,5 +1,11 @@
 /* ── Transaction Details Modal ───────────────── */
 
+.transaction-modal-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl, 24px);
+}
+
 .transaction-details-content {
   display: flex;
   flex-direction: column;
@@ -251,6 +257,58 @@
   color: #d89d3f;
 }
 
+/* ── Fraud ──────────────────────────────────── */
+
+.transaction-fraud-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-4xl, 48px) var(--spacing-2xl, 24px);
+  gap: var(--spacing-lg, 12px);
+}
+
+.transaction-fraud-placeholder svg {
+  color: var(--content-tertiary, #6b7676);
+}
+
+.transaction-fraud-placeholder h3 {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-3xs, 16px);
+  line-height: var(--line-height-3xs, 22px);
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+  margin: 0;
+}
+
+.transaction-fraud-placeholder p {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs, 14px);
+  line-height: var(--line-height-4xs, 18px);
+  font-weight: var(--font-weight-regular);
+  color: var(--content-secondary);
+  margin: 0;
+  max-width: 280px;
+}
+
+.transaction-fraud-notes {
+  padding: var(--spacing-lg, 12px);
+  background-color: var(--surface-neutral-low, #f7f9f9);
+  border-radius: var(--radius-xs, 4px);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+}
+
+.transaction-fraud-notes p {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs, 14px);
+  line-height: var(--line-height-4xs, 18px);
+  font-weight: var(--font-weight-regular);
+  color: var(--content-primary);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 /* ── Divider ─────────────────────────────────── */
 
 .transaction-divider {
@@ -383,6 +441,11 @@
 
 [data-theme="dark"] .transaction-compliance-notice {
   background-color: rgba(216, 157, 63, 0.15);
+}
+
+[data-theme="dark"] .transaction-fraud-notes {
+  background-color: #1e2534;
+  border-color: #2a3445;
 }
 
 [data-theme="dark"] .refund-confirmation-overlay {

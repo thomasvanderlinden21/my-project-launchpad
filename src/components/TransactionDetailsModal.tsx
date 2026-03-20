@@ -95,6 +95,12 @@ export interface Transaction {
   batchDate?: string
   acquirerName?: string
   acquirerCountry?: string
+
+  // Fraud Detection
+  fraudStatus?: string
+  fraudScore?: number
+  fraudReason?: string
+  fraudNotes?: string
 }
 
 export interface TransactionDetailsModalProps {
@@ -147,38 +153,6 @@ export default function TransactionDetailsModal({
       label: 'My details',
       children: (
         <div className="transaction-details-content">
-          {/* Card summary */}
-          <div className="transaction-card-summary">
-            <div className="transaction-card-info">
-              {transaction.cardLogo && (
-                <div className="transaction-card-logo">
-                  <img src={transaction.cardLogo} alt={transaction.cardType} />
-                </div>
-              )}
-              {!transaction.cardLogo && (
-                <div className="transaction-card-logo transaction-card-logo--placeholder">
-                  {transaction.cardType.charAt(0)}
-                </div>
-              )}
-              <div className="transaction-card-details">
-                <p className="transaction-card-type">{transaction.cardType}</p>
-                <p className="transaction-card-number">{transaction.cardNumber}</p>
-              </div>
-            </div>
-            <p className="transaction-card-amount">{transaction.grossAmount}</p>
-          </div>
-
-          {onRefund && transaction.status === 'Paid' && (
-            <Button
-              hierarchy="secondary"
-              size="sm"
-              fullWidth
-              onClick={handleRefundClick}
-            >
-              Refund transaction
-            </Button>
-          )}
-
           {/* Basic details */}
           <div className="transaction-section">
             <h3 className="transaction-section-title">Basic details</h3>
@@ -685,6 +659,60 @@ export default function TransactionDetailsModal({
     })
   }
 
+  // Add Fraud tab (always visible)
+  tabs.push({
+    id: 'fraud',
+    label: 'Fraud',
+    children: (
+      <div className="transaction-details-content">
+        {transaction.fraudStatus ? (
+          <>
+            {/* Fraud Status */}
+            <div className="transaction-section">
+              <h3 className="transaction-section-title">Fraud Detection</h3>
+              <div className="transaction-fields">
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Status</span>
+                  <span className="transaction-field-value">{transaction.fraudStatus}</span>
+                </div>
+                {transaction.fraudScore !== undefined && (
+                  <div className="transaction-field">
+                    <span className="transaction-field-label">Risk Score</span>
+                    <span className="transaction-field-value">{transaction.fraudScore}/100</span>
+                  </div>
+                )}
+                {transaction.fraudReason && (
+                  <div className="transaction-field">
+                    <span className="transaction-field-label">Reason</span>
+                    <span className="transaction-field-value">{transaction.fraudReason}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {transaction.fraudNotes && (
+              <>
+                <div className="transaction-divider" />
+                <div className="transaction-section">
+                  <h3 className="transaction-section-title">Investigation Notes</h3>
+                  <div className="transaction-fraud-notes">
+                    <p>{transaction.fraudNotes}</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <div className="transaction-fraud-placeholder">
+            <Icon name="shield-question" size={48} />
+            <h3>Need to be investigated still!</h3>
+            <p>No fraud analysis available for this transaction yet.</p>
+          </div>
+        )}
+      </div>
+    ),
+  })
+
   return (
     <>
       <SideModal
@@ -693,7 +721,42 @@ export default function TransactionDetailsModal({
         title="Transaction details"
         width="md"
       >
-        <Tabs items={tabs} activeId={activeTab} onChange={setActiveTab} />
+        <div className="transaction-modal-wrapper">
+          {/* Card summary */}
+          <div className="transaction-card-summary">
+            <div className="transaction-card-info">
+              {transaction.cardLogo && (
+                <div className="transaction-card-logo">
+                  <img src={transaction.cardLogo} alt={transaction.cardType} />
+                </div>
+              )}
+              {!transaction.cardLogo && (
+                <div className="transaction-card-logo transaction-card-logo--placeholder">
+                  {transaction.cardType.charAt(0)}
+                </div>
+              )}
+              <div className="transaction-card-details">
+                <p className="transaction-card-type">{transaction.cardType}</p>
+                <p className="transaction-card-number">{transaction.cardNumber}</p>
+              </div>
+            </div>
+            <p className="transaction-card-amount">{transaction.grossAmount}</p>
+          </div>
+
+          {onRefund && transaction.status === 'Paid' && (
+            <Button
+              hierarchy="secondary"
+              size="sm"
+              fullWidth
+              onClick={handleRefundClick}
+            >
+              Refund transaction
+            </Button>
+          )}
+
+          {/* Tabs */}
+          <Tabs items={tabs} activeId={activeTab} onChange={setActiveTab} />
+        </div>
       </SideModal>
 
       {/* Refund Confirmation Modal */}
