@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
-import FraudRuleModal from '../components/FraudRuleModal'
+import Chip from '../components/Chip'
+import FraudRuleCreationModal from '../components/FraudRuleCreationModal'
+import SettingsDetailPage from './SettingsDetailPage'
 import './FraudPage.css'
 
 export type FraudRuleType =
@@ -17,31 +19,28 @@ export interface FraudRule {
 }
 
 const RULE_TYPE_CONFIG = {
-  ip: { label: 'IP Address', icon: 'wifi' as const },
+  ip: { label: 'IP Address', icon: 'terminal' as const },
   email: { label: 'Email Address', icon: 'mail' as const },
   iban: { label: 'IBAN', icon: 'bank' as const },
-  card_country: { label: 'Card Country', icon: 'location' as const },
+  card_country: { label: 'Card Country', icon: 'card' as const },
   pan: { label: 'Card Number', icon: 'credit-card' as const },
-  shipping: { label: 'Shipping Address', icon: 'location' as const },
-  amount: { label: 'Amount', icon: 'currency-dollar' as const },
-  currency: { label: 'Currency', icon: 'currency-dollar' as const },
+  shipping: { label: 'Shipping Address', icon: 'storefront' as const },
+  amount: { label: 'Amount', icon: 'cash' as const },
+  currency: { label: 'Currency', icon: 'cash' as const },
 }
 
 function EmptyState({ onCreateRule }: { onCreateRule: () => void }) {
   return (
     <div className="fraud-page__empty">
       <div className="fraud-page__empty-icon">
-        <Icon name="shield-question" size={32} />
+        <Icon name="shield-question" size={48} />
       </div>
-      <h3 className="fraud-page__empty-title">Manual rules</h3>
       <p className="fraud-page__empty-description">
-        You have no rules set up. Create custom fraud rules to automatically block suspicious
-        transactions based on your own conditions.
+        You have no rules set up yet. Get started by creating your first fraud rule.
       </p>
-      <Button hierarchy="primary" size="md" onClick={onCreateRule}>
-        <Icon name="add" size={20} />
-        Set up your first fraud rule
-      </Button>
+      <button className="fraud-page__empty-action" onClick={onCreateRule}>
+        Create your first rule
+      </button>
     </div>
   )
 }
@@ -80,14 +79,14 @@ function RuleCard({
             className="fraud-rule-card__action-btn"
             aria-label="Edit rule"
           >
-            <Icon name="edit" size={16} />
+            <Icon name="tune" size={16} />
           </button>
           <button
             onClick={onDelete}
             className="fraud-rule-card__action-btn fraud-rule-card__action-btn--delete"
             aria-label="Delete rule"
           >
-            <Icon name="delete" size={16} />
+            <Icon name="close" size={16} />
           </button>
         </div>
       </div>
@@ -121,14 +120,7 @@ function RulesList({
   return (
     <div className="fraud-rules-list">
       <div className="fraud-rules-list__header">
-        <div className="fraud-rules-list__title-row">
-          <h3 className="fraud-rules-list__title">Manual rules</h3>
-          <span className="fraud-rules-list__count">{rules.length}</span>
-        </div>
-        <Button hierarchy="primary" size="sm" onClick={onCreateRule}>
-          <Icon name="add" size={16} />
-          Create new rule
-        </Button>
+        <span className="fraud-rules-list__count">{rules.length} {rules.length === 1 ? 'rule' : 'rules'} active</span>
       </div>
       <div className="fraud-rules-list__items">
         {rules.map((rule) => (
@@ -140,6 +132,12 @@ function RulesList({
           />
         ))}
       </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <Button hierarchy="primary" size="sm" onClick={onCreateRule}>
+          <Icon name="add" size={16} />
+          Create new rule
+        </Button>
+      </div>
     </div>
   )
 }
@@ -147,19 +145,19 @@ function RulesList({
 function PremiumCard() {
   return (
     <div className="fraud-premium-card">
-      <div className="fraud-premium-card__badge">
-        <Icon name="stars" size={14} />
-        <span>Premium</span>
-      </div>
+      <Chip
+        label="Premium"
+        icon={<Icon name="sparkle" size={12} />}
+        className="fraud-premium-card__badge"
+      />
       <div className="fraud-premium-card__icon">
-        <Icon name="shield-check" size={40} />
+        <Icon name="shield-question" size={40} />
       </div>
       <h3 className="fraud-premium-card__title">Fraud Sentinel</h3>
       <p className="fraud-premium-card__description">
-        Upgrade to unlock advanced rules and AI fraud detection, protecting your business from
-        fraudulent activities with real-time transaction scoring and adaptive machine learning.
+        Advanced AI-powered fraud detection with real-time transaction scoring and adaptive machine learning to protect your business.
         <br />
-        <strong>for €0,02 per screened transaction</strong>
+        <strong>€0,02 per screened transaction</strong>
       </p>
       <div className="fraud-premium-card__features">
         <div className="fraud-premium-card__feature">
@@ -167,7 +165,7 @@ function PremiumCard() {
           <span>Real-time scoring</span>
         </div>
         <div className="fraud-premium-card__feature">
-          <Icon name="shield-check" size={16} />
+          <Icon name="check-circle" size={16} />
           <span>Adaptive ML model</span>
         </div>
         <div className="fraud-premium-card__feature">
@@ -179,10 +177,10 @@ function PremiumCard() {
           <span>Custom rule builder</span>
         </div>
       </div>
-      <Button hierarchy="secondary" size="md">
+      <button className="fraud-premium-card__action">
         Learn more
         <Icon name="chevron-right" size={16} />
-      </Button>
+      </button>
       <p className="fraud-premium-card__trial">
         <Icon name="check-circle" size={14} />
         Includes a <strong>30-day free trial</strong> — cancel at any moment
@@ -201,6 +199,35 @@ export default function FraudPage() {
     setIsModalOpen(true)
   }
 
+  function handleCloseModal() {
+    setIsModalOpen(false)
+    setEditingRule(null)
+  }
+
+  function handlePublishRule(data: { type: FraudRuleType; entries: string[]; shops: string[] }) {
+    if (editingRule) {
+      // Update existing rule
+      setRules((prev) =>
+        prev.map((r) =>
+          r.id === editingRule.id
+            ? { ...r, type: data.type, entries: data.entries, shops: data.shops }
+            : r
+        )
+      )
+    } else {
+      // Create new rule
+      const newRule: FraudRule = {
+        id: Math.random().toString(36).substring(7),
+        type: data.type,
+        entries: data.entries,
+        shops: data.shops,
+        createdAt: new Date()
+      }
+      setRules((prev) => [...prev, newRule])
+    }
+    setEditingRule(null)
+  }
+
   function handleEditRule(rule: FraudRule) {
     setEditingRule(rule)
     setIsModalOpen(true)
@@ -210,77 +237,42 @@ export default function FraudPage() {
     setRules((prev) => prev.filter((r) => r.id !== id))
   }
 
-  function handleSaveRule(ruleData: Omit<FraudRule, 'id' | 'createdAt'>) {
-    if (editingRule) {
-      // Update existing rule
-      setRules((prev) =>
-        prev.map((r) =>
-          r.id === editingRule.id
-            ? { ...r, ...ruleData }
-            : r
-        )
-      )
-    } else {
-      // Create new rule
-      const newRule: FraudRule = {
-        id: Math.random().toString(36).substring(7),
-        ...ruleData,
-        createdAt: new Date()
-      }
-      setRules((prev) => [...prev, newRule])
-    }
-    setIsModalOpen(false)
-    setEditingRule(null)
-  }
-
-  function handleCloseModal() {
-    setIsModalOpen(false)
-    setEditingRule(null)
-  }
-
   return (
-    <div className="fraud-page">
-      <div className="fraud-page__header">
-        <div className="fraud-page__breadcrumb">
-          <span className="fraud-page__breadcrumb-item">Settings</span>
-          <Icon name="chevron-right" size={12} />
-          <span className="fraud-page__breadcrumb-item fraud-page__breadcrumb-item--current">
-            Fraud prevention
-          </span>
-        </div>
-        <div className="fraud-page__header-content">
-          <div className="fraud-page__header-icon">
-            <Icon name="shield-question" size={24} />
-          </div>
-          <div>
-            <h1 className="fraud-page__title">Fraud prevention</h1>
-            <p className="fraud-page__subtitle">
-              Protect your business from suspicious and fraudulent transactions
-            </p>
-          </div>
-        </div>
-      </div>
+    <>
+      <SettingsDetailPage
+        sections={[
+          {
+            title: 'Manual rules',
+            description: 'Create custom fraud rules to automatically block suspicious transactions based on your own conditions.',
+            content: (
+              <>
+                {rules.length === 0 ? (
+                  <EmptyState onCreateRule={handleCreateRule} />
+                ) : (
+                  <RulesList
+                    rules={rules}
+                    onCreateRule={handleCreateRule}
+                    onEditRule={handleEditRule}
+                    onDeleteRule={handleDeleteRule}
+                  />
+                )}
+              </>
+            )
+          },
+          {
+            title: 'Advanced fraud protection',
+            description: 'Unlock AI-powered fraud detection and advanced security features to protect your business.',
+            content: <PremiumCard />
+          }
+        ]}
+      />
 
-      <div className="fraud-page__content">
-        {rules.length === 0 ? (
-          <EmptyState onCreateRule={handleCreateRule} />
-        ) : (
-          <RulesList
-            rules={rules}
-            onCreateRule={handleCreateRule}
-            onEditRule={handleEditRule}
-            onDeleteRule={handleDeleteRule}
-          />
-        )}
-        <PremiumCard />
-      </div>
-
-      <FraudRuleModal
+      <FraudRuleCreationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onSave={handleSaveRule}
+        onPublish={handlePublishRule}
         editingRule={editingRule}
       />
-    </div>
+    </>
   )
 }

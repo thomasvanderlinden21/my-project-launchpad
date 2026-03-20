@@ -7,31 +7,7 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.15);
   z-index: 1000;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 12px 12px 12px 0;
   animation: fadeIn 0.2s ease-out;
-  transition: padding-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* When AI assistant is open, shift modal to the left */
-.side-modal-overlay--ai-open {
-  padding-right: 484px; /* 460px panel + 12px spacing + 12px margin */
-}
-
-/* On smaller screens, reduce the offset */
-@media (max-width: 1279px) {
-  .side-modal-overlay--ai-open {
-    padding-right: 424px; /* 400px panel + 12px spacing + 12px margin */
-  }
-}
-
-/* On mobile, no offset needed as AI assistant is full screen overlay */
-@media (max-width: 1023px) {
-  .side-modal-overlay--ai-open {
-    padding-right: 12px;
-  }
 }
 
 @keyframes fadeIn {
@@ -45,16 +21,38 @@
 
 /* Panel */
 .side-modal {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
   background-color: var(--surface-primary, #ffffff);
-  height: 100%;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 3px 3px -1.5px rgba(10, 13, 18, 0.04);
   border: 1px solid var(--border-neutral-low, #e6ebeb);
   border-radius: var(--radius-sm, 6px);
-  position: relative;
   animation: slideInFromRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
+}
+
+/* When AI assistant is open, shift modal to the left */
+.side-modal-overlay--ai-open .side-modal {
+  right: 484px; /* 460px AI panel + 12px spacing + 12px margin */
+}
+
+/* On smaller screens, reduce the offset */
+@media (max-width: 1279px) {
+  .side-modal-overlay--ai-open .side-modal {
+    right: 424px; /* 400px AI panel + 12px spacing + 12px margin */
+  }
+}
+
+/* On mobile, no offset needed as AI assistant is full screen overlay */
+@media (max-width: 1023px) {
+  .side-modal-overlay--ai-open .side-modal {
+    right: 12px;
+  }
 }
 
 @keyframes slideInFromRight {

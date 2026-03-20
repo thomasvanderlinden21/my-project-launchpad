@@ -395,15 +395,6 @@ export default function Portal() {
                     Track, manage and forecast your customers and orders.
                   </p>
                 </div>
-                <div className="portal__home-actions">
-                  <button className="portal__home-btn portal__home-btn--secondary">
-                    <Icon name="import" size={20} />
-                    Import
-                  </button>
-                  <button className="portal__home-btn portal__home-btn--primary">
-                    Add account
-                  </button>
-                </div>
               </div>
 
               <div className="portal__metrics">
@@ -520,15 +511,6 @@ export default function Portal() {
                 </div>
 
                 <div className="portal__chart-card">
-                  <h3 className="portal__chart-title portal__chart-title--stepper">Terminal delivery status</h3>
-                  <ProgressStepper
-                    steps={terminalStatusSteps}
-                  />
-                </div>
-              </div>
-
-              <div className="portal__bottom-section">
-                <div className="portal__chart-card">
                   <div className="portal__chart-header">
                     <button className="portal__chart-nav" aria-label="Previous">
                       <Icon name="chevron-left" size={20} />
@@ -596,6 +578,15 @@ export default function Portal() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="portal__bottom-section">
+                <div className="portal__chart-card">
+                  <h3 className="portal__chart-title portal__chart-title--stepper">Terminal delivery status</h3>
+                  <ProgressStepper
+                    steps={terminalStatusSteps}
+                  />
+                </div>
 
                 <div className="portal__notifications-container">
                   <h3 className="portal__notifications-title">Notifications</h3>
@@ -610,7 +601,7 @@ export default function Portal() {
                     </div>
                   </div>
 
-                  <div className="portal__notification-card portal__notification-card--highlight">
+                  <div className="portal__notification-card">
                     <div className="portal__notification-icon portal__notification-icon--info">
                       <Icon name="bell" size={20} />
                     </div>

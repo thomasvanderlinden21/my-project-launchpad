@@ -1,0 +1,204 @@
+/* Snackbar */
+.snackbar {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 506px;
+  padding: var(--spacing-md, 16px);
+  background-color: var(--surface-neutral-low, #ffffff);
+  border: 1px solid var(--border-brand-solid, #277777);
+  border-radius: var(--radius-xs, 4px);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
+  animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.snackbar--success {
+  border-color: var(--border-success-solid, #067647);
+}
+
+.snackbar--error {
+  border-color: #c81e1e;
+}
+
+.snackbar--warning {
+  border-color: #d89d3f;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.snackbar__content {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs, 8px);
+  padding-right: var(--spacing-2xl, 32px);
+}
+
+.snackbar__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--content-primary, #121621);
+}
+
+.snackbar--success .snackbar__icon {
+  color: #067647;
+}
+
+.snackbar--error .snackbar__icon {
+  color: #c81e1e;
+}
+
+.snackbar--warning .snackbar__icon {
+  color: #d89d3f;
+}
+
+.snackbar__text {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.snackbar__title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.snackbar__message {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+}
+
+.snackbar__action-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--surface-brand-high, #2c6764);
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: left;
+  margin-top: 4px;
+  transition: opacity 0.15s;
+}
+
+.snackbar__action-link:hover {
+  opacity: 0.8;
+}
+
+.snackbar__action-link:active {
+  opacity: 0.6;
+}
+
+.snackbar__close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--content-secondary, #525d5d);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.snackbar__close-btn:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  color: var(--content-primary, #121621);
+}
+
+.snackbar__close-btn:active {
+  background-color: var(--surface-neutral-mid, #e6ebeb);
+}
+
+/* Dark mode */
+[data-theme="dark"] .snackbar {
+  background-color: #1e2430;
+  border-color: #277777;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .snackbar--success {
+  border-color: #067647;
+}
+
+[data-theme="dark"] .snackbar--error {
+  border-color: #c81e1e;
+}
+
+[data-theme="dark"] .snackbar--warning {
+  border-color: #d89d3f;
+}
+
+[data-theme="dark"] .snackbar__title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .snackbar__message {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .snackbar__action-link {
+  color: #2c9d96;
+}
+
+[data-theme="dark"] .snackbar__icon {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .snackbar--success .snackbar__icon {
+  color: #0e9f6e;
+}
+
+[data-theme="dark"] .snackbar--error .snackbar__icon {
+  color: #f05252;
+}
+
+[data-theme="dark"] .snackbar--warning .snackbar__icon {
+  color: #d89d3f;
+}
+
+[data-theme="dark"] .snackbar__close-btn {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .snackbar__close-btn:hover {
+  background-color: #2a3445;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .snackbar__close-btn:active {
+  background-color: #3d4759;
+}

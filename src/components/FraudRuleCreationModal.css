@@ -1,0 +1,411 @@
+/* Fraud Rule Creation Modal */
+.fraud-rule-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl, 24px);
+}
+
+.fraud-rule-step-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl, 24px);
+}
+
+.fraud-rule-description {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+}
+
+/* Step 1: Rule Type Selection */
+.fraud-rule-types-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-rule-type-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 8px);
+  padding: var(--spacing-lg, 12px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-sm, 6px);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.fraud-rule-type-card:hover {
+  border-color: var(--border-neutral-mid, #d5d7da);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+}
+
+.fraud-rule-type-card--selected {
+  border-color: var(--border-brand-solid, #277777);
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+}
+
+.fraud-rule-type-card--selected:hover {
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+}
+
+.fraud-rule-type-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border-radius: var(--radius-xs, 4px);
+  color: var(--content-secondary, #525d5d);
+  transition: all 0.15s;
+}
+
+.fraud-rule-type-card--selected .fraud-rule-type-icon {
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+}
+
+.fraud-rule-type-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fraud-rule-type-label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.fraud-rule-type-description {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--content-tertiary, #8a9494);
+  margin: 0;
+}
+
+.fraud-rule-type-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Step 2: Add Entries */
+.fraud-rule-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+  padding: var(--spacing-md, 8px) var(--spacing-lg, 12px);
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+  border: 1px solid var(--border-brand-subtle, #b8d9d7);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--surface-brand-high, #2c6764);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.fraud-rule-section-title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  margin: 0 0 6px 0;
+}
+
+.fraud-rule-input-group {
+  display: flex;
+  gap: var(--spacing-md, 8px);
+  align-items: center;
+}
+
+.fraud-rule-input {
+  flex: 1;
+  height: 40px;
+  padding: 0 var(--spacing-lg, 12px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  color: var(--content-primary, #121621);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.fraud-rule-input:focus {
+  border-color: var(--border-brand-solid, #277777);
+}
+
+.fraud-rule-input::placeholder {
+  color: var(--content-tertiary, #8a9494);
+}
+
+.fraud-rule-select {
+  flex: 1;
+  height: 40px;
+  padding: 0 var(--spacing-lg, 12px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-mid, #d5d7da);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  color: var(--content-primary, #121621);
+  outline: none;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+
+.fraud-rule-select:focus {
+  border-color: var(--border-brand-solid, #277777);
+}
+
+.fraud-rule-entries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-rule-entries-label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.fraud-rule-entries-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-rule-entry-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs, 4px);
+  padding: var(--spacing-2xs, 4px) var(--spacing-md, 8px);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-rule-entry-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--content-secondary, #525d5d);
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.fraud-rule-entry-remove:hover {
+  opacity: 1;
+}
+
+/* Step 3: Review */
+.fraud-rule-review-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl, 16px);
+  padding: var(--spacing-xl, 16px);
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-sm, 6px);
+}
+
+.fraud-rule-review-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg, 12px);
+}
+
+.fraud-rule-review-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-xs, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface-brand-high, #2c6764);
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.fraud-rule-review-title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.fraud-rule-review-subtitle {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--content-secondary, #525d5d);
+  margin: 4px 0 0 0;
+}
+
+.fraud-rule-review-divider {
+  height: 1px;
+  background-color: var(--border-neutral-low, #e6ebeb);
+}
+
+.fraud-rule-review-label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--content-tertiary, #8a9494);
+  margin: 0 0 8px 0;
+}
+
+.fraud-rule-review-entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs, 6px);
+}
+
+.fraud-rule-review-entry {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-2xs, 4px) var(--spacing-md, 10px);
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: 999px;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--content-primary, #121621);
+}
+
+.fraud-rule-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md, 10px);
+  padding: var(--spacing-lg, 12px);
+  background-color: var(--chip-success-bg, #d4f4f1);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--chip-success-content, #0e9f6e);
+}
+
+.fraud-rule-notice svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Dark mode */
+[data-theme="dark"] .fraud-rule-description {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-rule-type-card {
+  background-color: #181d27;
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .fraud-rule-type-card:hover {
+  border-color: #3d4759;
+  background-color: #2a3445;
+}
+
+[data-theme="dark"] .fraud-rule-type-card--selected {
+  border-color: #277777;
+  background-color: rgba(39, 119, 119, 0.2);
+}
+
+[data-theme="dark"] .fraud-rule-type-icon {
+  background-color: #2a3445;
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-rule-type-card--selected .fraud-rule-type-icon {
+  background-color: #277777;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .fraud-rule-type-label,
+[data-theme="dark"] .fraud-rule-section-title,
+[data-theme="dark"] .fraud-rule-entries-label,
+[data-theme="dark"] .fraud-rule-review-title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-rule-type-description,
+[data-theme="dark"] .fraud-rule-review-subtitle {
+  color: #6b7280;
+}
+
+[data-theme="dark"] .fraud-rule-input {
+  background-color: #1e2534;
+  border-color: #2a3445;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-rule-input:focus {
+  border-color: #277777;
+}
+
+[data-theme="dark"] .fraud-rule-select {
+  background-color: #1e2534;
+  border-color: #2a3445;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-rule-select:focus {
+  border-color: #277777;
+}
+
+[data-theme="dark"] .fraud-rule-entry-tag,
+[data-theme="dark"] .fraud-rule-review-entry {
+  background-color: #2a3445;
+  border-color: #3d4759;
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-rule-review-card {
+  background-color: #2a3445;
+  border-color: #3d4759;
+}
+
+[data-theme="dark"] .fraud-rule-review-divider {
+  background-color: #3d4759;
+}
+
+[data-theme="dark"] .fraud-rule-review-icon {
+  background-color: #277777;
+}

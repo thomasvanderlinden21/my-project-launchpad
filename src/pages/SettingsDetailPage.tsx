@@ -34,14 +34,16 @@ export default function SettingsDetailPage({ sections, onCancel, onSave }: Setti
           </div>
         ))}
 
-        <div className="settings-detail__actions">
-          <Button hierarchy="secondary" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button hierarchy="primary" onClick={onSave}>
-            Save changes
-          </Button>
-        </div>
+        {(onCancel || onSave) && (
+          <div className="settings-detail__actions">
+            <Button hierarchy="secondary" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button hierarchy="primary" onClick={onSave}>
+              Save changes
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

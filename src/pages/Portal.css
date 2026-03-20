@@ -570,10 +570,20 @@
   padding: var(--spacing-md, 8px) var(--spacing-lg, 12px);
   display: flex;
   gap: var(--spacing-lg, 12px);
+  cursor: pointer;
+  transition: border-color 0.15s;
 }
 
-.portal__notification-card--highlight {
+.portal__notification-card:has(.portal__notification-icon--success):hover {
+  border-color: #2c9d96;
+}
+
+.portal__notification-card:has(.portal__notification-icon--info):hover {
   border-color: #9b8bd9;
+}
+
+.portal__notification-card:has(.portal__notification-icon--warning):hover {
+  border-color: #d89d3f;
 }
 
 .portal__notification-icon {
