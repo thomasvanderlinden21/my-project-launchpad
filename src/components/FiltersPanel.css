@@ -97,6 +97,13 @@
   gap: var(--spacing-lg, 12px);
 }
 
+/* Location inputs */
+.filters-panel__location-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 8px);
+}
+
 /* Checkbox group */
 .filters-panel__checkbox-group {
   display: flex;

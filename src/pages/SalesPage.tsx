@@ -11,6 +11,7 @@ import ColumnManagementModal from '../components/ColumnManagementModal'
 import type { ColumnConfig } from '../components/ColumnManagementModal'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
+import Snackbar from '../components/Snackbar'
 import './SalesPage.css'
 
 type Status = 'Paid' | 'Pending' | 'Completed' | 'Failed' | 'Refunded'
@@ -20,24 +21,213 @@ interface Transaction {
   id: string
   card: string
   status: Status
+  subStatus: string
   merchantId: string
+  locationName: string
+  terminalId: string
   orderId: string
   amount: string
+  currency: string
   date: string
   transactionType: TransactionType
+  paymentMethod: string
+  type: string
+  channel: string
+  acquiringReference: string
+  fraudFlagged: boolean
 }
 
-const transactions: Transaction[] = [
-  { id: '#2456221', card: '****9382', status: 'Paid',      merchantId: '113239382', orderId: '#113239382', amount: '€ 259,00', date: '24/02/25, 21:05', transactionType: 'Online' },
-  { id: '#2456222', card: '****9382', status: 'Pending',   merchantId: '113239383', orderId: '#113239382', amount: '€ 150,00', date: '25/02/25, 14:30', transactionType: 'Instore' },
-  { id: '#2456223', card: '****9382', status: 'Completed', merchantId: '113239384', orderId: '#113239382', amount: '€ 320,00', date: '26/02/25, 09:15', transactionType: 'Online' },
-  { id: '#2456224', card: '****9382', status: 'Failed',    merchantId: '113239385', orderId: '#113239382', amount: '€ 89,00',  date: '27/02/25, 11:45', transactionType: 'Acquiring' },
-  { id: '#2456225', card: '****9382', status: 'Refunded',  merchantId: '113239386', orderId: '#113239382', amount: '€ 120,00', date: '28/02/25, 16:00', transactionType: 'Online' },
-  { id: '#2456226', card: '****9382', status: 'Paid',      merchantId: '113239387', orderId: '#113239382', amount: '€ 450,00', date: '01/03/25, 18:20', transactionType: 'Instore' },
-  { id: '#2456227', card: '****9382', status: 'Pending',   merchantId: '113239388', orderId: '#113239382', amount: '€ 75,00',  date: '02/03/25, 10:10', transactionType: 'Acquiring' },
-  { id: '#2456228', card: '****9382', status: 'Completed', merchantId: '113239389', orderId: '#113239382', amount: '€ 200,00', date: '03/03/25, 12:00', transactionType: 'Online' },
-  { id: '#2456229', card: '****9382', status: 'Failed',    merchantId: '113239390', orderId: '#113239382', amount: '€ 300,00', date: '04/03/25, 14:15', transactionType: 'Instore' },
-  { id: '#2456230', card: '****9382', status: 'Refunded',  merchantId: '113239391', orderId: '#113239382', amount: '€ 180,00', date: '05/03/25, 09:45', transactionType: 'Acquiring' },
+const initialTransactions: Transaction[] = [
+  {
+    id: '#2456221',
+    card: '****9382',
+    status: 'Paid',
+    subStatus: 'Ecom',
+    merchantId: '113239382',
+    locationName: 'Downtown Store',
+    terminalId: 'T001',
+    orderId: '#113239382',
+    amount: '259.00',
+    currency: 'EUR',
+    date: '24/02/25, 21:05',
+    transactionType: 'Online',
+    paymentMethod: 'Visa',
+    type: 'Payment',
+    channel: 'Ecomm',
+    acquiringReference: 'ACQ-2456221',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456222',
+    card: '****9382',
+    status: 'Pending',
+    subStatus: 'MOTO',
+    merchantId: '113239383',
+    locationName: 'Uptown Branch',
+    terminalId: 'T002',
+    orderId: '#113239382',
+    amount: '150.00',
+    currency: 'EUR',
+    date: '25/02/25, 14:30',
+    transactionType: 'Instore',
+    paymentMethod: 'Mastercard',
+    type: 'Payment',
+    channel: 'Instore',
+    acquiringReference: 'ACQ-2456222',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456223',
+    card: '****9382',
+    status: 'Completed',
+    subStatus: 'Ecom',
+    merchantId: '113239384',
+    locationName: 'City Center',
+    terminalId: 'T003',
+    orderId: '#113239382',
+    amount: '320.00',
+    currency: 'EUR',
+    date: '26/02/25, 09:15',
+    transactionType: 'Online',
+    paymentMethod: 'Visa',
+    type: 'Payment',
+    channel: 'Ecomm',
+    acquiringReference: 'ACQ-2456223',
+    fraudFlagged: true
+  },
+  {
+    id: '#2456224',
+    card: '****9382',
+    status: 'Failed',
+    subStatus: 'Recurring',
+    merchantId: '113239385',
+    locationName: 'West Side Mall',
+    terminalId: 'T004',
+    orderId: '#113239382',
+    amount: '89.00',
+    currency: 'USD',
+    date: '27/02/25, 11:45',
+    transactionType: 'Acquiring',
+    paymentMethod: 'PayPal',
+    type: 'Payment',
+    channel: 'Mobile',
+    acquiringReference: 'ACQ-2456224',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456225',
+    card: '****9382',
+    status: 'Refunded',
+    subStatus: 'Ecom',
+    merchantId: '113239386',
+    locationName: 'East Plaza',
+    terminalId: 'T005',
+    orderId: '#113239382',
+    amount: '120.00',
+    currency: 'EUR',
+    date: '28/02/25, 16:00',
+    transactionType: 'Online',
+    paymentMethod: 'Visa',
+    type: 'Refund',
+    channel: 'Ecomm',
+    acquiringReference: 'ACQ-2456225',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456226',
+    card: '****9382',
+    status: 'Paid',
+    subStatus: 'MOTO',
+    merchantId: '113239387',
+    locationName: 'North Station',
+    terminalId: 'T006',
+    orderId: '#113239382',
+    amount: '450.00',
+    currency: 'GBP',
+    date: '01/03/25, 18:20',
+    transactionType: 'Instore',
+    paymentMethod: 'Mastercard',
+    type: 'Payment',
+    channel: 'Instore',
+    acquiringReference: 'ACQ-2456226',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456227',
+    card: '****9382',
+    status: 'Pending',
+    subStatus: 'Installment',
+    merchantId: '113239388',
+    locationName: 'South Park',
+    terminalId: 'T007',
+    orderId: '#113239382',
+    amount: '75.00',
+    currency: 'EUR',
+    date: '02/03/25, 10:10',
+    transactionType: 'Acquiring',
+    paymentMethod: 'Apple pay',
+    type: 'Payment',
+    channel: 'MOTO',
+    acquiringReference: 'ACQ-2456227',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456228',
+    card: '****9382',
+    status: 'Completed',
+    subStatus: 'Ecom',
+    merchantId: '113239389',
+    locationName: 'Harbor View',
+    terminalId: 'T008',
+    orderId: '#113239382',
+    amount: '200.00',
+    currency: 'EUR',
+    date: '03/03/25, 12:00',
+    transactionType: 'Online',
+    paymentMethod: 'Google Pay',
+    type: 'Payment',
+    channel: 'Ecomm',
+    acquiringReference: 'ACQ-2456228',
+    fraudFlagged: true
+  },
+  {
+    id: '#2456229',
+    card: '****9382',
+    status: 'Failed',
+    subStatus: 'MOTO',
+    merchantId: '113239390',
+    locationName: 'Airport Terminal',
+    terminalId: 'T009',
+    orderId: '#113239382',
+    amount: '300.00',
+    currency: 'CHF',
+    date: '04/03/25, 14:15',
+    transactionType: 'Instore',
+    paymentMethod: 'Visa',
+    type: 'Payment',
+    channel: 'Instore',
+    acquiringReference: 'ACQ-2456229',
+    fraudFlagged: false
+  },
+  {
+    id: '#2456230',
+    card: '****9382',
+    status: 'Refunded',
+    subStatus: 'Ecom',
+    merchantId: '113239391',
+    locationName: 'Main Street',
+    terminalId: 'T010',
+    orderId: '#113239382',
+    amount: '180.00',
+    currency: 'EUR',
+    date: '05/03/25, 09:45',
+    transactionType: 'Acquiring',
+    paymentMethod: 'Mastercard',
+    type: 'Refund',
+    channel: 'Mobile',
+    acquiringReference: 'ACQ-2456230',
+    fraudFlagged: false
+  },
 ]
 
 const statusToChipVariant: Record<Status, 'success' | 'info' | 'neutral' | 'warning'> = {
@@ -49,25 +239,52 @@ const statusToChipVariant: Record<Status, 'success' | 'info' | 'neutral' | 'warn
 }
 
 export default function SalesPage() {
+  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions)
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set())
   const [activeTab, setActiveTab] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
+  const [showRefundSnackbar, setShowRefundSnackbar] = useState(false)
+  const [refundedTransactionId, setRefundedTransactionId] = useState<string | null>(null)
+  const [previousTransactionState, setPreviousTransactionState] = useState<Transaction | null>(null)
+  const [showLastMonth, setShowLastMonth] = useState(false)
   const [filters, setFilters] = useState<FiltersState>({
     startDate: '',
     endDate: '',
+    currency: new Set(),
     minAmount: '',
     maxAmount: '',
+    cardNumber: '',
     status: new Set(),
+    subStatus: new Set(),
     paymentMethods: new Set(),
+    transactionType: new Set(),
+    transactionId: '',
+    channel: new Set(),
+    merchantId: '',
+    locationName: '',
+    terminalId: '',
+    acquiringReference: '',
+    fraudOnly: false,
   })
   const [appliedFilters, setAppliedFilters] = useState<FiltersState>({
     startDate: '',
     endDate: '',
+    currency: new Set(),
     minAmount: '',
     maxAmount: '',
+    cardNumber: '',
     status: new Set(),
+    subStatus: new Set(),
     paymentMethods: new Set(),
+    transactionType: new Set(),
+    transactionId: '',
+    channel: new Set(),
+    merchantId: '',
+    locationName: '',
+    terminalId: '',
+    acquiringReference: '',
+    fraudOnly: false,
   })
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<TransactionDetails | null>(null)
@@ -104,19 +321,89 @@ export default function SalesPage() {
         if (!searchableText.includes(query)) return false
       }
 
+      // Last month filter
+      if (showLastMonth) {
+        const txDate = new Date(tx.date.split(',')[0].split('/').reverse().join('-'))
+        const now = new Date()
+        const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+        const currentMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+        if (txDate < lastMonth || txDate >= currentMonth) return false
+      }
+
+      // Currency filter
+      if (appliedFilters.currency.size > 0 && !appliedFilters.currency.has(tx.currency)) {
+        return false
+      }
+
+      // Card number filter (last 4 digits)
+      if (appliedFilters.cardNumber) {
+        const last4 = tx.card.slice(-4)
+        if (!last4.includes(appliedFilters.cardNumber)) return false
+      }
+
       // Status filter
       if (appliedFilters.status.size > 0 && !appliedFilters.status.has(tx.status)) {
         return false
       }
 
+      // Sub-status filter
+      if (appliedFilters.subStatus.size > 0 && !appliedFilters.subStatus.has(tx.subStatus)) {
+        return false
+      }
+
+      // Payment method filter
+      if (appliedFilters.paymentMethods.size > 0 && !appliedFilters.paymentMethods.has(tx.paymentMethod)) {
+        return false
+      }
+
+      // Transaction type filter
+      if (appliedFilters.transactionType.size > 0 && !appliedFilters.transactionType.has(tx.type)) {
+        return false
+      }
+
+      // Transaction ID filter
+      if (appliedFilters.transactionId) {
+        if (!tx.id.toLowerCase().includes(appliedFilters.transactionId.toLowerCase())) return false
+      }
+
+      // Channel filter
+      if (appliedFilters.channel.size > 0 && !appliedFilters.channel.has(tx.channel)) {
+        return false
+      }
+
+      // Merchant ID filter
+      if (appliedFilters.merchantId) {
+        if (!tx.merchantId.toLowerCase().includes(appliedFilters.merchantId.toLowerCase())) return false
+      }
+
+      // Location name filter
+      if (appliedFilters.locationName) {
+        if (!tx.locationName.toLowerCase().includes(appliedFilters.locationName.toLowerCase())) return false
+      }
+
+      // Terminal ID filter
+      if (appliedFilters.terminalId) {
+        if (!tx.terminalId.toLowerCase().includes(appliedFilters.terminalId.toLowerCase())) return false
+      }
+
+      // Acquiring reference filter
+      if (appliedFilters.acquiringReference) {
+        if (!tx.acquiringReference.toLowerCase().includes(appliedFilters.acquiringReference.toLowerCase())) return false
+      }
+
+      // Fraud filter
+      if (appliedFilters.fraudOnly && !tx.fraudFlagged) {
+        return false
+      }
+
       // Amount filter
       if (appliedFilters.minAmount) {
-        const amount = parseFloat(tx.amount.replace('€ ', '').replace(',', '.'))
+        const amount = parseFloat(tx.amount)
         const min = parseFloat(appliedFilters.minAmount)
         if (amount < min) return false
       }
       if (appliedFilters.maxAmount) {
-        const amount = parseFloat(tx.amount.replace('€ ', '').replace(',', '.'))
+        const amount = parseFloat(tx.amount)
         const max = parseFloat(appliedFilters.maxAmount)
         if (amount > max) return false
       }
@@ -168,21 +455,113 @@ export default function SalesPage() {
 
     console.log('Found transaction:', transaction)
 
-    // Map the transaction data to the modal format
+    const currencySymbol = transaction.currency === 'EUR' ? '€' : transaction.currency === 'USD' ? '$' : transaction.currency === 'GBP' ? '£' : transaction.currency
+
+    // Map the transaction data to the modal format with comprehensive details
     const transactionDetails: TransactionDetails = {
+      // Basic details
       id: transaction.id,
       date: transaction.date,
-      amount: transaction.amount,
-      fee: '€0.01', // Default fee - replace with actual data if available
-      status: transaction.status === 'Completed' ? 'Paid' : transaction.status === 'Failed' ? 'Failed' : transaction.status === 'Refunded' ? 'Refunded' : transaction.status === 'Pending' ? 'Pending' : 'Paid',
-      cardType: 'Mastercard', // Replace with actual card type detection
+      reference: transaction.orderId,
+      status: transaction.status === 'Completed' ? 'Paid' : transaction.status as 'Paid' | 'Pending' | 'Failed' | 'Refunded',
+      type: transaction.type,
+      grossAmount: `${currencySymbol} ${transaction.amount}`,
+      feesAmount: `${currencySymbol} 2.50`,
+      dccPayback: `${currencySymbol} 0.00`,
+      netAmount: `${currencySymbol} ${(parseFloat(transaction.amount) - 2.50).toFixed(2)}`,
+
+      // Card details
+      cardType: transaction.paymentMethod,
       cardNumber: transaction.card,
-      companyName: 'Hotel Breakfast', // Replace with actual merchant name
+
+      // Company Location Details
+      acqPartnerMerchantId: transaction.merchantId,
+      instoreOnlineMerchantId: `${transaction.channel === 'Ecomm' ? 'ONL' : 'INS'}-${transaction.merchantId}`,
+      companyName: transaction.locationName,
+      location: transaction.locationName,
+      terminalId: transaction.terminalId,
+
+      // References
       merchantReference: transaction.merchantId,
-      paymentId: transaction.orderId,
-      authorizationDate: transaction.date,
-      acquirer: 'Credit Agricole', // Replace with actual acquirer data
-      channel: transaction.transactionType === 'Online' ? 'WEB' : transaction.transactionType === 'Instore' ? 'POS' : 'DIR',
+      acquirerReferenceNumber: transaction.acquiringReference,
+      paymentAccountReference: `PAR-${transaction.id.replace('#', '')}`,
+      creditingReference: `CR-${transaction.id.replace('#', '')}`,
+      settlementPayoutDate: '07/03/25',
+
+      // Channel
+      channel: transaction.channel,
+
+      // History
+      history: {
+        authorized: {
+          date: transaction.date,
+          status: 'Declined or Approved'
+        },
+        captured: {
+          date: transaction.date,
+          status: 'Cancel (full Amount)'
+        },
+        processedRejected: {
+          date: transaction.date,
+          status: 'Different statuses depending on'
+        },
+        settled: {
+          date: transaction.date.split(',')[0],
+          status: '(Money sent to bank)'
+        }
+      },
+
+      // Online Details - Cardholder (for online/mobile transactions)
+      ...((transaction.channel === 'Ecomm' || transaction.channel === 'Mobile') && {
+        issuingCountry: 'Netherlands',
+        cardholderName: 'John Doe',
+        cardholderEmail: 'john.doe@example.com',
+        cardholderPhone: '+31 6 12345678',
+        billingAddress: '123 Main Street, Amsterdam, 1012AB, NL',
+
+        // 3D Secure
+        authenticationStatus: 'Authenticated',
+        liability: 'Issuer',
+        version: '2.1.0',
+        flow: 'Frictionless',
+        warranty: 'Y',
+        eciScheme: '05',
+
+        // Card On File
+        schemeReferenceData: 'SRD-' + transaction.id.replace('#', ''),
+        processedWithSchemeToken: 'Yes',
+
+        // Technical Logs
+        accessControlServerId: 'ACS-' + transaction.merchantId,
+        directoryServerId: 'DS-' + transaction.merchantId,
+      }),
+
+      // Instore Details (for instore transactions)
+      ...(transaction.channel === 'Instore' && {
+        // POS Details
+        posTerminalId: transaction.terminalId,
+        posSerialNumber: 'SN-' + transaction.terminalId,
+        posModel: 'Verifone VX520',
+
+        // Physical Location Details
+        physicalAddress: transaction.locationName + ' Store, Main Street 123',
+        physicalCity: 'Amsterdam',
+        physicalCountry: 'Netherlands',
+        physicalPostalCode: '1012AB',
+
+        // Terminal Details
+        terminalSerialNumber: 'TSN-' + transaction.terminalId,
+        terminalModel: 'Verifone VX520',
+        terminalManufacturer: 'Verifone',
+      }),
+
+      // Acquiring Details (for MOTO transactions)
+      ...(transaction.channel === 'MOTO' && {
+        acquirerName: 'Worldpay',
+        acquirerCountry: 'United Kingdom',
+        batchNumber: 'BATCH-' + transaction.id.replace('#', ''),
+        batchDate: transaction.date.split(',')[0],
+      }),
     }
 
     console.log('Setting transaction details:', transactionDetails)
@@ -238,7 +617,7 @@ export default function SalesPage() {
       tx.status,
       tx.merchantId,
       tx.orderId,
-      tx.amount,
+      `${tx.currency} ${tx.amount}`,
       tx.date,
     ])
 
@@ -257,6 +636,29 @@ export default function SalesPage() {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+  }
+
+  const handleUndoRefund = () => {
+    if (previousTransactionState && refundedTransactionId) {
+      // Restore the previous transaction state
+      setTransactions(prev =>
+        prev.map(tx =>
+          tx.id === refundedTransactionId ? previousTransactionState : tx
+        )
+      )
+
+      // Update the selected transaction if it's the one being undone
+      if (selectedTransaction && selectedTransaction.id === refundedTransactionId) {
+        setSelectedTransaction({
+          ...selectedTransaction,
+          status: previousTransactionState.status === 'Completed' ? 'Paid' : previousTransactionState.status === 'Failed' ? 'Failed' : previousTransactionState.status === 'Pending' ? 'Pending' : 'Paid',
+        })
+      }
+
+      // Reset state
+      setPreviousTransactionState(null)
+      setRefundedTransactionId(null)
+    }
   }
 
   const tabItems: TabItem[] = [
@@ -312,6 +714,14 @@ export default function SalesPage() {
             >
               Filters
               <Icon name="filter" size={20} />
+            </button>
+            <button
+              className={`sales-page__filter-btn ${showLastMonth ? 'sales-page__filter-btn--active' : ''}`}
+              onClick={() => setShowLastMonth(!showLastMonth)}
+              aria-label="Show last month"
+            >
+              Last month
+              <Icon name="calendar" size={20} />
             </button>
           </div>
           <button
@@ -439,7 +849,7 @@ export default function SalesPage() {
                         case 'amount':
                           return (
                             <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                              {tx.amount}
+                              {tx.currency === 'EUR' ? '€' : tx.currency === 'USD' ? '$' : tx.currency === 'GBP' ? '£' : tx.currency} {tx.amount}
                             </TableCell>
                           )
                         case 'date':
@@ -497,9 +907,30 @@ export default function SalesPage() {
         onClose={() => setIsDetailsModalOpen(false)}
         transaction={selectedTransaction}
         onRefund={(transactionId) => {
-          console.log('Refund requested for:', transactionId)
-          // Implement refund logic here
-          setIsDetailsModalOpen(false)
+          // Save the previous state for undo
+          const transactionToRefund = transactions.find(tx => tx.id === transactionId)
+          if (transactionToRefund) {
+            setPreviousTransactionState({ ...transactionToRefund })
+            setRefundedTransactionId(transactionId)
+          }
+
+          // Update transaction status to Refunded
+          setTransactions(prev =>
+            prev.map(tx =>
+              tx.id === transactionId ? { ...tx, status: 'Refunded' as Status } : tx
+            )
+          )
+
+          // Update the selected transaction to reflect the new status
+          if (selectedTransaction) {
+            setSelectedTransaction({
+              ...selectedTransaction,
+              status: 'Refunded'
+            })
+          }
+
+          // Show snackbar
+          setShowRefundSnackbar(true)
         }}
       />
 
@@ -509,6 +940,18 @@ export default function SalesPage() {
         columns={columns}
         onColumnsChange={setColumns}
         onApply={handleApplyColumns}
+      />
+
+      <Snackbar
+        isOpen={showRefundSnackbar}
+        title="Transaction refunded successfully"
+        onClose={() => setShowRefundSnackbar(false)}
+        action={{
+          label: 'Undo',
+          onClick: handleUndoRefund
+        }}
+        variant="success"
+        duration={5000}
       />
     </div>
   )

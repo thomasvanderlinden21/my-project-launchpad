@@ -107,6 +107,16 @@
   outline-offset: 2px;
 }
 
+.sales-page__filter-btn--active {
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+  border-color: var(--border-brand-solid, #277777);
+  color: var(--surface-brand-high, #2c6764);
+}
+
+.sales-page__filter-btn--active:hover {
+  background-color: var(--surface-brand-subtile, #e6f0ef);
+}
+
 /* Export button */
 .sales-page__export-btn {
   display: flex;
@@ -331,6 +341,16 @@
 [data-theme="dark"] .sales-page__filter-btn:hover {
   background-color: #2a3445;
   border-color: #277777;
+}
+
+[data-theme="dark"] .sales-page__filter-btn--active {
+  background-color: rgba(39, 119, 119, 0.2);
+  border-color: #277777;
+  color: #2c9d96;
+}
+
+[data-theme="dark"] .sales-page__filter-btn--active:hover {
+  background-color: rgba(39, 119, 119, 0.25);
 }
 
 [data-theme="dark"] .sales-page__export-btn {

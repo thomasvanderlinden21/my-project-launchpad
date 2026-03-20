@@ -6,23 +6,95 @@ import Button from './Button'
 import Chip from './Chip'
 import Stepper from './Stepper'
 import Step from './Step'
+import Icon from './Icon'
 import './TransactionDetailsModal.css'
 
 export interface Transaction {
+  // Basic details
   id: string
   date: string
-  amount: string
-  fee: string
+  reference: string
   status: 'Paid' | 'Pending' | 'Failed' | 'Refunded'
+  type: string
+  grossAmount: string
+  feesAmount: string
+  dccPayback: string
+  netAmount: string
+
+  // Card details
   cardType: string
   cardNumber: string
   cardLogo?: string
+
+  // Company Location Details
+  acqPartnerMerchantId: string
+  instoreOnlineMerchantId: string
   companyName: string
+  location: string
+  terminalId: string
+
+  // References
   merchantReference: string
-  paymentId: string
-  authorizationDate: string
-  acquirer: string
+  acquirerReferenceNumber: string
+  paymentAccountReference: string
+  creditingReference: string
+  settlementPayoutDate: string
+
+  // Channel
   channel: string
+
+  // History
+  history?: {
+    authorized?: { date: string; status: string }
+    captured?: { date: string; status?: string }
+    processedRejected?: { date: string; status: string }
+    settled?: { date: string; status: string }
+  }
+
+  // Online Details - Cardholder
+  issuingCountry?: string
+  cardholderName?: string
+  cardholderEmail?: string
+  cardholderPhone?: string
+  billingAddress?: string
+
+  // 3D Secure
+  authenticationStatus?: string
+  liability?: string
+  version?: string
+  flow?: string
+  warranty?: string
+  eciScheme?: string
+
+  // Card On File
+  schemeReferenceData?: string
+  processedWithSchemeToken?: string
+
+  // Technical Logs
+  accessControlServerId?: string
+  directoryServerId?: string
+
+  // Instore Details - POS
+  posTerminalId?: string
+  posSerialNumber?: string
+  posModel?: string
+
+  // Physical Location
+  physicalAddress?: string
+  physicalCity?: string
+  physicalCountry?: string
+  physicalPostalCode?: string
+
+  // Terminal Details
+  terminalSerialNumber?: string
+  terminalModel?: string
+  terminalManufacturer?: string
+
+  // Acquiring Details
+  batchNumber?: string
+  batchDate?: string
+  acquirerName?: string
+  acquirerCountry?: string
 }
 
 export interface TransactionDetailsModalProps {
@@ -43,13 +115,31 @@ export default function TransactionDetailsModal({
   onRefund,
 }: TransactionDetailsModalProps) {
   const [activeTab, setActiveTab] = useState('details')
+  const [showRefundConfirmation, setShowRefundConfirmation] = useState(false)
 
   if (!transaction) return null
 
-  const statusVariant = transaction.status === 'Paid' ? 'success' : 'neutral'
+  const statusVariant = transaction.status === 'Paid' ? 'success' : transaction.status === 'Refunded' ? 'neutral' : 'neutral'
 
-  // For paid transactions, show all steps as completed
-  const historyActiveStep = transaction.status === 'Paid' ? 4 : 2
+  const handleRefundClick = () => {
+    setShowRefundConfirmation(true)
+  }
+
+  const handleRefundConfirm = () => {
+    if (onRefund) {
+      onRefund(transaction.id)
+    }
+    setShowRefundConfirmation(false)
+    onClose()
+  }
+
+  const handleRefundCancel = () => {
+    setShowRefundConfirmation(false)
+  }
+
+  const isOnline = transaction.channel === 'Ecomm' || transaction.channel === 'Mobile'
+  const isInstore = transaction.channel === 'Instore'
+  const isAcquiring = transaction.channel === 'MOTO'
 
   const tabs: TabItem[] = [
     {
@@ -75,31 +165,31 @@ export default function TransactionDetailsModal({
                 <p className="transaction-card-number">{transaction.cardNumber}</p>
               </div>
             </div>
-            <p className="transaction-card-amount">{transaction.amount}</p>
+            <p className="transaction-card-amount">{transaction.grossAmount}</p>
           </div>
 
-          {onRefund && (
+          {onRefund && transaction.status === 'Paid' && (
             <Button
               hierarchy="secondary"
               size="sm"
               fullWidth
-              onClick={() => onRefund(transaction.id)}
+              onClick={handleRefundClick}
             >
               Refund transaction
             </Button>
           )}
 
-          {/* Details section */}
+          {/* Basic details */}
           <div className="transaction-section">
-            <h3 className="transaction-section-title">Details</h3>
+            <h3 className="transaction-section-title">Basic details</h3>
             <div className="transaction-fields">
-              <div className="transaction-field">
-                <span className="transaction-field-label">Transaction ID</span>
-                <span className="transaction-field-value">{transaction.id}</span>
-              </div>
               <div className="transaction-field">
                 <span className="transaction-field-label">Transaction Date</span>
                 <span className="transaction-field-value">{transaction.date}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">Reference</span>
+                <span className="transaction-field-value">{transaction.reference}</span>
               </div>
               <div className="transaction-field">
                 <span className="transaction-field-label">Status</span>
@@ -108,46 +198,82 @@ export default function TransactionDetailsModal({
                 </span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Amount</span>
-                <span className="transaction-field-value">{transaction.amount}</span>
+                <span className="transaction-field-label">Type</span>
+                <span className="transaction-field-value">{transaction.type}</span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Fee</span>
-                <span className="transaction-field-value">{transaction.fee}</span>
+                <span className="transaction-field-label">Gross Amount</span>
+                <span className="transaction-field-value">{transaction.grossAmount}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">Fees Amount</span>
+                <span className="transaction-field-value">{transaction.feesAmount}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">DCC Payback</span>
+                <span className="transaction-field-value">{transaction.dccPayback}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">Net Amount</span>
+                <span className="transaction-field-value">{transaction.netAmount}</span>
               </div>
             </div>
           </div>
 
-          {/* Divider */}
           <div className="transaction-divider" />
 
-          {/* Transactions section */}
+          {/* Company Location Details */}
           <div className="transaction-section">
-            <h3 className="transaction-section-title">Transactions</h3>
+            <h3 className="transaction-section-title">Company Location Details</h3>
             <div className="transaction-fields">
               <div className="transaction-field">
-                <span className="transaction-field-label">Company name</span>
+                <span className="transaction-field-label">ACQ Partner/Merchant ID</span>
+                <span className="transaction-field-value">{transaction.acqPartnerMerchantId}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">Instore / Online Merchant ID</span>
+                <span className="transaction-field-value">{transaction.instoreOnlineMerchantId}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">Company Name</span>
                 <span className="transaction-field-value">{transaction.companyName}</span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Merchant reference</span>
+                <span className="transaction-field-label">Location</span>
+                <span className="transaction-field-value">{transaction.location}</span>
+              </div>
+              <div className="transaction-field">
+                <span className="transaction-field-label">Terminal ID</span>
+                <span className="transaction-field-value">{transaction.terminalId}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* References */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">References</h3>
+            <div className="transaction-fields">
+              <div className="transaction-field">
+                <span className="transaction-field-label">Merchant Reference</span>
                 <span className="transaction-field-value">{transaction.merchantReference}</span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Payment ID</span>
-                <span className="transaction-field-value">{transaction.paymentId}</span>
+                <span className="transaction-field-label">Acquirer Reference Number</span>
+                <span className="transaction-field-value">{transaction.acquirerReferenceNumber}</span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Authorization date</span>
-                <span className="transaction-field-value">{transaction.authorizationDate}</span>
+                <span className="transaction-field-label">Payment Account Reference</span>
+                <span className="transaction-field-value">{transaction.paymentAccountReference}</span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Acquirer</span>
-                <span className="transaction-field-value">{transaction.acquirer}</span>
+                <span className="transaction-field-label">Crediting Reference</span>
+                <span className="transaction-field-value">{transaction.creditingReference}</span>
               </div>
               <div className="transaction-field">
-                <span className="transaction-field-label">Channel</span>
-                <span className="transaction-field-value">{transaction.channel}</span>
+                <span className="transaction-field-label">Settlement/Payout date/Expected</span>
+                <span className="transaction-field-value">{transaction.settlementPayoutDate}</span>
               </div>
             </div>
           </div>
@@ -159,51 +285,449 @@ export default function TransactionDetailsModal({
       label: 'History',
       children: (
         <div className="transaction-details-content">
-          <Stepper activeStep={historyActiveStep} orientation="vertical">
-            <Step
-              label="Payment initiated"
-              description="Customer started checkout process"
-            />
-            <Step
-              label="Card validated"
-              description="Card details verified successfully"
-            />
-            <Step
-              label="Payment authorized"
-              description="Payment method authorized by bank"
-            />
-            <Step
-              label="Payment completed"
-              description={`Customer successfully paid ${transaction.amount}`}
-            />
-          </Stepper>
-        </div>
-      ),
-    },
-    {
-      id: 'password',
-      label: 'Password',
-      children: (
-        <div className="transaction-details-content">
-          <p className="transaction-placeholder">Password settings will be displayed here.</p>
+          {transaction.history ? (
+            <div className="transaction-timeline">
+              {transaction.history.settled && (
+                <div className="transaction-timeline-item">
+                  <div className="transaction-timeline-marker">
+                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
+                    <div className="transaction-timeline-line"></div>
+                  </div>
+                  <div className="transaction-timeline-content">
+                    <div className="transaction-timeline-header">
+                      <h4 className="transaction-timeline-title">Settled</h4>
+                      <span className="transaction-timeline-date">{transaction.history.settled.date}</span>
+                    </div>
+                    <p className="transaction-timeline-description">{transaction.history.settled.status}</p>
+                  </div>
+                </div>
+              )}
+              {transaction.history.processedRejected && (
+                <div className="transaction-timeline-item">
+                  <div className="transaction-timeline-marker">
+                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
+                    <div className="transaction-timeline-line"></div>
+                  </div>
+                  <div className="transaction-timeline-content">
+                    <div className="transaction-timeline-header">
+                      <h4 className="transaction-timeline-title">Processed or Rejected</h4>
+                      <span className="transaction-timeline-date">{transaction.history.processedRejected.date}</span>
+                    </div>
+                    <p className="transaction-timeline-description">{transaction.history.processedRejected.status}</p>
+                  </div>
+                </div>
+              )}
+              {transaction.history.captured && (
+                <div className="transaction-timeline-item">
+                  <div className="transaction-timeline-marker">
+                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
+                    <div className="transaction-timeline-line"></div>
+                  </div>
+                  <div className="transaction-timeline-content">
+                    <div className="transaction-timeline-header">
+                      <h4 className="transaction-timeline-title">Captured</h4>
+                      <span className="transaction-timeline-date">{transaction.history.captured.date}</span>
+                    </div>
+                    {transaction.history.captured.status && (
+                      <p className="transaction-timeline-description">{transaction.history.captured.status}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+              {transaction.history.authorized && (
+                <div className="transaction-timeline-item transaction-timeline-item--last">
+                  <div className="transaction-timeline-marker">
+                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
+                  </div>
+                  <div className="transaction-timeline-content">
+                    <div className="transaction-timeline-header">
+                      <h4 className="transaction-timeline-title">Authorized</h4>
+                      <span className="transaction-timeline-date">{transaction.history.authorized.date}</span>
+                    </div>
+                    <p className="transaction-timeline-description">{transaction.history.authorized.status}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Stepper activeStep={transaction.status === 'Paid' ? 4 : 2} orientation="vertical">
+              <Step
+                label="Payment initiated"
+                description="Customer started checkout process"
+              />
+              <Step
+                label="Card validated"
+                description="Card details verified successfully"
+              />
+              <Step
+                label="Payment authorized"
+                description="Payment method authorized by bank"
+              />
+              <Step
+                label="Payment completed"
+                description={`Customer successfully paid ${transaction.grossAmount}`}
+              />
+            </Stepper>
+          )}
         </div>
       ),
     },
   ]
 
+  // Add Online Details tab for online transactions
+  if (isOnline) {
+    tabs.push({
+      id: 'online',
+      label: 'Online Details',
+      children: (
+        <div className="transaction-details-content">
+          {/* Cardholder Details */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Cardholder Details</h3>
+            <div className="transaction-fields">
+              {transaction.issuingCountry && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Issuing Country</span>
+                  <span className="transaction-field-value">{transaction.issuingCountry}</span>
+                </div>
+              )}
+              {transaction.cardholderName && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Name</span>
+                  <span className="transaction-field-value">{transaction.cardholderName}</span>
+                </div>
+              )}
+              {transaction.cardholderEmail && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">e-mail</span>
+                  <span className="transaction-field-value">{transaction.cardholderEmail}</span>
+                </div>
+              )}
+              {transaction.cardholderPhone && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Telephone Number</span>
+                  <span className="transaction-field-value">{transaction.cardholderPhone}</span>
+                </div>
+              )}
+              {transaction.billingAddress && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Billing Address</span>
+                  <span className="transaction-field-value">{transaction.billingAddress}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* 3D Secure */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">3D Secure</h3>
+            <div className="transaction-fields">
+              {transaction.authenticationStatus && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Authentication Status</span>
+                  <span className="transaction-field-value">{transaction.authenticationStatus}</span>
+                </div>
+              )}
+              {transaction.liability && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Liability</span>
+                  <span className="transaction-field-value">{transaction.liability}</span>
+                </div>
+              )}
+              {transaction.version && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Version</span>
+                  <span className="transaction-field-value">{transaction.version}</span>
+                </div>
+              )}
+              {transaction.flow && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Flow</span>
+                  <span className="transaction-field-value">{transaction.flow}</span>
+                </div>
+              )}
+              {transaction.warranty && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">warranty</span>
+                  <span className="transaction-field-value">{transaction.warranty}</span>
+                </div>
+              )}
+              {transaction.eciScheme && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">ECI Scheme</span>
+                  <span className="transaction-field-value">{transaction.eciScheme}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* Card On File */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Card On File</h3>
+            <div className="transaction-fields">
+              {transaction.schemeReferenceData && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Scheme Reference Data</span>
+                  <span className="transaction-field-value">{transaction.schemeReferenceData}</span>
+                </div>
+              )}
+              {transaction.processedWithSchemeToken && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Processed with Scheme Token</span>
+                  <span className="transaction-field-value">{transaction.processedWithSchemeToken}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* Technical Logs */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Technical Logs</h3>
+            <div className="transaction-fields">
+              {transaction.accessControlServerId && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Access Control Server ID</span>
+                  <span className="transaction-field-value">{transaction.accessControlServerId}</span>
+                </div>
+              )}
+              {transaction.directoryServerId && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Directory Server ID</span>
+                  <span className="transaction-field-value">{transaction.directoryServerId}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* GDPR / PCI Compliance */}
+          <div className="transaction-compliance-notice">
+            <Icon name="info" size={16} />
+            <span>GDPR / PCI Compliance?</span>
+          </div>
+        </div>
+      ),
+    })
+  }
+
+  // Add Instore Details tab for instore transactions
+  if (isInstore) {
+    tabs.push({
+      id: 'instore',
+      label: 'Instore Details',
+      children: (
+        <div className="transaction-details-content">
+          {/* POS Details */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">POS Details</h3>
+            <div className="transaction-fields">
+              {transaction.posTerminalId && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Terminal ID</span>
+                  <span className="transaction-field-value">{transaction.posTerminalId}</span>
+                </div>
+              )}
+              {transaction.posSerialNumber && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Serial Number</span>
+                  <span className="transaction-field-value">{transaction.posSerialNumber}</span>
+                </div>
+              )}
+              {transaction.posModel && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Model</span>
+                  <span className="transaction-field-value">{transaction.posModel}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* Physical Location Details */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Physical Location Details</h3>
+            <div className="transaction-fields">
+              {transaction.physicalAddress && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Address</span>
+                  <span className="transaction-field-value">{transaction.physicalAddress}</span>
+                </div>
+              )}
+              {transaction.physicalCity && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">City</span>
+                  <span className="transaction-field-value">{transaction.physicalCity}</span>
+                </div>
+              )}
+              {transaction.physicalCountry && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Country</span>
+                  <span className="transaction-field-value">{transaction.physicalCountry}</span>
+                </div>
+              )}
+              {transaction.physicalPostalCode && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Postal Code</span>
+                  <span className="transaction-field-value">{transaction.physicalPostalCode}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* Terminal Details */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Terminal Details</h3>
+            <div className="transaction-fields">
+              {transaction.terminalSerialNumber && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Serial Number</span>
+                  <span className="transaction-field-value">{transaction.terminalSerialNumber}</span>
+                </div>
+              )}
+              {transaction.terminalModel && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Model</span>
+                  <span className="transaction-field-value">{transaction.terminalModel}</span>
+                </div>
+              )}
+              {transaction.terminalManufacturer && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Manufacturer</span>
+                  <span className="transaction-field-value">{transaction.terminalManufacturer}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ),
+    })
+  }
+
+  // Add Acquiring Details tab for acquiring transactions
+  if (isAcquiring) {
+    tabs.push({
+      id: 'acquiring',
+      label: 'Acquiring Details',
+      children: (
+        <div className="transaction-details-content">
+          {/* ACQ Details */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">ACQ Details</h3>
+            <div className="transaction-fields">
+              {transaction.acquirerName && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Acquirer Name</span>
+                  <span className="transaction-field-value">{transaction.acquirerName}</span>
+                </div>
+              )}
+              {transaction.acquirerCountry && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Acquirer Country</span>
+                  <span className="transaction-field-value">{transaction.acquirerCountry}</span>
+                </div>
+              )}
+              {transaction.acquirerReferenceNumber && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Acquirer Reference</span>
+                  <span className="transaction-field-value">{transaction.acquirerReferenceNumber}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* Batch Details */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Batch Details</h3>
+            <div className="transaction-fields">
+              {transaction.batchNumber && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Batch Number</span>
+                  <span className="transaction-field-value">{transaction.batchNumber}</span>
+                </div>
+              )}
+              {transaction.batchDate && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Batch Date</span>
+                  <span className="transaction-field-value">{transaction.batchDate}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="transaction-divider" />
+
+          {/* Crediting Reference */}
+          <div className="transaction-section">
+            <h3 className="transaction-section-title">Crediting Reference</h3>
+            <div className="transaction-fields">
+              {transaction.creditingReference && (
+                <div className="transaction-field">
+                  <span className="transaction-field-label">Reference</span>
+                  <span className="transaction-field-value">{transaction.creditingReference}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ),
+    })
+  }
+
   return (
-    <SideModal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Transaction details"
-      width="md"
-      footer={
-        <Button hierarchy="secondary" size="sm" onClick={onClose}>
-          Close
-        </Button>
-      }
-    >
-      <Tabs items={tabs} activeId={activeTab} onChange={setActiveTab} />
-    </SideModal>
+    <>
+      <SideModal
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Transaction details"
+        width="md"
+      >
+        <Tabs items={tabs} activeId={activeTab} onChange={setActiveTab} />
+      </SideModal>
+
+      {/* Refund Confirmation Modal */}
+      {showRefundConfirmation && (
+        <div className="refund-confirmation-overlay">
+          <div className="refund-confirmation-dialog">
+            <div className="refund-confirmation-icon">
+              <Icon name="alert-circle" size={48} />
+            </div>
+            <h3 className="refund-confirmation-title">Confirm refund</h3>
+            <p className="refund-confirmation-description">
+              Are you sure you want to refund this transaction of {transaction.grossAmount}? This action cannot be undone.
+            </p>
+            <div className="refund-confirmation-actions">
+              <Button
+                hierarchy="secondary"
+                size="md"
+                onClick={handleRefundCancel}
+                fullWidth
+              >
+                Cancel
+              </Button>
+              <Button
+                hierarchy="primary"
+                size="md"
+                onClick={handleRefundConfirm}
+                fullWidth
+              >
+                Confirm refund
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }

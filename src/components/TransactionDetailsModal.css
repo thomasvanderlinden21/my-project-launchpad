@@ -93,7 +93,7 @@
 .transaction-section {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl, 16px);
+  gap: var(--spacing-md, 8px);
 }
 
 .transaction-section-title {
@@ -110,7 +110,7 @@
 .transaction-fields {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xl, 16px);
+  gap: 0;
 }
 
 .transaction-field {
@@ -119,6 +119,7 @@
   justify-content: space-between;
   gap: var(--spacing-xl, 16px);
   min-height: 18px;
+  padding: var(--spacing-xs, 6px) 0;
 }
 
 .transaction-field-label {
@@ -143,6 +144,113 @@
   word-break: break-word;
 }
 
+/* ── Timeline ─────────────────────────────────── */
+
+.transaction-timeline {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg, 12px) 0;
+}
+
+.transaction-timeline-item {
+  display: flex;
+  gap: var(--spacing-xl, 16px);
+  position: relative;
+}
+
+.transaction-timeline-item:not(.transaction-timeline-item--last) {
+  padding-bottom: var(--spacing-2xl, 24px);
+}
+
+.transaction-timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.transaction-timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--surface-neutral-high, #e6ebeb);
+  border: 2px solid var(--surface-primary, #ffffff);
+  box-shadow: 0 0 0 2px var(--border-neutral-low, #e6ebeb);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.transaction-timeline-dot--completed {
+  background-color: var(--surface-brand-solid, #277777);
+  box-shadow: 0 0 0 2px var(--surface-brand-solid, #277777);
+}
+
+.transaction-timeline-line {
+  width: 2px;
+  flex: 1;
+  background-color: var(--border-neutral-low, #e6ebeb);
+  margin-top: var(--spacing-xs, 6px);
+}
+
+.transaction-timeline-content {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.transaction-timeline-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-lg, 12px);
+  margin-bottom: var(--spacing-xs, 6px);
+}
+
+.transaction-timeline-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs, 14px);
+  line-height: var(--line-height-4xs, 18px);
+  font-weight: var(--font-weight-medium);
+  color: var(--content-primary);
+  margin: 0;
+}
+
+.transaction-timeline-date {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-5xs, 12px);
+  line-height: var(--line-height-5xs, 16px);
+  font-weight: var(--font-weight-regular);
+  color: var(--content-tertiary);
+  white-space: nowrap;
+}
+
+.transaction-timeline-description {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs, 14px);
+  line-height: var(--line-height-4xs, 18px);
+  font-weight: var(--font-weight-regular);
+  color: var(--content-secondary);
+  margin: 0;
+}
+
+/* ── Compliance Notice ──────────────────────── */
+
+.transaction-compliance-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+  padding: var(--spacing-lg, 12px);
+  background-color: #fef3e6;
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-4xs, 14px);
+  line-height: var(--line-height-4xs, 18px);
+  font-weight: var(--font-weight-medium);
+  color: #d89d3f;
+}
+
 /* ── Divider ─────────────────────────────────── */
 
 .transaction-divider {
@@ -165,6 +273,87 @@
   margin: 0;
 }
 
+/* ── Refund Confirmation Dialog ─────────────── */
+
+.refund-confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.refund-confirmation-dialog {
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-sm, 6px);
+  padding: var(--spacing-3xl, 32px);
+  max-width: 400px;
+  width: calc(100% - 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl, 16px);
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.refund-confirmation-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #fef3e6;
+  color: #d89d3f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.refund-confirmation-title {
+  font-family: var(--font-family-primary, 'Raleway', sans-serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+  text-align: center;
+}
+
+.refund-confirmation-description {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+  text-align: center;
+}
+
+.refund-confirmation-actions {
+  display: flex;
+  gap: var(--spacing-md, 8px);
+  width: 100%;
+  margin-top: var(--spacing-md, 8px);
+}
+
 /* ── Dark Mode ───────────────────────────────── */
 
 [data-theme="dark"] .transaction-card-summary {
@@ -177,4 +366,42 @@
 
 [data-theme="dark"] .transaction-divider {
   background-color: var(--border-neutral-low, #2a3445);
+}
+
+[data-theme="dark"] .transaction-timeline-dot {
+  border-color: #181d27;
+  box-shadow: 0 0 0 2px var(--border-neutral-low, #2a3445);
+}
+
+[data-theme="dark"] .transaction-timeline-dot--completed {
+  box-shadow: 0 0 0 2px var(--surface-brand-solid, #277777);
+}
+
+[data-theme="dark"] .transaction-timeline-line {
+  background-color: var(--border-neutral-low, #2a3445);
+}
+
+[data-theme="dark"] .transaction-compliance-notice {
+  background-color: rgba(216, 157, 63, 0.15);
+}
+
+[data-theme="dark"] .refund-confirmation-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .refund-confirmation-dialog {
+  background-color: #181d27;
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .refund-confirmation-icon {
+  background-color: rgba(216, 157, 63, 0.2);
+}
+
+[data-theme="dark"] .refund-confirmation-title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .refund-confirmation-description {
+  color: #b4bbc6;
 }
