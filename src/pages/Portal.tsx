@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { useAIAssistant } from '../context/AIAssistantContext'
 import Sidebar from '../components/Sidebar'
@@ -65,9 +65,18 @@ interface PortalProps {
 }
 
 export default function Portal({ variant = 'v1' }: PortalProps) {
+  console.log('[Portal] Rendering, variant:', variant)
+
   const navigate = useNavigate()
-  const location = useLocation()
   const [activeNav, setActiveNav] = useState('home')
+
+  // Log when Portal unmounts
+  useEffect(() => {
+    console.log('[Portal] Mounted')
+    return () => {
+      console.log('[Portal] Unmounting!')
+    }
+  }, [])
   const [activeSalesSubItem, setActiveSalesSubItem] = useState('transactions')
   const [activeSettingsSubItem, setActiveSettingsSubItem] = useState('overview')
   const [activeMyBusinessSubItem, setActiveMyBusinessSubItem] = useState('payouts')

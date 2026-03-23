@@ -22,6 +22,8 @@ const navCards = [
 ]
 
 export default function LandingPage() {
+  console.log('[LandingPage] Rendering')
+
   const { isDark, toggle } = useTheme()
 
   return (
