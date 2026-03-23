@@ -210,6 +210,17 @@ export default function Portal() {
     togglePanel()
   }
 
+  const handleAINavigate = (target: string) => {
+    // Handle special navigation from AI assistant
+    console.log('handleAINavigate called with:', target)
+    if (target.startsWith('terminal:')) {
+      const terminalId = target.replace('terminal:', '')
+      console.log('Navigating to terminal ID:', terminalId)
+      setActiveNav('terminals')
+      setSelectedTerminalId(terminalId)
+    }
+  }
+
   // Update AI context when page changes
   useEffect(() => {
     const currentPage = getCurrentPage()
@@ -467,6 +478,50 @@ export default function Portal() {
                 </div>
               </div>
 
+              <div className="portal__bottom-section">
+                <div className="portal__chart-card">
+                  <h3 className="portal__chart-title portal__chart-title--stepper">Terminal delivery status</h3>
+                  <ProgressStepper
+                    steps={terminalStatusSteps}
+                  />
+                </div>
+
+                <div className="portal__notifications-container">
+                  <h3 className="portal__notifications-title">Notifications</h3>
+                  <div className="portal__notifications-list">
+                  <div className="portal__notification-card">
+                    <div className="portal__notification-icon portal__notification-icon--success">
+                      <Icon name="check-circle" size={20} />
+                    </div>
+                    <div className="portal__notification-content">
+                      <h4 className="portal__notification-title">Weekly goal achieved</h4>
+                      <p className="portal__notification-text">Transaction volume exceeded target by 12%</p>
+                    </div>
+                  </div>
+
+                  <div className="portal__notification-card">
+                    <div className="portal__notification-icon portal__notification-icon--info">
+                      <Icon name="bell" size={20} />
+                    </div>
+                    <div className="portal__notification-content">
+                      <h4 className="portal__notification-title">New market opportunity</h4>
+                      <p className="portal__notification-text">Strong growth detected in European markets</p>
+                    </div>
+                  </div>
+
+                  <div className="portal__notification-card">
+                    <div className="portal__notification-icon portal__notification-icon--warning">
+                      <Icon name="alert-circle" size={20} />
+                    </div>
+                    <div className="portal__notification-content">
+                      <h4 className="portal__notification-title">System maintenance</h4>
+                      <p className="portal__notification-text">Scheduled maintenance tonight at 2 AM UTC.</p>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+
               <div className="portal__charts portal__charts--main">
                 <div className="portal__chart-card portal__chart-card--large">
                   <div className="portal__chart-header">
@@ -579,50 +634,6 @@ export default function Portal() {
                   </div>
                 </div>
               </div>
-
-              <div className="portal__bottom-section">
-                <div className="portal__chart-card">
-                  <h3 className="portal__chart-title portal__chart-title--stepper">Terminal delivery status</h3>
-                  <ProgressStepper
-                    steps={terminalStatusSteps}
-                  />
-                </div>
-
-                <div className="portal__notifications-container">
-                  <h3 className="portal__notifications-title">Notifications</h3>
-                  <div className="portal__notifications-list">
-                  <div className="portal__notification-card">
-                    <div className="portal__notification-icon portal__notification-icon--success">
-                      <Icon name="check-circle" size={20} />
-                    </div>
-                    <div className="portal__notification-content">
-                      <h4 className="portal__notification-title">Weekly goal achieved</h4>
-                      <p className="portal__notification-text">Transaction volume exceeded target by 12%</p>
-                    </div>
-                  </div>
-
-                  <div className="portal__notification-card">
-                    <div className="portal__notification-icon portal__notification-icon--info">
-                      <Icon name="bell" size={20} />
-                    </div>
-                    <div className="portal__notification-content">
-                      <h4 className="portal__notification-title">New market opportunity</h4>
-                      <p className="portal__notification-text">Strong growth detected in European markets</p>
-                    </div>
-                  </div>
-
-                  <div className="portal__notification-card">
-                    <div className="portal__notification-icon portal__notification-icon--warning">
-                      <Icon name="alert-circle" size={20} />
-                    </div>
-                    <div className="portal__notification-content">
-                      <h4 className="portal__notification-title">System maintenance</h4>
-                      <p className="portal__notification-text">Scheduled maintenance tonight at 2 AM UTC.</p>
-                    </div>
-                  </div>
-                </div>
-                </div>
-              </div>
             </div>
           )}
         </main>
@@ -630,10 +641,23 @@ export default function Portal() {
       <SpotlightSearch
         isOpen={isSpotlightOpen}
         onClose={() => setIsSpotlightOpen(false)}
+        onNavigate={(page, subPage) => {
+          setActiveNav(page)
+          if (page === 'sales' && subPage) {
+            setActiveSalesSubItem(subPage)
+          } else if (page === 'settings' && subPage) {
+            setActiveSettingsSubItem(subPage)
+          }
+        }}
+        onTerminalNavigate={(terminalId) => {
+          setActiveNav('terminals')
+          setSelectedTerminalId(terminalId)
+        }}
       />
       <AIAssistantPanel
         isOpen={isAIAssistantOpen}
         onClose={togglePanel}
+        onNavigate={handleAINavigate}
       />
     </div>
   )

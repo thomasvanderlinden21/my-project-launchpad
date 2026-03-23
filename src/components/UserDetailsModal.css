@@ -107,7 +107,7 @@
 
 /* Dark mode */
 [data-theme="dark"] .user-details__header {
-  background-color: #1e2534;
+  background-color: #1e2430;
 }
 
 [data-theme="dark"] .user-details__avatar {
@@ -217,7 +217,7 @@
 
 [data-theme="dark"] .user-details__form-input,
 [data-theme="dark"] .user-details__form-select {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #525d5d;
   color: #e4eaee;
 }

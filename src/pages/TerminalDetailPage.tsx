@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Tabs from '../components/Tabs'
 import type { TabItem } from '../components/Tabs'
 import Chip from '../components/Chip'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
 import Spinner from '../components/Spinner'
+import Snackbar from '../components/Snackbar'
+import Alert from '../components/Alert'
 import './TerminalDetailPage.css'
 
 interface TerminalDetail {
@@ -46,9 +48,9 @@ interface TerminalDetail {
 const mockTerminals: Record<string, TerminalDetail> = {
   '1': {
     id: '1',
-    name: 'Outside main terminal #1',
+    name: 'Main Counter',
     model: 'AXIUM RX 7000',
-    serialNumber: '1926D82',
+    serialNumber: '#TRM-8742-2195',
     imageSrc: '/terminal-images/axium-rx-7000.png',
     statusChips: [
       { label: 'Online', variant: 'success' },
@@ -115,9 +117,9 @@ const mockTerminals: Record<string, TerminalDetail> = {
   },
   '2': {
     id: '2',
-    name: 'Inside main terminal #1',
+    name: 'Workshop Desk',
     model: 'MOVE 5000',
-    serialNumber: '1926D83',
+    serialNumber: '#TRM-5631-8904',
     statusChips: [
       { label: 'Online', variant: 'success' },
       { label: 'Update available', variant: 'warning' }
@@ -181,9 +183,9 @@ const mockTerminals: Record<string, TerminalDetail> = {
   },
   '3': {
     id: '3',
-    name: 'Mobile terminal #1',
+    name: 'Mobile Sales Unit',
     model: 'YOXIMO',
-    serialNumber: '1926D84',
+    serialNumber: '#TRM-3298-4567',
     statusChips: [
       { label: 'Online', variant: 'success' }
     ],
@@ -246,9 +248,9 @@ const mockTerminals: Record<string, TerminalDetail> = {
   },
   '4': {
     id: '4',
-    name: 'Terminal #4',
+    name: 'Express Checkout',
     model: 'DESK 3500',
-    serialNumber: '1926D85',
+    serialNumber: '#TRM-9124-7483',
     statusChips: [
       { label: 'Shipped', variant: 'info' }
     ],
@@ -311,9 +313,9 @@ const mockTerminals: Record<string, TerminalDetail> = {
   },
   '5': {
     id: '5',
-    name: 'Terminal #5',
+    name: 'Back Office',
     model: 'iPP 320',
-    serialNumber: '1926D86',
+    serialNumber: '#TRM-6745-1029',
     statusChips: [
       { label: 'Inactive', variant: 'neutral' }
     ],
@@ -376,9 +378,9 @@ const mockTerminals: Record<string, TerminalDetail> = {
   },
   '6': {
     id: '6',
-    name: 'Card Reader #1',
+    name: 'Card Reader',
     model: 'LINK 2500',
-    serialNumber: '1926D87',
+    serialNumber: '#ACC-4812-3376',
     statusChips: [
       { label: 'Online', variant: 'success' }
     ],
@@ -441,9 +443,9 @@ const mockTerminals: Record<string, TerminalDetail> = {
   },
   '7': {
     id: '7',
-    name: 'Receipt Printer #1',
+    name: 'Receipt Printer',
     model: 'TRP 100',
-    serialNumber: '1926D88',
+    serialNumber: '#ACC-7293-5648',
     statusChips: [
       { label: 'Online', variant: 'success' }
     ],
@@ -514,8 +516,17 @@ export interface TerminalDetailPageProps {
 export default function TerminalDetailPage({ terminalId = '1', onBack }: TerminalDetailPageProps) {
   const [activeTab, setActiveTab] = useState('identification')
   const [isUpdating, setIsUpdating] = useState(false)
+  const [statusChips, setStatusChips] = useState<{ label: string; variant: 'success' | 'warning' | 'info' | 'neutral' }[]>([])
+  const [showUpdateSnackbar, setShowUpdateSnackbar] = useState(false)
 
   const terminal = terminalId ? mockTerminals[terminalId] : null
+
+  // Initialize status chips from terminal data
+  useEffect(() => {
+    if (terminal) {
+      setStatusChips(terminal.statusChips)
+    }
+  }, [terminal])
 
   if (!terminal) {
     return (
@@ -530,14 +541,17 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
     )
   }
 
-  const hasUpdateAvailable = terminal.statusChips.some(chip => chip.label === 'Update available')
+  const hasUpdateAvailable = statusChips.some(chip => chip.label === 'Update available')
 
   const handleUpdateTerminal = () => {
     setIsUpdating(true)
     // Simulate update process
     setTimeout(() => {
       setIsUpdating(false)
-      alert('Terminal updated successfully!')
+      // Remove the "Update available" chip after successful update
+      setStatusChips(prev => prev.filter(chip => chip.label !== 'Update available'))
+      // Show success snackbar
+      setShowUpdateSnackbar(true)
     }, 2000)
   }
 
@@ -557,8 +571,8 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
         <div className="terminal-detail-page__header-left">
           <div className="terminal-detail-page__title-row">
             <h1 className="terminal-detail-page__title">{terminal.name}</h1>
-            {terminal.statusChips.map((chip, index) => (
-              <Chip key={index} label={chip.label} variant={chip.variant} size="lg" />
+            {statusChips.map((chip, index) => (
+              <Chip key={index} label={chip.label} variant={chip.variant} className="terminal-detail-page__status-chip" />
             ))}
           </div>
           <p className="terminal-detail-page__subtitle">
@@ -577,6 +591,16 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
           </Button>
         )}
       </div>
+
+      {/* Delivery Status Notification */}
+      {statusChips.some(chip => chip.label === 'Shipped') && (
+        <Alert
+          variant="info"
+          title="Terminal on its way"
+          message={`Your terminal is being delivered and should arrive on ${terminal.identification.deliveryDate}. Track your shipment or contact support for more details.`}
+          className="terminal-detail-page__delivery-alert"
+        />
+      )}
 
       {/* Hero Section */}
       <div className="terminal-detail-page__hero">
@@ -779,6 +803,14 @@ export default function TerminalDetailPage({ terminalId = '1', onBack }: Termina
           </div>
         )}
       </div>
+
+      <Snackbar
+        isOpen={showUpdateSnackbar}
+        title="Terminal updated successfully"
+        onClose={() => setShowUpdateSnackbar(false)}
+        variant="success"
+        duration={5000}
+      />
     </div>
   )
 }

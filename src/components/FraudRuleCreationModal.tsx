@@ -82,7 +82,7 @@ const CURRENCIES = [
   'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SAR', 'SEK', 'SGD', 'THB',
   'TRY', 'TWD', 'UAH', 'USD', 'VND', 'ZAR'
 ]
-const SHOPS = ['All shops', 'European Store', 'US Online Store', 'B2B Portal']
+const SHOPS = ['All shops', 'Cycle shop #1', 'Cycle shop #2', 'Cycle shop #3']
 
 export default function FraudRuleCreationModal({
   isOpen,
@@ -163,7 +163,6 @@ export default function FraudRuleCreationModal({
         <>
           {step > 1 ? (
             <Button hierarchy="secondary" size="md" onClick={handleBack} fullWidth>
-              <Icon name="chevron-left" size={16} />
               Back
             </Button>
           ) : (
@@ -172,11 +171,9 @@ export default function FraudRuleCreationModal({
           {step < 3 ? (
             <Button hierarchy="primary" size="md" onClick={handleNext} disabled={!canContinue} fullWidth>
               Continue
-              <Icon name="chevron-right" size={16} />
             </Button>
           ) : (
             <Button hierarchy="primary" size="md" onClick={handlePublish} fullWidth>
-              <Icon name="check" size={16} />
               Publish rule
             </Button>
           )}
@@ -273,7 +270,6 @@ export default function FraudRuleCreationModal({
                   className="fraud-rule-input"
                 />
                 <Button hierarchy="primary" size="sm" onClick={handleAddEntry} disabled={!currentInput.trim()}>
-                  <Icon name="add" size={16} />
                   Add
                 </Button>
               </div>
@@ -294,6 +290,51 @@ export default function FraudRuleCreationModal({
                 </div>
               </div>
             )}
+
+            {/* Shop Selection */}
+            <div className="fraud-rule-section">
+              <p className="fraud-rule-section-title">Apply to sales locations</p>
+              <p className="fraud-rule-section-description">
+                Select which shops this rule applies to. Default is all shops.
+              </p>
+              <div className="fraud-rule-checkbox-group">
+                {SHOPS.map(shop => {
+                  const isAllShops = shop === 'All shops'
+                  const isSelected = shops.includes(shop) || (isAllShops && shops.includes('All shops'))
+
+                  return (
+                    <label key={shop} className="fraud-rule-checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(e) => {
+                          if (isAllShops) {
+                            // Toggle all shops
+                            if (e.target.checked) {
+                              setShops(['All shops'])
+                            } else {
+                              setShops([])
+                            }
+                          } else {
+                            // Toggle individual shop
+                            if (e.target.checked) {
+                              // Remove 'All shops' if adding individual shop
+                              const newShops = shops.filter(s => s !== 'All shops')
+                              setShops([...newShops, shop])
+                            } else {
+                              const newShops = shops.filter(s => s !== shop)
+                              // If no shops selected, select 'All shops'
+                              setShops(newShops.length === 0 ? ['All shops'] : newShops)
+                            }
+                          }
+                        }}
+                      />
+                      <span>{shop}</span>
+                    </label>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         )}
 
@@ -324,6 +365,19 @@ export default function FraudRuleCreationModal({
                   ))}
                   {entries.length > 8 && (
                     <span className="fraud-rule-review-entry">+{entries.length - 8} more</span>
+                  )}
+                </div>
+              </div>
+              <div className="fraud-rule-review-divider" />
+              <div>
+                <p className="fraud-rule-review-label">Applies to</p>
+                <div className="fraud-rule-review-entries">
+                  {shops.includes('All shops') ? (
+                    <span className="fraud-rule-review-entry">All shops</span>
+                  ) : (
+                    shops.map(shop => (
+                      <span key={shop} className="fraud-rule-review-entry">{shop}</span>
+                    ))
                   )}
                 </div>
               </div>

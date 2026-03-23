@@ -232,6 +232,45 @@
   color: var(--content-tertiary, #8a9494);
 }
 
+.fraud-rule-card__shops {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 8px);
+  padding-top: var(--spacing-md, 8px);
+  border-top: 1px solid var(--border-neutral-low, #e6ebeb);
+}
+
+.fraud-rule-card__shops-label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--content-tertiary, #8a9494);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fraud-rule-card__shops-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs, 6px);
+}
+
+.fraud-rule-card__shop {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-3xs, 2px) var(--spacing-xs, 6px);
+  background-color: var(--chip-neutral-bg);
+  border-radius: var(--radius-xs, 4px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-6xs, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-4xs, 18px);
+  color: var(--chip-neutral-content);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* Premium card */
 .fraud-premium-card {
   position: relative;
@@ -380,7 +419,7 @@
 /* Dark mode */
 [data-theme="dark"] .fraud-page__empty {
   background-color: #1e2430;
-  border-color: #2a2f38;
+  border-color: #2a3445;
 }
 
 [data-theme="dark"] .fraud-page__empty-description,
@@ -391,7 +430,7 @@
 
 [data-theme="dark"] .fraud-page__empty-icon,
 [data-theme="dark"] .fraud-rule-card__icon {
-  background-color: #2a2f38;
+  background-color: #2a3445;
   color: #b4bbc6;
 }
 
@@ -407,7 +446,7 @@
 
 [data-theme="dark"] .fraud-rule-card {
   background-color: #1e2430;
-  border-color: #2a2f38;
+  border-color: #2a3445;
 }
 
 [data-theme="dark"] .fraud-rule-card:hover {
@@ -425,12 +464,12 @@
 }
 
 [data-theme="dark"] .fraud-rule-card__action-btn {
-  border-color: #2a2f38;
+  border-color: #2a3445;
   color: #b4bbc6;
 }
 
 [data-theme="dark"] .fraud-rule-card__action-btn:hover {
-  background-color: #2a2f38;
+  background-color: #2a3445;
   border-color: #3d4759;
 }
 
@@ -441,14 +480,18 @@
 }
 
 [data-theme="dark"] .fraud-rule-card__tag {
-  background-color: #2a2f38;
+  background-color: #2a3445;
   border-color: #3d4759;
   color: #e4eaee;
 }
 
+[data-theme="dark"] .fraud-rule-card__shops {
+  border-color: #2a3445;
+}
+
 [data-theme="dark"] .fraud-premium-card {
   background-color: rgba(39, 119, 119, 0.1);
-  border-color: #2a2f38;
+  border-color: #2a3445;
 }
 
 [data-theme="dark"] .fraud-premium-card__badge {
@@ -457,7 +500,7 @@
 }
 
 [data-theme="dark"] .fraud-premium-card__icon {
-  background-color: #2a2f38;
+  background-color: #2a3445;
   color: #277777;
 }
 

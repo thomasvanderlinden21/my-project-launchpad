@@ -1,7 +1,7 @@
 .sidebar {
   width: 272px;
   height: 100%;
-  background-color: #2c6764;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -22,7 +22,7 @@
 }
 
 [data-theme="dark"] .sidebar {
-  background-color: #121621;
+  background-color: transparent;
 }
 
 [data-theme="dark"] .sidebar::before {
@@ -97,6 +97,8 @@
 .sidebar__sub-panel-item:hover {
   background-color: rgba(255, 255, 255, 0.12);
   color: white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__sub-panel-item--active {
@@ -104,6 +106,8 @@
   color: white;
   font-weight: 500;
   border-radius: 8px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__sub-panel-divider {
@@ -218,11 +222,15 @@
 
 .sidebar__nav-item:hover {
   background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__nav-item--active {
   background-color: rgba(255, 255, 255, 0.16);
   border-radius: 8px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__nav-item:focus-visible {
@@ -274,11 +282,15 @@
 
 .sidebar__nav-item-icon:hover {
   background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__nav-item-icon--active {
   background-color: rgba(255, 255, 255, 0.16);
   border-radius: 8px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__nav-item-icon:focus-visible {
@@ -332,6 +344,8 @@
 
 .sidebar__bottom-item:hover {
   background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .sidebar__bottom-item:focus-visible {

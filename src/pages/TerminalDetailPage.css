@@ -33,9 +33,9 @@
 
 .terminal-detail-page__title {
   font-family: var(--font-family-primary, 'Raleway', sans-serif);
-  font-size: var(--font-size-lg, 24px);
-  font-weight: var(--font-weight-semibold, 600);
-  line-height: var(--line-height-lg, 32px);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
   color: var(--content-primary, #121621);
   margin: 0;
 }
@@ -47,6 +47,18 @@
   line-height: var(--line-height-4xs, 18px);
   color: var(--content-tertiary, #6b7676);
   margin: 0;
+}
+
+.terminal-detail-page__status-chip {
+  padding: var(--spacing-2xs, 4px) var(--spacing-md, 10px);
+  font-size: var(--font-size-5xs, 13px);
+  line-height: var(--line-height-4xs, 18px);
+}
+
+/* Delivery Alert */
+.terminal-detail-page__delivery-alert {
+  max-width: 1280px;
+  width: 100%;
 }
 
 /* Hero Section */
@@ -424,7 +436,7 @@
 [data-theme="dark"] .terminal-detail-page__hero-card,
 [data-theme="dark"] .terminal-detail-page__hero-actions,
 [data-theme="dark"] .integration-card {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
 }
 

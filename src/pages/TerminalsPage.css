@@ -55,7 +55,6 @@
 .terminals-page__search-input {
   flex: 1;
   min-width: 0;
-  height: 100%;
   padding: 0;
   font-family: var(--font-family-secondary, 'Inter', sans-serif);
   font-size: var(--font-size-4xs, 14px);
@@ -387,7 +386,7 @@
 
 /* Dark mode */
 [data-theme="dark"] .terminals-page__search {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
 }
 
@@ -414,7 +413,7 @@
 }
 
 [data-theme="dark"] .terminals-page__filter-btn {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
   color: #e4eaee;
 }
@@ -425,7 +424,7 @@
 }
 
 [data-theme="dark"] .terminals-page__view-toggle {
-  background-color: #1e2534;
+  background-color: #1e2430;
 }
 
 [data-theme="dark"] .terminals-page__view-btn {
@@ -450,7 +449,7 @@
 }
 
 [data-theme="dark"] .terminals-page__row:hover {
-  background-color: #1e2534;
+  background-color: #1e2430;
 }
 
 [data-theme="dark"] .terminals-page__row--selected {
@@ -478,7 +477,7 @@
 }
 
 [data-theme="dark"] .terminals-page__settings-btn {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
   color: #e4eaee;
 }

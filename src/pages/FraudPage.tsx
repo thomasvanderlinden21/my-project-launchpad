@@ -102,6 +102,20 @@ function RuleCard({
           </span>
         )}
       </div>
+      <div className="fraud-rule-card__shops">
+        <span className="fraud-rule-card__shops-label">Applies to:</span>
+        <div className="fraud-rule-card__shops-list">
+          {rule.shops.includes('All shops') ? (
+            <span className="fraud-rule-card__shop">All shops</span>
+          ) : (
+            rule.shops.map((shop) => (
+              <span key={shop} className="fraud-rule-card__shop">
+                {shop}
+              </span>
+            ))
+          )}
+        </div>
+      </div>
     </div>
   )
 }

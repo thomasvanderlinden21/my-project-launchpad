@@ -125,7 +125,7 @@ export default function TransactionDetailsModal({
 
   if (!transaction) return null
 
-  const statusVariant = transaction.status === 'Paid' ? 'success' : transaction.status === 'Refunded' ? 'neutral' : 'neutral'
+  const statusVariant = transaction.status === 'Paid' ? 'success' : transaction.status === 'Failed' ? 'error' : transaction.status === 'Pending' ? 'neutral' : 'neutral'
 
   const handleRefundClick = () => {
     setShowRefundConfirmation(true)

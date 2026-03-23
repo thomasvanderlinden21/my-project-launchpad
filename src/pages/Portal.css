@@ -36,7 +36,7 @@
   background-position: center;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 9999;
+  z-index: 10;
   mix-blend-mode: screen;
 }
 
@@ -645,12 +645,12 @@
 }
 
 [data-theme="dark"] .portal__home-btn--secondary {
-  border-color: #2a2f38;
+  border-color: #2a3445;
   color: #e4eaee;
 }
 
 [data-theme="dark"] .portal__home-btn--secondary:hover {
-  background-color: #2a2f38;
+  background-color: #2a3445;
 }
 
 [data-theme="dark"] .portal__metric-card,
@@ -658,7 +658,7 @@
 [data-theme="dark"] .portal__notifications-container,
 [data-theme="dark"] .portal__notification-card {
   background-color: #1e2430;
-  border-color: #2a2f38;
+  border-color: #2a3445;
 }
 
 [data-theme="dark"] .portal__metric-label,
@@ -678,7 +678,7 @@
 
 [data-theme="dark"] .portal__chart-dropdown {
   background-color: #1e2430;
-  border-color: #2a2f38;
+  border-color: #2a3445;
   color: #e4eaee;
 }
 
@@ -687,7 +687,7 @@
 }
 
 [data-theme="dark"] .portal__metric-menu:hover {
-  background-color: #2a2f38;
+  background-color: #2a3445;
   color: #b4bbc6;
 }
 
@@ -696,13 +696,13 @@
 }
 
 [data-theme="dark"] .portal__chart-nav:hover {
-  background-color: #2a2f38;
+  background-color: #2a3445;
   color: #e4eaee;
 }
 
 [data-theme="dark"] .portal__chart-tooltip {
   background-color: #1e2430;
-  border-color: #2a2f38;
+  border-color: #2a3445;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 

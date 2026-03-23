@@ -10,11 +10,14 @@ export interface AIAssistantPanelProps {
   isOpen: boolean
   /** Callback when the panel should close */
   onClose: () => void
+  /** Callback to navigate to specific items (e.g., terminal:2) */
+  onNavigate?: (target: string) => void
 }
 
 export default function AIAssistantPanel({
   isOpen,
   onClose,
+  onNavigate,
 }: AIAssistantPanelProps) {
   const {
     conversations,
@@ -45,6 +48,39 @@ export default function AIAssistantPanel({
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 100)}px`
     }
   }, [inputValue])
+
+  // Handle link clicks for navigation
+  useEffect(() => {
+    const handleLinkClick = (e: MouseEvent) => {
+      let target = e.target as HTMLElement
+
+      // Check if clicked element or its parent is a link
+      while (target && target !== document.body) {
+        if (target.tagName === 'A' && target.classList.contains('ai-assistant-panel__link')) {
+          e.preventDefault()
+          e.stopPropagation()
+
+          const href = target.getAttribute('href')
+          console.log('AI Link clicked:', href)
+
+          if (href) {
+            if (href.startsWith('terminal:') && onNavigate) {
+              console.log('Navigating to terminal:', href)
+              onNavigate(href)
+            } else if (href === '/') {
+              // Handle navigation to pages - for now just log
+              console.log('Navigate to page:', href)
+            }
+          }
+          return
+        }
+        target = target.parentElement as HTMLElement
+      }
+    }
+
+    document.addEventListener('click', handleLinkClick, true)
+    return () => document.removeEventListener('click', handleLinkClick, true)
+  }, [onNavigate])
 
   const handleSend = () => {
     if (inputValue.trim()) {

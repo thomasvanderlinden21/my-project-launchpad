@@ -368,6 +368,7 @@
   font-weight: 500;
   border-bottom: 1px solid currentColor;
   transition: opacity 0.15s;
+  cursor: pointer;
 }
 
 .ai-assistant-panel__link:hover {

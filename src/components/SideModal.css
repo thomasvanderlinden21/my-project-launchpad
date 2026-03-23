@@ -6,7 +6,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  z-index: 9999;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -33,7 +33,7 @@
   border-radius: var(--radius-sm, 6px);
   animation: slideInFromRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1001;
+  z-index: 10000;
 }
 
 /* When AI assistant is open, shift modal to the left */

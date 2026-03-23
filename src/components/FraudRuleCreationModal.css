@@ -230,6 +230,89 @@
   opacity: 1;
 }
 
+/* Shop Selection Section */
+.fraud-rule-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 12px);
+  padding-top: var(--spacing-xl, 16px);
+  border-top: 1px solid var(--border-neutral-low, #e6ebeb);
+}
+
+.fraud-rule-section-title {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.fraud-rule-section-description {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+}
+
+.fraud-rule-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 8px);
+}
+
+.fraud-rule-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-4xs, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-4xs, 18px);
+  color: var(--content-primary, #121621);
+  cursor: pointer;
+  user-select: none;
+}
+
+.fraud-rule-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-neutral-high, #859090);
+  border-radius: var(--radius-xs, 4px);
+  cursor: pointer;
+  appearance: none;
+  background-color: transparent;
+  position: relative;
+  transition: background-color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.fraud-rule-checkbox-label input[type="checkbox"]:hover {
+  border-color: var(--border-brand-solid, #277777);
+}
+
+.fraud-rule-checkbox-label input[type="checkbox"]:checked {
+  background-color: var(--surface-brand-solid, #277777);
+  border-color: var(--surface-brand-solid, #277777);
+}
+
+.fraud-rule-checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.fraud-rule-checkbox-label input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--focus-ring-outer, #277777);
+  outline-offset: 2px;
+}
+
 /* Step 3: Review */
 .fraud-rule-review-card {
   display: flex;
@@ -371,7 +454,7 @@
 }
 
 [data-theme="dark"] .fraud-rule-input {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
   color: #e4eaee;
 }
@@ -381,7 +464,7 @@
 }
 
 [data-theme="dark"] .fraud-rule-select {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
   color: #e4eaee;
 }
@@ -395,6 +478,30 @@
   background-color: #2a3445;
   border-color: #3d4759;
   color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-rule-section {
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .fraud-rule-section-title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .fraud-rule-section-description {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .fraud-rule-checkbox-label {
+  color: #d0d8e0;
+}
+
+[data-theme="dark"] .fraud-rule-checkbox-label input[type="checkbox"] {
+  border-color: #525d5d;
+}
+
+[data-theme="dark"] .fraud-rule-checkbox-label input[type="checkbox"]:hover {
+  border-color: #277777;
 }
 
 [data-theme="dark"] .fraud-rule-review-card {

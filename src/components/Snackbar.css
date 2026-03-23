@@ -9,7 +9,7 @@
   border: 1px solid var(--border-brand-solid, #277777);
   border-radius: var(--radius-xs, 4px);
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.15);
-  z-index: 2000;
+  z-index: 999999;
   animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

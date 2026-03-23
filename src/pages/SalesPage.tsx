@@ -12,7 +12,6 @@ import type { ColumnConfig } from '../components/ColumnManagementModal'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
 import Snackbar from '../components/Snackbar'
-import Pagination from '../components/Pagination'
 import './SalesPage.css'
 
 type Status = 'Paid' | 'Pending' | 'Completed' | 'Failed' | 'Refunded'
@@ -231,11 +230,11 @@ const initialTransactions: Transaction[] = [
   },
 ]
 
-const statusToChipVariant: Record<Status, 'success' | 'info' | 'neutral' | 'warning'> = {
+const statusToChipVariant: Record<Status, 'success' | 'info' | 'neutral' | 'warning' | 'error'> = {
   Paid:      'success',
   Pending:   'neutral',
-  Completed: 'info',
-  Failed:    'warning',
+  Completed: 'success', // Display as Paid
+  Failed:    'error',
   Refunded:  'neutral',
 }
 
@@ -291,29 +290,29 @@ export default function SalesPage() {
   const [selectedTransaction, setSelectedTransaction] = useState<TransactionDetails | null>(null)
   const [isColumnManagementOpen, setIsColumnManagementOpen] = useState(false)
   const [dateSortOrder, setDateSortOrder] = useState<'asc' | 'desc' | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [columns, setColumns] = useState<ColumnConfig[]>([
     { id: 'id', label: 'Transaction ID', visible: true, locked: true, order: 0 },
-    { id: 'card', label: 'Payment method', visible: true, order: 1 },
+    { id: 'card', label: 'Card number', visible: true, order: 1 },
     { id: 'status', label: 'Status', visible: true, order: 2 },
-    { id: 'merchantId', label: 'Merchant ID', visible: true, order: 3 },
-    { id: 'orderId', label: 'Order ID', visible: true, order: 4 },
+    { id: 'type', label: 'Type', visible: true, order: 3 },
+    { id: 'orderId', label: 'Location', visible: true, order: 4 },
     { id: 'amount', label: 'Amount', visible: true, order: 5 },
-    { id: 'date', label: 'Date / Time', visible: true, order: 6 },
+    { id: 'date', label: 'Date', visible: true, order: 6 },
   ])
   const [appliedColumns, setAppliedColumns] = useState<ColumnConfig[]>(columns)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
 
   // Reset to first page when filters or search change
   useEffect(() => {
     setCurrentPage(1)
-  }, [appliedFilters, searchQuery, activeTab, showLastMonth])
+  }, [searchQuery, appliedFilters, activeTab, showLastMonth])
 
   // Get visible columns in order
   const visibleColumns = appliedColumns.filter(c => c.visible).sort((a, b) => (a.order || 0) - (b.order || 0))
 
-  // Filter and sort transactions
-  const filteredTransactions = transactions
+  // Filter, sort, and paginate transactions
+  const allFilteredTransactions = transactions
     .filter(tx => {
       // Tab filter
       if (activeTab !== 'all') {
@@ -325,7 +324,7 @@ export default function SalesPage() {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase()
-        const searchableText = `${tx.id} ${tx.card} ${tx.status} ${tx.merchantId} ${tx.orderId} ${tx.amount} ${tx.date}`.toLowerCase()
+        const searchableText = `${tx.id} ${tx.card} ${tx.status} ${tx.type} ${tx.orderId} ${tx.amount} ${tx.date}`.toLowerCase()
         if (!searchableText.includes(query)) return false
       }
 
@@ -431,31 +430,22 @@ export default function SalesPage() {
     })
 
   // Pagination
-  const totalPages = Math.max(1, Math.ceil(filteredTransactions.length / pageSize))
-  const startIndex = (currentPage - 1) * pageSize
-  const endIndex = startIndex + pageSize
-  const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex)
+  const totalPages = Math.ceil(allFilteredTransactions.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const filteredTransactions = allFilteredTransactions.slice(startIndex, endIndex)
 
-  const allSelected = paginatedTransactions.length > 0 &&
-    paginatedTransactions.every(tx => selectedRows.has(tx.id))
+  const allSelected = filteredTransactions.length > 0 &&
+    filteredTransactions.every(tx => selectedRows.has(tx.id))
 
-  const someSelected = paginatedTransactions.some(tx => selectedRows.has(tx.id)) && !allSelected
+  const someSelected = filteredTransactions.some(tx => selectedRows.has(tx.id)) && !allSelected
 
   const handleSelectAll = () => {
     if (allSelected) {
       setSelectedRows(new Set())
     } else {
-      setSelectedRows(new Set(paginatedTransactions.map(tx => tx.id)))
+      setSelectedRows(new Set(filteredTransactions.map(tx => tx.id)))
     }
-  }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize)
-    setCurrentPage(1) // Reset to first page when page size changes
   }
 
   const handleSelectRow = (id: string) => {
@@ -641,14 +631,14 @@ export default function SalesPage() {
 
   const handleExport = () => {
     // Create CSV content
-    const headers = ['Transaction ID', 'Payment method', 'Status', 'Merchant ID', 'Order ID', 'Amount', 'Date / Time']
-    const rows = filteredTransactions.map(tx => [
+    const headers = ['Transaction ID', 'Card number', 'Status', 'Type', 'Location', 'Amount', 'Date']
+    const rows = allFilteredTransactions.map(tx => [
       tx.id,
       tx.card,
-      tx.status,
-      tx.merchantId,
+      tx.status === 'Completed' ? 'Paid' : tx.status,
+      tx.type === 'Payment' ? '-' : tx.type,
       tx.orderId,
-      `${tx.currency} ${tx.amount}`,
+      `${tx.amount.replace('.', ',')} ${tx.currency}`,
       tx.date,
     ])
 
@@ -760,7 +750,7 @@ export default function SalesPage() {
             onClick={handleExport}
           >
             Export
-            <Icon name="download" size={24} />
+            <Icon name="arrow-up" size={24} />
           </button>
         </div>
 
@@ -781,27 +771,18 @@ export default function SalesPage() {
                     aria-label="Select all"
                   />
                 </th>
-                {visibleColumns.map(col => {
-                  if (col.id === 'date') {
-                    return (
-                      <th key={col.id} className="sales-page__th sales-page__th--sortable">
-                        <button
-                          className="sales-page__th-sort-btn"
-                          onClick={handleDateSort}
-                          aria-label="Sort by date"
-                        >
-                          <span>{col.label}</span>
-                          <Icon name="chevron-up-down-small" size={12} />
-                        </button>
-                      </th>
-                    )
-                  }
-                  return (
-                    <th key={col.id} className="sales-page__th">
-                      {col.label}
-                    </th>
-                  )
-                })}
+                {visibleColumns.map(col => (
+                  <th key={col.id} className="sales-page__th sales-page__th--sortable">
+                    <button
+                      className="sales-page__th-sort-btn"
+                      onClick={col.id === 'date' ? handleDateSort : undefined}
+                      aria-label={`Sort by ${col.label}`}
+                    >
+                      <span>{col.label}</span>
+                      <Icon name="chevron-up-down-small" size={12} />
+                    </button>
+                  </th>
+                ))}
                 <th className="sales-page__th sales-page__th--actions">
                   <button
                     className="sales-page__column-btn"
@@ -814,7 +795,7 @@ export default function SalesPage() {
               </tr>
             </thead>
             <tbody>
-              {paginatedTransactions.map(tx => {
+              {filteredTransactions.map(tx => {
                 const isSelected = selectedRows.has(tx.id)
 
                 return (
@@ -859,17 +840,11 @@ export default function SalesPage() {
                             <TableCell
                               key={col.id}
                               chip={{
-                                label: tx.status,
+                                label: tx.status === 'Completed' ? 'Paid' : tx.status,
                                 variant: statusToChipVariant[tx.status],
                               }}
                               onClick={() => handleRowClick(tx.id)}
                             />
-                          )
-                        case 'merchantId':
-                          return (
-                            <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                              {tx.merchantId}
-                            </TableCell>
                           )
                         case 'orderId':
                           return (
@@ -877,10 +852,16 @@ export default function SalesPage() {
                               {tx.orderId}
                             </TableCell>
                           )
+                        case 'type':
+                          return (
+                            <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
+                              {tx.type === 'Payment' ? '-' : tx.type}
+                            </TableCell>
+                          )
                         case 'amount':
                           return (
                             <TableCell key={col.id} onClick={() => handleRowClick(tx.id)}>
-                              {tx.currency === 'EUR' ? '€' : tx.currency === 'USD' ? '$' : tx.currency === 'GBP' ? '£' : tx.currency} {tx.amount}
+                              {tx.amount.replace('.', ',')} {tx.currency}
                             </TableCell>
                           )
                         case 'date':
@@ -908,13 +889,101 @@ export default function SalesPage() {
           </table>
         </div>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          pageSize={pageSize}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
+        {/* Enhanced Pagination */}
+        <div className="sales-page__pagination">
+          <div className="sales-page__pagination-info">
+            Page {currentPage} of {totalPages || 1}
+          </div>
+          <div className="sales-page__pagination-controls">
+            <div className="sales-page__pagination-nav">
+              <button
+                className="sales-page__pagination-btn"
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                aria-label="First page"
+              >
+                <Icon name="chevron-left" size={16} />
+                <Icon name="chevron-left" size={16} />
+              </button>
+              <button
+                className="sales-page__pagination-btn"
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+              >
+                <Icon name="chevron-left" size={16} />
+              </button>
+
+              {/* Page numbers */}
+              {Array.from({ length: Math.min(9, totalPages) }, (_, i) => {
+                let pageNum: number
+                if (totalPages <= 9) {
+                  pageNum = i + 1
+                } else if (currentPage <= 4) {
+                  pageNum = i + 1
+                } else if (currentPage >= totalPages - 3) {
+                  pageNum = totalPages - 8 + i
+                } else {
+                  pageNum = currentPage - 4 + i
+                }
+
+                // Show ellipsis for gaps
+                if (totalPages > 9 && ((i === 3 && currentPage > 4) || (i === 5 && currentPage < totalPages - 3))) {
+                  return <span key={`ellipsis-${i}`} className="sales-page__pagination-ellipsis">...</span>
+                }
+
+                // Skip middle pages if showing ellipsis
+                if (totalPages > 9 && i >= 3 && i <= 5 && (currentPage <= 4 || currentPage >= totalPages - 3)) {
+                  return null
+                }
+
+                return (
+                  <button
+                    key={pageNum}
+                    className={`sales-page__pagination-num${currentPage === pageNum ? ' sales-page__pagination-num--active' : ''}`}
+                    onClick={() => setCurrentPage(pageNum)}
+                  >
+                    {pageNum}
+                  </button>
+                )
+              }).filter(Boolean)}
+
+              <button
+                className="sales-page__pagination-btn"
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+              >
+                <Icon name="chevron-right" size={16} />
+              </button>
+              <button
+                className="sales-page__pagination-btn"
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}
+                aria-label="Last page"
+              >
+                <Icon name="chevron-right" size={16} />
+                <Icon name="chevron-right" size={16} />
+              </button>
+            </div>
+            <div className="sales-page__pagination-view">
+              <span>View:</span>
+              <select
+                className="sales-page__pagination-select"
+                value={itemsPerPage}
+                onChange={(e) => {
+                  setItemsPerPage(Number(e.target.value))
+                  setCurrentPage(1)
+                }}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </>
 
       <SideModal

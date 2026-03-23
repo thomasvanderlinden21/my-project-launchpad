@@ -116,7 +116,7 @@
 
 /* Dark mode */
 [data-theme="dark"] .timeline-item__dot {
-  border-color: #1e2534;
+  border-color: #1e2430;
   background-color: #525d5d;
 }
 

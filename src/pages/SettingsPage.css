@@ -119,7 +119,7 @@
 }
 
 [data-theme="dark"] .settings-card {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
 }
 
@@ -141,7 +141,7 @@
 }
 
 [data-theme="dark"] .settings-page__placeholder {
-  background-color: #1e2534;
+  background-color: #1e2430;
   border-color: #2a3445;
 }
 

@@ -219,7 +219,7 @@
 }
 
 [data-theme="dark"] .pagination__nav-btn:hover:not(:disabled) {
-  background-color: var(--surface-neutral-low, #1e2534);
+  background-color: var(--surface-neutral-low, #1e2430);
 }
 
 [data-theme="dark"] .pagination__nav-btn:active:not(:disabled) {
@@ -235,7 +235,7 @@
 }
 
 [data-theme="dark"] .pagination__page-btn:hover {
-  background-color: var(--surface-neutral-low, #1e2534);
+  background-color: var(--surface-neutral-low, #1e2430);
 }
 
 [data-theme="dark"] .pagination__page-btn:active {

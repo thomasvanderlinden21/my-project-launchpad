@@ -77,6 +77,9 @@ export type IconName =
   | 'arrow-down'
   | 'alert-circle'
   | 'credit-card'
+  | 'wifi'
+  | 'location'
+  | 'currency-dollar'
 
 const icons: Record<IconName, (size: number) => React.ReactNode> = {
   check: (s) => (
@@ -453,6 +456,21 @@ const icons: Record<IconName, (size: number) => React.ReactNode> = {
     <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
       <path d="M2 10h20M6 15h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+  wifi: (s) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 18h.01M9.172 14.828a4 4 0 015.656 0M6.343 11.657a8 8 0 0111.314 0M3.515 8.828a12 12 0 0116.97 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  location: (s) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor" />
+    </svg>
+  ),
+  'currency-dollar': (s) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
 }

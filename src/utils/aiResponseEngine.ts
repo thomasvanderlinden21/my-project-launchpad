@@ -16,7 +16,7 @@ import {
 const patterns = {
   navigation: /(?:where|how do i get|take me|navigate|go to|show me the|find)/i,
   dataOverview: /(?:overview|summary|how many|what\'s my|show me today|give me a)/i,
-  specificLookup: /(?:failed|offline|top|unpaid|open|pending)/i,
+  specificLookup: /(?:failed|offline|top|unpaid|open|pending|update)/i,
   howTo: /(?:how do i|how can i|what\'s the process|help me|explain)/i,
   analysis: /(?:compare|trend|analyze|breakdown|growth|month over month)/i,
   action: /(?:export|download|filter|create|add|generate)/i,
@@ -99,21 +99,21 @@ Try asking me something like "Show me today\'s sales" or "How do I add a termina
 
 function generateNavigationResponse(input: string, context: PageContext): string {
   // Map common terms to routes
-  const routes: Record<string, { route: string; name: string }> = {
-    transaction: { route: '/', name: 'Transactions' },
-    sale: { route: '/', name: 'Sales/Transactions' },
-    terminal: { route: '/', name: 'Terminals' },
-    invoice: { route: '/', name: 'Invoices' },
-    order: { route: '/', name: 'Orders' },
-    dispute: { route: '/', name: 'Disputes' },
-    report: { route: '/', name: 'Reports' },
-    setting: { route: '/', name: 'Settings' },
-    home: { route: '/', name: 'Home' },
+  const routes: Record<string, { route: string; name: string; description: string }> = {
+    transaction: { route: '/', name: 'Transactions', description: 'view and manage all transactions' },
+    sale: { route: '/', name: 'Sales/Transactions', description: 'view sales data and transactions' },
+    terminal: { route: '/', name: 'Terminals', description: 'view, update, and manage your payment terminals' },
+    invoice: { route: '/', name: 'Invoices', description: 'view and download invoices' },
+    order: { route: '/', name: 'Orders', description: 'view and fulfill orders' },
+    dispute: { route: '/', name: 'Disputes', description: 'manage disputes and chargebacks' },
+    report: { route: '/', name: 'Reports', description: 'view analytics and export reports' },
+    setting: { route: '/', name: 'Settings', description: 'manage account and preferences' },
+    home: { route: '/', name: 'Home', description: 'see your dashboard overview' },
   }
 
   for (const [key, value] of Object.entries(routes)) {
     if (input.includes(key)) {
-      return `You can find ${value.name} in the sidebar navigation. [Go to ${value.name} →](${value.route})\n\nOnce there, you\'ll see all your ${key}s with options to filter, search, and manage them.`
+      return `You can find ${value.name} in the sidebar navigation. [Go to ${value.name} →](${value.route})\n\nOnce there, you can ${value.description}.`
     }
   }
 
@@ -129,6 +129,22 @@ Which section would you like to visit?`
 }
 
 function generateHowToResponse(input: string, context: PageContext): string {
+  if (input.includes('terminal') && input.includes('update')) {
+    return `To update a terminal:
+
+1. Go to **Terminals** from the sidebar
+2. Click on the terminal that needs updating
+3. Click the **"Update terminal"** button (top right)
+4. Wait for the update to complete (usually 1-2 minutes)
+
+[Go to Terminals →](/)
+
+⚠️ **Important:**
+• Don't power off the terminal during the update
+• The terminal will show "Updating..." while in progress
+• Once complete, the "Update available" tag will be removed`
+  }
+
   if (input.includes('terminal') && input.includes('add')) {
     return `To add a new terminal:
 
@@ -141,6 +157,68 @@ function generateHowToResponse(input: string, context: PageContext): string {
 [Go to Terminals →](/)
 
 The new terminal will appear in your list once it\'s shipped.`
+  }
+
+  if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
+    return `To add a new user to your team:
+
+1. Click on **Settings** in the sidebar
+2. Go to the **Users & Permissions** tab
+3. Click the **"Add user"** button (top right)
+4. Enter their email address and name
+5. Select their role (Admin, Manager, or Viewer)
+6. Click **"Send invitation"**
+
+[Go to Settings →](/)
+
+The user will receive an email invitation to join your portal. They'll need to accept it to gain access.`
+  }
+
+  if (input.includes('refund')) {
+    const refundableTransaction = mockTransactions.find(t => t.status === 'Processed')
+    if (refundableTransaction) {
+      return `To refund a transaction:
+
+1. Go to **Transactions** from the sidebar
+2. Find and click on the transaction (e.g., **${refundableTransaction.id}** - ${refundableTransaction.amount})
+3. Click the **"Refund"** button in the transaction details
+4. Enter the refund amount (full or partial)
+5. Add a reason (optional but recommended)
+6. Confirm the refund
+
+[Go to Transactions →](/)
+
+⚠️ **Note:** Refunds typically take 5-10 business days to appear on the customer's account.`
+    }
+    return `To refund a transaction:
+
+1. Go to **Transactions** from the sidebar
+2. Find and click on the transaction you want to refund
+3. Click the **"Refund"** button in the transaction details
+4. Enter the refund amount (full or partial)
+5. Add a reason (optional but recommended)
+6. Confirm the refund
+
+[Go to Transactions →](/)
+
+⚠️ **Note:** Refunds typically take 5-10 business days to appear on the customer's account.`
+  }
+
+  if ((input.includes('block') || input.includes('prevent') || input.includes('stop')) && (input.includes('ireland') || input.includes('country') || input.includes('transaction'))) {
+    return `To block transactions from a specific country (like Ireland):
+
+1. Click on **Settings** in the sidebar
+2. Go to the **Fraud Prevention** tab
+3. Click **"Add rule"** button (top right)
+4. Configure your rule:
+   • **Rule name:** "Block Ireland transactions"
+   • **Condition:** Country equals Ireland
+   • **Action:** Block transaction
+5. Click **"Save rule"**
+
+[Go to Settings →](/)
+
+⚠️ **Important:** This will immediately block all transactions from the specified country. Make sure this is what you want before activating the rule.`
   }
 
   if (input.includes('export')) {
@@ -166,10 +244,11 @@ The table will update to show only matching items. You can clear filters anytime
 
   return `I can help you with most portal features! Here are common tasks:
 
+• **Adding users** - Invite team members from Settings
+• **Refunding transactions** - Process refunds from transaction details
+• **Blocking transactions** - Create fraud rules in Settings
 • **Adding terminals** - Order from Terminals page
 • **Exporting data** - Use Export button on any data page
-• **Filtering** - Use Filters panel on list pages
-• **Refunds** - Click on a transaction, then "Refund"
 
 What specifically would you like to know how to do?`
 }
@@ -229,21 +308,75 @@ function generateActionResponse(input: string, context: PageContext): string {
 Or [Go to Transactions →](/) and I\'ll help you set it up!`
   }
 
+  if (input.includes('refund')) {
+    const refundableTransaction = mockTransactions.find(t => t.status === 'Processed')
+    if (refundableTransaction) {
+      return `I can help you refund a transaction!
+
+**Example transaction to refund:**
+• **${refundableTransaction.id}** - ${refundableTransaction.amount}
+• Date: ${refundableTransaction.date}
+• Status: ${refundableTransaction.status}
+
+**To refund this:**
+1. [Go to Transactions →](/)
+2. Click on the transaction
+3. Click **"Refund"** button
+4. Enter amount and confirm
+
+Would you like me to walk you through the refund process?`
+    }
+  }
+
+  if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
+    return `To add a new user to ${mockMerchant.name}:
+
+1. [Go to Settings →](/)
+2. Click on **Users & Permissions** tab
+3. Click **"Add user"** button (top right)
+4. Fill in their details:
+   • Email address
+   • Name
+   • Role (Admin, Manager, or Viewer)
+5. Click **"Send invitation"**
+
+They'll receive an email to join your portal. Want me to guide you through it?`
+  }
+
+  if ((input.includes('block') || input.includes('prevent')) && (input.includes('ireland') || input.includes('country'))) {
+    return `I can help you block transactions from Ireland (or any country).
+
+**To create a blocking rule:**
+1. [Go to Settings →](/)
+2. Navigate to **Fraud Prevention** tab
+3. Click **"Add rule"** (top right)
+4. Set up your rule:
+   • **Name:** "Block Ireland transactions"
+   • **Condition:** Country equals Ireland
+   • **Action:** Block transaction
+5. Save and activate
+
+⚠️ This will immediately block all future transactions from Ireland. Should I guide you through the steps?`
+  }
+
   if (input.includes('create') || input.includes('add')) {
     return `You can create/add items from the relevant page:
 
-• **New transaction** - Use "Create Payment" in sidebar
-• **New terminal** - Click "Order terminal" on Terminals page
 • **New user** - Go to Settings > Users > "Add user"
+• **Refund transaction** - Click on any transaction to refund it
+• **Fraud rule** - Go to Settings > Fraud Prevention > "Add rule"
+• **New terminal** - Click "Order terminal" on Terminals page
 
 What would you like to create?`
   }
 
   return `I can help you perform actions like:
 
+• **Refund** transactions
+• **Add users** to your team
+• **Block transactions** with fraud rules
 • **Export** data to CSV
 • **Filter** to specific items
-• **Create** new records
 
 What action would you like to take?`
 }
@@ -265,6 +398,27 @@ function generateSpecificLookupResponse(input: string, context: PageContext): st
 ${failedTxs.map(tx => `• ${tx.id} - ${tx.amount} (${tx.date.split(',')[0]})`).join('\n')}
 
 [View all transactions →](/) to see more details or attempt to retry them.`
+  }
+
+  if (input.includes('update') && input.includes('terminal')) {
+    const terminalsNeedingUpdate = mockTerminals.filter(t => t.status === 'new-update')
+    if (terminalsNeedingUpdate.length === 0) {
+      return `All your terminals are up to date! ✅\n\nNo updates are currently available for your terminals.`
+    }
+
+    const terminalsList = terminalsNeedingUpdate.map(t => `• **${t.name}** (${t.serialNumber}) at ${t.locationValue}`).join('\n')
+    const firstTerminal = terminalsNeedingUpdate[0]
+
+    return `**${terminals.needsUpdate} terminal${terminals.needsUpdate > 1 ? 's need' : ' needs'} an update:**
+
+${terminalsList}
+
+**To update ${firstTerminal.name}:**
+1. [Click here to open ${firstTerminal.name} →](terminal:${firstTerminal.id})
+2. Click the **"Update terminal"** button in the top right
+3. Wait for the update to complete (usually 1-2 minutes)
+
+⚠️ **Important:** Don't power off terminals during updates.`
   }
 
   if (input.includes('offline') || (input.includes('terminal') && input.includes('down'))) {
@@ -313,6 +467,7 @@ These are awaiting confirmation. They typically process within 24 hours.
 
   return `I can look up specific data for you. Try asking:
 
+• "Do my terminals need updates?"
 • "Show failed transactions"
 • "Which terminals are offline?"
 • "List unpaid invoices"
@@ -367,9 +522,9 @@ Everything looks good! ${transactions.failed > 0 ? `You have ${transactions.fail
 • **Active:** ${terminals.active} ✅
 • **Offline:** ${terminals.offline} ${terminals.offline > 0 ? '⚠️' : ''}
 • **Shipped:** ${terminals.shipped} 📦
-• **Needs update:** ${terminals.needsUpdate}
+• **Needs update:** ${terminals.needsUpdate} ${terminals.needsUpdate > 0 ? '🔄' : ''}
 
-${terminals.offline > 0 ? '[View offline terminals →](/)' : 'All systems operational! ✅'}`
+${terminals.needsUpdate > 0 ? `⚠️ **Action needed:** ${terminals.needsUpdate} terminal${terminals.needsUpdate > 1 ? 's need' : ' needs'} an update\n\n[View terminals →](/)` : terminals.offline > 0 ? '[View offline terminals →](/)' : 'All systems operational! ✅'}`
   }
 
   if (input.includes('sales') || input.includes('revenue')) {
@@ -450,14 +605,14 @@ export function getPageSuggestions(page: string): string[] {
       'Any issues I should know about?',
     ],
     transactions: [
-      'Summarize today\'s transactions',
+      'How do I refund a transaction?',
       'Are there any failed transactions?',
       'Compare this week vs last week',
     ],
     terminals: [
+      'Do my terminals need updates?',
       'Show terminal status overview',
       'Which terminals are offline?',
-      'How do I add a new terminal?',
     ],
     orders: [
       'Show recent orders',
@@ -480,9 +635,9 @@ export function getPageSuggestions(page: string): string[] {
       'What\'s my dispute rate?',
     ],
     settings: [
+      'How do I add a new user?',
+      'How do I block transactions from Ireland?',
       'How do I change notification preferences?',
-      'Manage user access',
-      'Update business information',
     ],
   }
 
