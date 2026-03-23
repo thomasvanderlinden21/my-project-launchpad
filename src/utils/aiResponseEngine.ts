@@ -113,6 +113,7 @@ function handleAddUserFlow(input: string, state: ConversationState): string {
 
   switch (step) {
     case 0: // Offer help and ask if they want assistance
+      state.step = 1 // Move to next step so we can handle their yes/no response
       return `To add a new user to your team:
 
 **You can do it manually:**
