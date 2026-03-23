@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { useUserManagement } from './UserManagementContext'
+import { useFraudManagement } from './FraudManagementContext'
 
 export interface Message {
   id: string
@@ -50,6 +51,7 @@ const STORAGE_KEY = 'ai-assistant-conversations'
 
 export function AIAssistantProvider({ children }: { children: ReactNode }) {
   const { addUser } = useUserManagement()
+  const { addRule } = useFraudManagement()
   const [isOpen, setIsOpen] = useState(false)
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
@@ -152,7 +154,7 @@ export function AIAssistantProvider({ children }: { children: ReactNode }) {
         const assistantMessage: Message = {
           id: `msg-${Date.now()}-assistant`,
           role: 'assistant',
-          content: generateResponse(content, currentContext, lastTopic, addUser),
+          content: generateResponse(content, currentContext, lastTopic, addUser, addRule),
           timestamp: new Date(),
         }
 

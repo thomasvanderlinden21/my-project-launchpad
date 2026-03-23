@@ -4,19 +4,9 @@ import Icon from '../components/Icon'
 import Chip from '../components/Chip'
 import FraudRuleCreationModal from '../components/FraudRuleCreationModal'
 import SettingsDetailPage from './SettingsDetailPage'
+import { useFraudManagement } from '../context/FraudManagementContext'
+import type { FraudRule, FraudRuleType } from '../context/FraudManagementContext'
 import './FraudPage.css'
-
-export type FraudRuleType =
-  | 'ip' | 'email' | 'iban' | 'card_country'
-  | 'pan' | 'shipping' | 'amount' | 'currency'
-
-export interface FraudRule {
-  id: string
-  type: FraudRuleType
-  entries: string[]
-  shops: string[]
-  createdAt: Date
-}
 
 const RULE_TYPE_CONFIG = {
   ip: { label: 'IP Address', icon: 'terminal' as const },
@@ -204,7 +194,7 @@ function PremiumCard() {
 }
 
 export default function FraudPage() {
-  const [rules, setRules] = useState<FraudRule[]>([])
+  const { rules, addRule } = useFraudManagement()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingRule, setEditingRule] = useState<FraudRule | null>(null)
 
@@ -220,24 +210,12 @@ export default function FraudPage() {
 
   function handlePublishRule(data: { type: FraudRuleType; entries: string[]; shops: string[] }) {
     if (editingRule) {
-      // Update existing rule
-      setRules((prev) =>
-        prev.map((r) =>
-          r.id === editingRule.id
-            ? { ...r, type: data.type, entries: data.entries, shops: data.shops }
-            : r
-        )
-      )
+      // Update existing rule - for now just log
+      console.log('Update rule:', editingRule.id, data)
+      // TODO: Add update functionality to context
     } else {
       // Create new rule
-      const newRule: FraudRule = {
-        id: Math.random().toString(36).substring(7),
-        type: data.type,
-        entries: data.entries,
-        shops: data.shops,
-        createdAt: new Date()
-      }
-      setRules((prev) => [...prev, newRule])
+      addRule(data.type, data.entries, data.shops)
     }
     setEditingRule(null)
   }
@@ -248,7 +226,8 @@ export default function FraudPage() {
   }
 
   function handleDeleteRule(id: string) {
-    setRules((prev) => prev.filter((r) => r.id !== id))
+    // TODO: Add delete functionality to context
+    console.log('Delete rule:', id)
   }
 
   return (

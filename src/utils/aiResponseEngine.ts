@@ -26,27 +26,34 @@ const patterns = {
 
 // Conversation state for multi-turn interactions
 interface ConversationState {
-  flow?: 'add-user' | 'update-terminal'
+  flow?: 'add-user' | 'update-terminal' | 'block-country'
   step?: number
   data?: Record<string, string>
 }
 
 type UserRole = 'Admin' | 'Manager' | 'User'
 type AccessLevel = 'Full access' | 'Limited access' | 'View only'
+type FraudRuleType = 'ip' | 'email' | 'iban' | 'card_country' | 'pan' | 'shipping' | 'amount' | 'currency'
 type AddUserCallback = (email: string, firstName: string, lastName: string, role: UserRole, accessLevel: AccessLevel) => void
+type AddFraudRuleCallback = (type: FraudRuleType, entries: string[], shops: string[]) => void
 
 let conversationState: ConversationState = {}
 let addUserCallback: AddUserCallback | null = null
+let addFraudRuleCallback: AddFraudRuleCallback | null = null
 
 export function generateResponse(
   userInput: string,
   context: PageContext,
   lastTopic: string | null,
-  addUser?: AddUserCallback
+  addUser?: AddUserCallback,
+  addFraudRule?: AddFraudRuleCallback
 ): string {
-  // Store the callback for use in the conversation flow
+  // Store the callbacks for use in the conversation flow
   if (addUser) {
     addUserCallback = addUser
+  }
+  if (addFraudRule) {
+    addFraudRuleCallback = addFraudRule
   }
   const input = userInput.toLowerCase().trim()
 
@@ -107,6 +114,9 @@ export function generateResponse(
 function handleConversationFlow(input: string, state: ConversationState): string {
   if (state.flow === 'add-user') {
     return handleAddUserFlow(input, state)
+  }
+  if (state.flow === 'block-country') {
+    return handleBlockCountryFlow(input, state)
   }
   return generateFallbackResponse()
 }
@@ -254,6 +264,129 @@ Need to invite someone else?`
   }
 }
 
+function handleBlockCountryFlow(input: string, state: ConversationState): string {
+  const step = state.step || 0
+  state.data = state.data || {}
+
+  // Handle cancellation
+  if (input.includes('cancel') || input.includes('stop') || input.includes('nevermind') || input.includes('no')) {
+    conversationState = {}
+    return 'No problem! Let me know if you need anything else.'
+  }
+
+  switch (step) {
+    case 0: // Offer help and ask if they want assistance
+      state.step = 1
+      return `To block transactions from a specific country:
+
+**You can do it manually:**
+1. Go to **Settings** from the sidebar
+2. Click on the **Fraud** tab
+3. Click **"Create new rule"** button
+4. Select **"Card Country"** as the rule type
+5. Enter the country name and save
+
+[Go to Settings > Fraud →](/settings/fraud)
+
+**Or I can help you set up this rule right now!**
+
+Would you like me to create the blocking rule for you? (Type **"yes"** to start, or **"no"** if you'll do it yourself)`
+
+    case 1: // Confirm they want help, then ask for country
+      if (!input.includes('yes') && !input.includes('sure') && !input.includes('ok') && !input.includes('please')) {
+        conversationState = {}
+        return 'No problem! You can create fraud rules anytime from Settings > Fraud. Let me know if you need anything else!'
+      }
+      state.step = 2
+      return `Great! I'll help you block transactions from a specific country.
+
+🌍 **Which country would you like to block?**
+
+(Enter the country name, e.g., "Ireland", "Germany", "France")`
+
+    case 2: // Collect country, ask for shops
+      if (input.trim().length < 2) {
+        return `Please enter a valid country name.`
+      }
+      state.data.country = input.trim()
+      state.step = 3
+      return `Got it! Country: **${state.data.country}**
+
+🏪 **Which shops should this rule apply to?**
+
+• Type **"all"** for all shops
+• Type **"1"** for Cycle shop #1
+• Type **"2"** for Cycle shop #2
+• Type **"3"** for Cycle shop #3`
+
+    case 3: // Collect shops, show summary
+      let shops: string[] = []
+      if (input.toLowerCase().includes('all')) {
+        shops = ['All shops']
+      } else if (input.includes('1')) {
+        shops = ['Cycle shop #1']
+      } else if (input.includes('2')) {
+        shops = ['Cycle shop #2']
+      } else if (input.includes('3')) {
+        shops = ['Cycle shop #3']
+      } else {
+        return `Please choose a valid option:
+• Type **"all"** for all shops
+• Type **"1"**, **"2"**, or **"3"** for specific shops`
+      }
+
+      state.data.shops = JSON.stringify(shops)
+      state.step = 4
+      return `Perfect! Here's the rule summary:
+
+**Fraud Rule:**
+🛡️ **Type:** Block transactions by Card Country
+🌍 **Block:** ${state.data.country}
+🏪 **Applies to:** ${shops.join(', ')}
+
+⚠️ **This will immediately block all transactions from ${state.data.country}** for the selected shops.
+
+**Ready to activate this rule?**
+
+Type **"yes"** to confirm and create the rule, or **"cancel"** to stop.`
+
+    case 4: // Confirmation
+      if (input.includes('yes') || input.includes('confirm') || input.includes('activate')) {
+        const shops = JSON.parse(state.data.shops || '["All shops"]')
+
+        // Actually add the fraud rule
+        if (addFraudRuleCallback && state.data.country) {
+          addFraudRuleCallback(
+            'card_country',
+            [state.data.country],
+            shops
+          )
+        }
+
+        conversationState = {} // Reset state
+        return `✅ **Fraud rule activated!**
+
+I've created a rule to block all transactions from **${state.data.country}**.
+
+**What this means:**
+• All transactions using cards from ${state.data.country} will be automatically blocked
+• The rule applies to: ${shops.join(', ')}
+• You can view and manage this rule in Settings > Fraud
+
+[Go to Settings > Fraud →](/settings/fraud) to see your active fraud rules.
+
+Need to block another country or create a different rule?`
+      } else {
+        conversationState = {} // Reset state
+        return 'Rule creation cancelled. Let me know if you\'d like to try again!'
+      }
+
+    default:
+      conversationState = {} // Reset on error
+      return generateFallbackResponse()
+  }
+}
+
 function generateGreeting(context: PageContext): string {
   const suggestions = getPageSuggestions(context.page)
   return `Hi ${mockUser.firstName}! 👋 I\'m here to help. ${suggestions[0]?.toLowerCase() || 'What can I help you with?'}`
@@ -374,20 +507,13 @@ The new terminal will appear in your list once it\'s shipped.`
   }
 
   if ((input.includes('block') || input.includes('prevent') || input.includes('stop')) && (input.includes('ireland') || input.includes('country') || input.includes('transaction'))) {
-    return `To block transactions from a specific country (like Ireland):
-
-1. Click on **Settings** in the sidebar
-2. Go to the **Fraud Prevention** tab
-3. Click **"Add rule"** button (top right)
-4. Configure your rule:
-   • **Rule name:** "Block Ireland transactions"
-   • **Condition:** Country equals Ireland
-   • **Action:** Block transaction
-5. Click **"Save rule"**
-
-[Go to Settings →](/settings)
-
-⚠️ **Important:** This will immediately block all transactions from the specified country. Make sure this is what you want before activating the rule.`
+    // Start the block-country conversation flow
+    conversationState = {
+      flow: 'block-country',
+      step: 0,
+      data: {}
+    }
+    return handleBlockCountryFlow('', conversationState)
   }
 
   if (input.includes('export')) {
@@ -510,20 +636,14 @@ Would you like me to walk you through the refund process?`
     return handleAddUserFlow('', conversationState)
   }
 
-  if ((input.includes('block') || input.includes('prevent')) && (input.includes('ireland') || input.includes('country'))) {
-    return `I can help you block transactions from Ireland (or any country).
-
-**To create a blocking rule:**
-1. [Go to Settings →](/settings)
-2. Navigate to **Fraud Prevention** tab
-3. Click **"Add rule"** (top right)
-4. Set up your rule:
-   • **Name:** "Block Ireland transactions"
-   • **Condition:** Country equals Ireland
-   • **Action:** Block transaction
-5. Save and activate
-
-⚠️ This will immediately block all future transactions from Ireland. Should I guide you through the steps?`
+  if ((input.includes('block') || input.includes('prevent') || input.includes('stop')) && (input.includes('ireland') || input.includes('country') || input.includes('transaction'))) {
+    // Start the block-country conversation flow
+    conversationState = {
+      flow: 'block-country',
+      step: 0,
+      data: {}
+    }
+    return handleBlockCountryFlow('', conversationState)
   }
 
   if (input.includes('create') || input.includes('add')) {
