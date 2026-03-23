@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { useAIAssistant } from '../context/AIAssistantContext'
 import Sidebar from '../components/Sidebar'
@@ -64,6 +65,7 @@ interface PortalProps {
 }
 
 export default function Portal({ variant = 'v1' }: PortalProps) {
+  const navigate = useNavigate()
   const [activeNav, setActiveNav] = useState('home')
   const [activeSalesSubItem, setActiveSalesSubItem] = useState('transactions')
   const [activeSettingsSubItem, setActiveSettingsSubItem] = useState('overview')
@@ -231,8 +233,7 @@ export default function Portal({ variant = 'v1' }: PortalProps) {
   }
 
   const handleSignOut = () => {
-    console.log('Sign out clicked')
-    // Handle sign out logic
+    navigate('/landing')
   }
 
   const handleAddAccount = () => {
