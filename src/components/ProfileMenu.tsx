@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import Icon from './Icon'
 import './ProfileMenu.css'
 
@@ -95,13 +96,14 @@ export default function ProfileMenu({
             <Icon name="adjustments" size={20} />
             <span>Preferences</span>
           </button>
-          <button
+          <Link
+            to="/landing"
             className="profile-menu__item"
-            onClick={() => handleMenuItemClick(onSignOut)}
+            onClick={onClose}
           >
             <Icon name="logout" size={20} />
             <span>Sign out</span>
-          </button>
+          </Link>
         </div>
 
         {/* Account switcher */}
