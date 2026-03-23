@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { useAIAssistant } from '../context/AIAssistantContext'
 import Sidebar from '../components/Sidebar'
@@ -66,6 +66,7 @@ interface PortalProps {
 
 export default function Portal({ variant = 'v1' }: PortalProps) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [activeNav, setActiveNav] = useState('home')
   const [activeSalesSubItem, setActiveSalesSubItem] = useState('transactions')
   const [activeSettingsSubItem, setActiveSettingsSubItem] = useState('overview')
@@ -233,8 +234,17 @@ export default function Portal({ variant = 'v1' }: PortalProps) {
   }
 
   const handleSignOut = () => {
+    console.log('Navigating to /landing')
     navigate('/landing')
   }
+
+  // Sync with route changes - if we're on a route that shouldn't show Portal, navigate away
+  useEffect(() => {
+    console.log('Portal location:', location.pathname)
+    if (location.pathname === '/landing') {
+      console.log('Portal detected /landing route, this should not happen')
+    }
+  }, [location])
 
   const handleAddAccount = () => {
     console.log('Add account clicked')
