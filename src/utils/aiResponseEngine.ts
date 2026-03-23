@@ -31,13 +31,23 @@ interface ConversationState {
   data?: Record<string, string>
 }
 
+type UserRole = 'Admin' | 'Manager' | 'User'
+type AccessLevel = 'Full access' | 'Limited access' | 'View only'
+type AddUserCallback = (email: string, firstName: string, lastName: string, role: UserRole, accessLevel: AccessLevel) => void
+
 let conversationState: ConversationState = {}
+let addUserCallback: AddUserCallback | null = null
 
 export function generateResponse(
   userInput: string,
   context: PageContext,
-  lastTopic: string | null
+  lastTopic: string | null,
+  addUser?: AddUserCallback
 ): string {
+  // Store the callback for use in the conversation flow
+  if (addUser) {
+    addUserCallback = addUser
+  }
   const input = userInput.toLowerCase().trim()
 
   // Check if we're in an active conversation flow
@@ -199,6 +209,26 @@ Type **"yes"** to confirm and invite this user, or **"cancel"** to stop.`
 
     case 6: // Confirmation
       if (input.includes('yes') || input.includes('confirm') || input.includes('send')) {
+        // Map role to UserRole type and determine access level
+        const roleMapping: Record<string, { role: UserRole; accessLevel: AccessLevel }> = {
+          'Admin': { role: 'Admin', accessLevel: 'Full access' },
+          'Manager': { role: 'Manager', accessLevel: 'Limited access' },
+          'Viewer': { role: 'User', accessLevel: 'View only' },
+        }
+
+        const userRole = roleMapping[state.data.role || 'Viewer']
+
+        // Actually add the user to the system
+        if (addUserCallback && state.data.email && state.data.firstName && state.data.lastName) {
+          addUserCallback(
+            state.data.email,
+            state.data.firstName,
+            state.data.lastName,
+            userRole.role,
+            userRole.accessLevel
+          )
+        }
+
         const userDetails = `${state.data.firstName} ${state.data.lastName} (${state.data.email}) as ${state.data.role}`
         conversationState = {} // Reset state
         return `✅ **Invitation sent!**
@@ -210,7 +240,7 @@ I've sent an invitation to **${state.data.email}**.
 2. They'll click the link to create their account
 3. Once registered, they'll appear in your Users list with ${state.data.role} permissions
 
-[Go to Settings > Users →](/) to see all your team members.
+[Go to Settings > Users →](/) to see **${state.data.firstName} ${state.data.lastName}** in your team!
 
 Need to invite someone else?`
       } else {
