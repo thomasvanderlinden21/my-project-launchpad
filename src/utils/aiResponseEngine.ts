@@ -106,40 +106,60 @@ function handleAddUserFlow(input: string, state: ConversationState): string {
   state.data = state.data || {}
 
   // Handle cancellation
-  if (input.includes('cancel') || input.includes('stop') || input.includes('nevermind')) {
+  if (input.includes('cancel') || input.includes('stop') || input.includes('nevermind') || input.includes('no')) {
     conversationState = {}
-    return 'No problem! User invitation cancelled. Let me know if you need anything else.'
+    return 'No problem! Let me know if you need anything else.'
   }
 
   switch (step) {
-    case 0: // Ask for email
+    case 0: // Offer help and ask if they want assistance
+      return `To add a new user to your team:
+
+**You can do it manually:**
+1. Go to **Settings** from the sidebar
+2. Click on the **Users** tab
+3. Click the **"Invite user"** button (top right)
+4. Fill in their details and send the invitation
+
+[Go to Settings > Users →](/)
+
+**Or I can help you add the user right now!**
+
+Would you like me to collect the details and add them for you? (Type **"yes"** to start, or **"no"** if you'll do it yourself)`
+
+    case 1: // Confirm they want help, then ask for email
+      if (!input.includes('yes') && !input.includes('sure') && !input.includes('ok') && !input.includes('please')) {
+        conversationState = {}
+        return 'No problem! You can add users anytime from Settings > Users. Let me know if you need anything else!'
+      }
+      state.step = 2
       return `Great! I'll help you invite a new user.
 
 📧 **What's their email address?**
 
 (Or type "cancel" to stop)`
 
-    case 1: // Collect email, ask for first name
+    case 2: // Collect email, ask for first name
       // Simple email validation
       if (!input.includes('@') || !input.includes('.')) {
         return `That doesn't look like a valid email address. Please provide a valid email like: name@company.com`
       }
       state.data.email = input.trim()
-      state.step = 2
+      state.step = 3
       return `Got it! Email: **${state.data.email}**
 
 👤 **What's their first name?**`
 
-    case 2: // Collect first name, ask for last name
+    case 3: // Collect first name, ask for last name
       state.data.firstName = input.trim()
-      state.step = 3
+      state.step = 4
       return `Perfect! First name: **${state.data.firstName}**
 
 👤 **What's their last name?**`
 
-    case 3: // Collect last name, ask for role
+    case 4: // Collect last name, ask for role
       state.data.lastName = input.trim()
-      state.step = 4
+      state.step = 5
       return `Great! Last name: **${state.data.lastName}**
 
 🔐 **What role should they have?**
@@ -148,7 +168,7 @@ function handleAddUserFlow(input: string, state: ConversationState): string {
 • Type **2** for **Manager** (can manage transactions, not settings)
 • Type **3** for **Viewer** (read-only access)`
 
-    case 4: // Collect role, ask for confirmation
+    case 5: // Collect role, ask for confirmation
       let role = ''
       if (input.includes('1') || input.toLowerCase().includes('admin')) {
         role = 'Admin'
@@ -164,7 +184,7 @@ function handleAddUserFlow(input: string, state: ConversationState): string {
       }
 
       state.data.role = role
-      state.step = 5
+      state.step = 6
       return `Perfect! Here's the summary:
 
 **New User Details:**
@@ -176,7 +196,7 @@ function handleAddUserFlow(input: string, state: ConversationState): string {
 
 Type **"yes"** to confirm and invite this user, or **"cancel"** to stop.`
 
-    case 5: // Confirmation
+    case 6: // Confirmation
       if (input.includes('yes') || input.includes('confirm') || input.includes('send')) {
         const userDetails = `${state.data.firstName} ${state.data.lastName} (${state.data.email}) as ${state.data.role}`
         conversationState = {} // Reset state
@@ -282,11 +302,11 @@ function generateHowToResponse(input: string, context: PageContext): string {
 The new terminal will appear in your list once it\'s shipped.`
   }
 
-  if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
+  if ((input.includes('add') || input.includes('create') || input.includes('invite')) && (input.includes('user') || input.includes('person') || input.includes('member') || input.includes('someone') || input.includes('team'))) {
     // Start the add-user conversation flow
     conversationState = {
       flow: 'add-user',
-      step: 1,
+      step: 0,
       data: {}
     }
     return handleAddUserFlow('', conversationState)
@@ -446,11 +466,11 @@ Would you like me to walk you through the refund process?`
     }
   }
 
-  if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
+  if ((input.includes('add') || input.includes('create') || input.includes('invite')) && (input.includes('user') || input.includes('person') || input.includes('member') || input.includes('someone'))) {
     // Start the add-user conversation flow
     conversationState = {
       flow: 'add-user',
-      step: 1,
+      step: 0,
       data: {}
     }
     return handleAddUserFlow('', conversationState)
