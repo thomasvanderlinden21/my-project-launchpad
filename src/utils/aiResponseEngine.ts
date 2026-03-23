@@ -162,16 +162,26 @@ The new terminal will appear in your list once it\'s shipped.`
   if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
     return `To add a new user to your team:
 
-1. Click on **Settings** in the sidebar
-2. Go to the **Users & Permissions** tab
-3. Click the **"Add user"** button (top right)
-4. Enter their email address and name
-5. Select their role (Admin, Manager, or Viewer)
-6. Click **"Send invitation"**
+1. Go to **Settings** from the sidebar
+2. Click on the **Users** tab
+3. Click the **"Invite user"** button (top right)
+4. Fill in their details:
+   • **Email address** (required)
+   • **First name** and **Last name**
+   • **Role:** Choose Admin, Manager, or Viewer
+5. Click **"Send invitation"**
 
-[Go to Settings →](/)
+[Go to Settings > Users →](/)
 
-The user will receive an email invitation to join your portal. They'll need to accept it to gain access.`
+💡 **What happens next:**
+• The user receives an email invitation
+• They click the link to accept and create their account
+• They'll appear in your Users list once registered
+
+⚠️ **Role permissions:**
+• **Admin** - Full access to all features
+• **Manager** - Can view and manage transactions, but can't change settings
+• **Viewer** - Read-only access to transactions and reports`
   }
 
   if (input.includes('refund')) {
@@ -329,18 +339,27 @@ Would you like me to walk you through the refund process?`
   }
 
   if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
-    return `To add a new user to ${mockMerchant.name}:
+    return `I can help you invite a new user to ${mockMerchant.name}!
 
-1. [Go to Settings →](/)
-2. Click on **Users & Permissions** tab
-3. Click **"Add user"** button (top right)
-4. Fill in their details:
-   • Email address
-   • Name
-   • Role (Admin, Manager, or Viewer)
-5. Click **"Send invitation"**
+**To invite a new team member:**
 
-They'll receive an email to join your portal. Want me to guide you through it?`
+1. [Go to Settings → Users →](/)
+2. Click the **"Invite user"** button in the top right
+3. Enter their information:
+   • **Email address** - They'll receive an invite here
+   • **First & Last name**
+   • **Role** - Choose their permission level:
+     - **Admin:** Full access (manage settings, users, payments)
+     - **Manager:** Can process transactions but not change settings
+     - **Viewer:** Read-only access to transactions and reports
+4. Click **"Send invitation"**
+
+**What happens next:**
+✉️ The user receives an email invitation
+👤 They create their account by clicking the link
+✅ They appear in your Users list once registered
+
+Would you like me to walk you through the steps?`
   }
 
   if ((input.includes('block') || input.includes('prevent')) && (input.includes('ireland') || input.includes('country'))) {
@@ -635,9 +654,9 @@ export function getPageSuggestions(page: string): string[] {
       'What\'s my dispute rate?',
     ],
     settings: [
-      'How do I add a new user?',
+      'How do I invite a new user?',
+      'How do I add a team member?',
       'How do I block transactions from Ireland?',
-      'How do I change notification preferences?',
     ],
   }
 
