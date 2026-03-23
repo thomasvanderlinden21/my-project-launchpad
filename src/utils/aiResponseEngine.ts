@@ -24,12 +24,26 @@ const patterns = {
   greeting: /^(?:hi|hello|hey|thanks|thank you|good morning|good afternoon)/i,
 }
 
+// Conversation state for multi-turn interactions
+interface ConversationState {
+  flow?: 'add-user' | 'update-terminal'
+  step?: number
+  data?: Record<string, string>
+}
+
+let conversationState: ConversationState = {}
+
 export function generateResponse(
   userInput: string,
   context: PageContext,
   lastTopic: string | null
 ): string {
   const input = userInput.toLowerCase().trim()
+
+  // Check if we're in an active conversation flow
+  if (conversationState.flow) {
+    return handleConversationFlow(input, conversationState)
+  }
 
   // Greeting
   if (patterns.greeting.test(input)) {
@@ -78,6 +92,115 @@ export function generateResponse(
 
   // Fallback
   return generateFallbackResponse()
+}
+
+function handleConversationFlow(input: string, state: ConversationState): string {
+  if (state.flow === 'add-user') {
+    return handleAddUserFlow(input, state)
+  }
+  return generateFallbackResponse()
+}
+
+function handleAddUserFlow(input: string, state: ConversationState): string {
+  const step = state.step || 0
+  state.data = state.data || {}
+
+  // Handle cancellation
+  if (input.includes('cancel') || input.includes('stop') || input.includes('nevermind')) {
+    conversationState = {}
+    return 'No problem! User invitation cancelled. Let me know if you need anything else.'
+  }
+
+  switch (step) {
+    case 0: // Ask for email
+      return `Great! I'll help you invite a new user.
+
+📧 **What's their email address?**
+
+(Or type "cancel" to stop)`
+
+    case 1: // Collect email, ask for first name
+      // Simple email validation
+      if (!input.includes('@') || !input.includes('.')) {
+        return `That doesn't look like a valid email address. Please provide a valid email like: name@company.com`
+      }
+      state.data.email = input.trim()
+      state.step = 2
+      return `Got it! Email: **${state.data.email}**
+
+👤 **What's their first name?**`
+
+    case 2: // Collect first name, ask for last name
+      state.data.firstName = input.trim()
+      state.step = 3
+      return `Perfect! First name: **${state.data.firstName}**
+
+👤 **What's their last name?**`
+
+    case 3: // Collect last name, ask for role
+      state.data.lastName = input.trim()
+      state.step = 4
+      return `Great! Last name: **${state.data.lastName}**
+
+🔐 **What role should they have?**
+
+• Type **1** for **Admin** (full access to everything)
+• Type **2** for **Manager** (can manage transactions, not settings)
+• Type **3** for **Viewer** (read-only access)`
+
+    case 4: // Collect role, ask for confirmation
+      let role = ''
+      if (input.includes('1') || input.toLowerCase().includes('admin')) {
+        role = 'Admin'
+      } else if (input.includes('2') || input.toLowerCase().includes('manager')) {
+        role = 'Manager'
+      } else if (input.includes('3') || input.toLowerCase().includes('viewer')) {
+        role = 'Viewer'
+      } else {
+        return `Please choose a valid role:
+• Type **1** for Admin
+• Type **2** for Manager
+• Type **3** for Viewer`
+      }
+
+      state.data.role = role
+      state.step = 5
+      return `Perfect! Here's the summary:
+
+**New User Details:**
+📧 Email: ${state.data.email}
+👤 Name: ${state.data.firstName} ${state.data.lastName}
+🔐 Role: ${state.data.role}
+
+**Ready to send the invitation?**
+
+Type **"yes"** to confirm and invite this user, or **"cancel"** to stop.`
+
+    case 5: // Confirmation
+      if (input.includes('yes') || input.includes('confirm') || input.includes('send')) {
+        const userDetails = `${state.data.firstName} ${state.data.lastName} (${state.data.email}) as ${state.data.role}`
+        conversationState = {} // Reset state
+        return `✅ **Invitation sent!**
+
+I've sent an invitation to **${state.data.email}**.
+
+**What happens next:**
+1. ${state.data.firstName} will receive an email invitation
+2. They'll click the link to create their account
+3. Once registered, they'll appear in your Users list with ${state.data.role} permissions
+
+[Go to Settings > Users →](/) to see all your team members.
+
+Need to invite someone else?`
+      } else {
+        conversationState = {} // Reset state
+        return 'User invitation cancelled. Let me know if you\'d like to try again!'
+      }
+
+    default:
+      conversationState = {} // Reset on error
+      return generateFallbackResponse()
+  }
 }
 
 function generateGreeting(context: PageContext): string {
@@ -160,28 +283,13 @@ The new terminal will appear in your list once it\'s shipped.`
   }
 
   if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
-    return `To add a new user to your team:
-
-1. Go to **Settings** from the sidebar
-2. Click on the **Users** tab
-3. Click the **"Invite user"** button (top right)
-4. Fill in their details:
-   • **Email address** (required)
-   • **First name** and **Last name**
-   • **Role:** Choose Admin, Manager, or Viewer
-5. Click **"Send invitation"**
-
-[Go to Settings > Users →](/)
-
-💡 **What happens next:**
-• The user receives an email invitation
-• They click the link to accept and create their account
-• They'll appear in your Users list once registered
-
-⚠️ **Role permissions:**
-• **Admin** - Full access to all features
-• **Manager** - Can view and manage transactions, but can't change settings
-• **Viewer** - Read-only access to transactions and reports`
+    // Start the add-user conversation flow
+    conversationState = {
+      flow: 'add-user',
+      step: 1,
+      data: {}
+    }
+    return handleAddUserFlow('', conversationState)
   }
 
   if (input.includes('refund')) {
@@ -339,27 +447,13 @@ Would you like me to walk you through the refund process?`
   }
 
   if ((input.includes('add') || input.includes('create') || input.includes('invite')) && input.includes('user')) {
-    return `I can help you invite a new user to ${mockMerchant.name}!
-
-**To invite a new team member:**
-
-1. [Go to Settings → Users →](/)
-2. Click the **"Invite user"** button in the top right
-3. Enter their information:
-   • **Email address** - They'll receive an invite here
-   • **First & Last name**
-   • **Role** - Choose their permission level:
-     - **Admin:** Full access (manage settings, users, payments)
-     - **Manager:** Can process transactions but not change settings
-     - **Viewer:** Read-only access to transactions and reports
-4. Click **"Send invitation"**
-
-**What happens next:**
-✉️ The user receives an email invitation
-👤 They create their account by clicking the link
-✅ They appear in your Users list once registered
-
-Would you like me to walk you through the steps?`
+    // Start the add-user conversation flow
+    conversationState = {
+      flow: 'add-user',
+      step: 1,
+      data: {}
+    }
+    return handleAddUserFlow('', conversationState)
   }
 
   if ((input.includes('block') || input.includes('prevent')) && (input.includes('ireland') || input.includes('country'))) {
