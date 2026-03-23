@@ -750,6 +750,17 @@ export default function Portal({ variant = 'v1' }: PortalProps) {
         isOpen={isAIAssistantOpen}
         onClose={togglePanel}
         onNavigate={handleAINavigate}
+        onPageNavigate={(page, subPage) => {
+          console.log('AI Page navigate:', page, subPage)
+          setActiveNav(page)
+          if (page === 'sales' && subPage) {
+            setActiveSalesSubItem(subPage)
+          } else if (page === 'settings' && subPage) {
+            setActiveSettingsSubItem(subPage)
+          } else if (page === 'my-business' && subPage) {
+            setActiveMyBusinessSubItem(subPage)
+          }
+        }}
       />
     </div>
   )

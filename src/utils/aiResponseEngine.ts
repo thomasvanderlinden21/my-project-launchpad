@@ -132,7 +132,7 @@ function handleAddUserFlow(input: string, state: ConversationState): string {
 3. Click the **"Invite user"** button (top right)
 4. Fill in their details and send the invitation
 
-[Go to Settings > Users →](/)
+[Go to Settings > Users →](/settings/users)
 
 **Or I can help you add the user right now!**
 
@@ -240,7 +240,7 @@ I've sent an invitation to **${state.data.email}**.
 2. They'll click the link to create their account
 3. Once registered, they'll appear in your Users list with ${state.data.role} permissions
 
-[Go to Settings > Users →](/) to see **${state.data.firstName} ${state.data.lastName}** in your team!
+[Go to Settings > Users →](/settings/users) to see **${state.data.firstName} ${state.data.lastName}** in your team!
 
 Need to invite someone else?`
       } else {
@@ -311,7 +311,7 @@ function generateHowToResponse(input: string, context: PageContext): string {
 3. Click the **"Update terminal"** button (top right)
 4. Wait for the update to complete (usually 1-2 minutes)
 
-[Go to Terminals →](/)
+[Go to Terminals →](/terminals)
 
 ⚠️ **Important:**
 • Don't power off the terminal during the update
@@ -328,7 +328,7 @@ function generateHowToResponse(input: string, context: PageContext): string {
 4. Fill in the delivery details
 5. Confirm your order
 
-[Go to Terminals →](/)
+[Go to Terminals →](/terminals)
 
 The new terminal will appear in your list once it\'s shipped.`
   }
@@ -355,7 +355,7 @@ The new terminal will appear in your list once it\'s shipped.`
 5. Add a reason (optional but recommended)
 6. Confirm the refund
 
-[Go to Transactions →](/)
+[Go to Transactions →](/sales/transactions)
 
 ⚠️ **Note:** Refunds typically take 5-10 business days to appear on the customer's account.`
     }
@@ -368,7 +368,7 @@ The new terminal will appear in your list once it\'s shipped.`
 5. Add a reason (optional but recommended)
 6. Confirm the refund
 
-[Go to Transactions →](/)
+[Go to Transactions →](/sales/transactions)
 
 ⚠️ **Note:** Refunds typically take 5-10 business days to appear on the customer's account.`
   }
@@ -385,7 +385,7 @@ The new terminal will appear in your list once it\'s shipped.`
    • **Action:** Block transaction
 5. Click **"Save rule"**
 
-[Go to Settings →](/)
+[Go to Settings →](/settings)
 
 ⚠️ **Important:** This will immediately block all transactions from the specified country. Make sure this is what you want before activating the rule.`
   }
@@ -461,9 +461,12 @@ Try asking "Compare this month vs last month" or "Show sales trend this quarter"
 function generateActionResponse(input: string, context: PageContext): string {
   if (input.includes('export')) {
     const currentPage = context.page
+    const pageUrl = currentPage === 'transactions' ? '/sales/transactions' :
+                    currentPage === 'terminals' ? '/terminals' :
+                    `/${currentPage}`
     return `To export ${currentPage} data, click the **Export** button at the top right of the page. Your data will download as a CSV file.
 
-[View ${context.pageTitle} →](/)`
+[View ${context.pageTitle} →](${pageUrl})`
   }
 
   if (input.includes('filter') && input.includes('failed')) {
@@ -474,7 +477,7 @@ function generateActionResponse(input: string, context: PageContext): string {
 3. Select "Failed" under Status
 4. Click "Apply filters"
 
-Or [Go to Transactions →](/) and I\'ll help you set it up!`
+Or [Go to Transactions →](/sales/transactions) and I\'ll help you set it up!`
   }
 
   if (input.includes('refund')) {
@@ -488,7 +491,7 @@ Or [Go to Transactions →](/) and I\'ll help you set it up!`
 • Status: ${refundableTransaction.status}
 
 **To refund this:**
-1. [Go to Transactions →](/)
+1. [Go to Transactions →](/sales/transactions)
 2. Click on the transaction
 3. Click **"Refund"** button
 4. Enter amount and confirm
@@ -511,7 +514,7 @@ Would you like me to walk you through the refund process?`
     return `I can help you block transactions from Ireland (or any country).
 
 **To create a blocking rule:**
-1. [Go to Settings →](/)
+1. [Go to Settings →](/settings)
 2. Navigate to **Fraud Prevention** tab
 3. Click **"Add rule"** (top right)
 4. Set up your rule:
@@ -561,7 +564,7 @@ function generateSpecificLookupResponse(input: string, context: PageContext): st
 
 ${failedTxs.map(tx => `• ${tx.id} - ${tx.amount} (${tx.date.split(',')[0]})`).join('\n')}
 
-[View all transactions →](/) to see more details or attempt to retry them.`
+[View all transactions →](/sales/transactions) to see more details or attempt to retry them.`
   }
 
   if (input.includes('update') && input.includes('terminal')) {
@@ -595,7 +598,7 @@ ${terminalsList}
 
 ${offlineTerminals.map(t => `• **${t.name}** (${t.serialNumber}) - ${t.locationValue}`).join('\n')}
 
-[View Terminals →](/) for more details and troubleshooting options.`
+[View Terminals →](/terminals) for more details and troubleshooting options.`
   }
 
   if (input.includes('unpaid')) {
@@ -605,7 +608,7 @@ ${invoices.list.filter(inv => inv.status === 'unpaid').map(inv => `• ${inv.id}
 
 **Next due:** ${invoices.nextDue} - ${invoices.nextAmount}
 
-[View Invoices →](/)`
+[View Invoices →](/sales/invoices)`
   }
 
   if (input.includes('open') && input.includes('dispute')) {
@@ -615,7 +618,7 @@ ${disputes.list.filter(d => d.status === 'open').map(d => `• ${d.id} - ${d.amo
 
 ${disputes.requiresAction > 0 ? `⚠️ **${disputes.requiresAction} requires your action**` : ''}
 
-[View Disputes →](/)`
+[View Disputes →](/sales/disputes)`
   }
 
   if (input.includes('pending')) {
@@ -626,7 +629,7 @@ ${pendingTxs.slice(0, 3).map(tx => `• ${tx.id} - ${tx.amount} (${tx.date.split
 
 These are awaiting confirmation. They typically process within 24 hours.
 
-[View all transactions →](/)`
+[View all transactions →](/sales/transactions)`
   }
 
   return `I can look up specific data for you. Try asking:
@@ -674,7 +677,7 @@ Everything looks good! ${transactions.failed > 0 ? `You have ${transactions.fail
 
 **Total volume:** ${transactions.totalVolume}
 
-[View detailed transactions →](/)`
+[View detailed transactions →](/sales/transactions)`
   }
 
   if (page === 'terminals' || input.includes('terminal')) {
@@ -700,7 +703,7 @@ ${terminals.needsUpdate > 0 ? `⚠️ **Action needed:** ${terminals.needsUpdate
 
 Your sales are trending ${parseFloat(sales.vsLastMonth) > 0 ? 'upward' : 'downward'}! 📊
 
-[View detailed reports →](/)`
+[View detailed reports →](/sales/reports)`
   }
 
   return `**${mockMerchant.name} Portal Overview**
@@ -724,7 +727,7 @@ ${failedTxs.map(tx => `**${tx.id}**
 • Type: ${tx.transactionType}
 • Order: ${tx.orderId}`).join('\n\n')}
 
-[View in Transactions →](/) to retry or refund.`
+[View in Transactions →](/sales/transactions) to retry or refund.`
   }
 
   if (lastTopic.includes('offline') || lastTopic.includes('terminal')) {
@@ -741,7 +744,7 @@ To troubleshoot:
 2. Restart the terminal
 3. Contact support if issue persists
 
-[View Terminals →](/)`
+[View Terminals →](/terminals)`
   }
 
   return `Based on our conversation, here's more detail:\n\n${generateOverviewResponse(input, context)}`

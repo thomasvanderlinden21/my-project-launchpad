@@ -12,12 +12,15 @@ export interface AIAssistantPanelProps {
   onClose: () => void
   /** Callback to navigate to specific items (e.g., terminal:2) */
   onNavigate?: (target: string) => void
+  /** Callback to navigate to pages (e.g., settings, settings/users) */
+  onPageNavigate?: (page: string, subPage?: string) => void
 }
 
 export default function AIAssistantPanel({
   isOpen,
   onClose,
   onNavigate,
+  onPageNavigate,
 }: AIAssistantPanelProps) {
   const {
     conversations,
@@ -67,9 +70,17 @@ export default function AIAssistantPanel({
             if (href.startsWith('terminal:') && onNavigate) {
               console.log('Navigating to terminal:', href)
               onNavigate(href)
-            } else if (href === '/') {
-              // Handle navigation to pages - for now just log
-              console.log('Navigate to page:', href)
+            } else if (href.startsWith('/') && onPageNavigate) {
+              // Parse the href to determine page and subpage
+              // Format: /page or /page/subpage
+              const path = href.substring(1) // Remove leading /
+              const parts = path.split('/')
+              const page = parts[0] || 'home'
+              const subPage = parts[1]
+
+              console.log('Navigating to page:', page, subPage)
+              onPageNavigate(page, subPage)
+              onClose() // Close AI panel after navigation
             }
           }
           return
@@ -80,7 +91,7 @@ export default function AIAssistantPanel({
 
     document.addEventListener('click', handleLinkClick, true)
     return () => document.removeEventListener('click', handleLinkClick, true)
-  }, [onNavigate])
+  }, [onNavigate, onPageNavigate, onClose])
 
   const handleSend = () => {
     if (inputValue.trim()) {
