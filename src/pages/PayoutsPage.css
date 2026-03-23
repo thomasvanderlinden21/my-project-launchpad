@@ -1,0 +1,254 @@
+.payouts-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl, 24px);
+  height: 100%;
+}
+
+/* Header */
+.payouts-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-xl, 16px);
+}
+
+.payouts-page__header-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs, 4px);
+}
+
+.payouts-page__title {
+  font-family: var(--font-family-primary, 'Raleway', sans-serif);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+  color: var(--content-primary, #121621);
+  margin: 0;
+}
+
+.payouts-page__subtitle {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  color: var(--content-secondary, #525d5d);
+  margin: 0;
+}
+
+.payouts-page__header-actions {
+  display: flex;
+  gap: var(--spacing-md, 8px);
+  align-items: center;
+}
+
+/* View Toggle */
+.payouts-page__view-toggle {
+  display: flex;
+  gap: 0;
+  background-color: var(--surface-neutral-low, #f5f7f7);
+  border-radius: var(--radius-sm, 6px);
+  padding: 2px;
+}
+
+.payouts-page__view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--content-secondary, #525d5d);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.payouts-page__view-btn:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.payouts-page__view-btn--active {
+  background-color: var(--surface-primary, #ffffff);
+  color: var(--content-primary, #121621);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid View */
+.payouts-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-xl, 16px);
+  padding-bottom: var(--spacing-xl, 16px);
+}
+
+/* Payout Card */
+.payout-card {
+  background-color: var(--surface-primary, #ffffff);
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-md, 8px);
+  padding: var(--spacing-xl, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 12px);
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.payout-card:hover {
+  border-color: var(--border-neutral-mid, #d5d7da);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.payout-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md, 8px);
+}
+
+.payout-card__id {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-4xs, 14px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-4xs, 18px);
+  color: var(--content-primary, #121621);
+}
+
+.payout-card__amount {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs, 6px);
+}
+
+.payout-card__currency {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-4xs, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-4xs, 18px);
+  color: var(--content-secondary, #525d5d);
+}
+
+.payout-card__value {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-xl, 28px);
+  font-weight: var(--font-weight-light, 300);
+  line-height: var(--line-height-xl, 36px);
+  color: var(--content-primary, #121621);
+}
+
+.payout-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 10px);
+  padding-top: var(--spacing-sm, 10px);
+  border-top: 1px solid var(--border-neutral-low, #e6ebeb);
+}
+
+.payout-card__detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md, 8px);
+}
+
+.payout-card__label {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-5xs, 12px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-5xs, 16px);
+  color: var(--content-tertiary, #6b7676);
+}
+
+.payout-card__info {
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: var(--font-size-5xs, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  line-height: var(--line-height-5xs, 16px);
+  color: var(--content-primary, #121621);
+  text-align: right;
+}
+
+/* Table Container */
+.payouts-page__table-container {
+  border: 1px solid var(--border-neutral-low, #e6ebeb);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+/* Table */
+.payouts-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--surface-primary, #ffffff);
+}
+
+.payouts-page__table tbody tr:hover {
+  background-color: var(--surface-neutral-low, #f5f7f7);
+}
+
+.payouts-page__table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Dark mode */
+[data-theme="dark"] .payouts-page__title {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .payouts-page__subtitle {
+  color: #b4bbc6;
+}
+
+[data-theme="dark"] .payouts-page__table-container {
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .payouts-page__table {
+  background-color: #1e2430;
+}
+
+[data-theme="dark"] .payouts-page__table tbody tr:hover {
+  background-color: #2a3445;
+}
+
+[data-theme="dark"] .payouts-page__view-toggle {
+  background-color: #2a3445;
+}
+
+[data-theme="dark"] .payouts-page__view-btn:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .payouts-page__view-btn--active {
+  background-color: #1e2430;
+  color: #e4eaee;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .payout-card {
+  background-color: #1e2430;
+  border-color: #2a3445;
+}
+
+[data-theme="dark"] .payout-card:hover {
+  border-color: #3d4759;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .payout-card__id,
+[data-theme="dark"] .payout-card__value,
+[data-theme="dark"] .payout-card__info {
+  color: #e4eaee;
+}
+
+[data-theme="dark"] .payout-card__currency,
+[data-theme="dark"] .payout-card__label {
+  color: #6b7c8a;
+}
+
+[data-theme="dark"] .payout-card__details {
+  border-top-color: #2a3445;
+}

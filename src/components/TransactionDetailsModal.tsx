@@ -7,6 +7,8 @@ import Chip from './Chip'
 import Stepper from './Stepper'
 import Step from './Step'
 import Icon from './Icon'
+import Timeline from './Timeline'
+import type { TimelineItem } from './Timeline'
 import './TransactionDetailsModal.css'
 
 export interface Transaction {
@@ -260,69 +262,54 @@ export default function TransactionDetailsModal({
       children: (
         <div className="transaction-details-content">
           {transaction.history ? (
-            <div className="transaction-timeline">
-              {transaction.history.settled && (
-                <div className="transaction-timeline-item">
-                  <div className="transaction-timeline-marker">
-                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
-                    <div className="transaction-timeline-line"></div>
-                  </div>
-                  <div className="transaction-timeline-content">
-                    <div className="transaction-timeline-header">
-                      <h4 className="transaction-timeline-title">Settled</h4>
-                      <span className="transaction-timeline-date">{transaction.history.settled.date}</span>
-                    </div>
-                    <p className="transaction-timeline-description">{transaction.history.settled.status}</p>
-                  </div>
-                </div>
-              )}
-              {transaction.history.processedRejected && (
-                <div className="transaction-timeline-item">
-                  <div className="transaction-timeline-marker">
-                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
-                    <div className="transaction-timeline-line"></div>
-                  </div>
-                  <div className="transaction-timeline-content">
-                    <div className="transaction-timeline-header">
-                      <h4 className="transaction-timeline-title">Processed or Rejected</h4>
-                      <span className="transaction-timeline-date">{transaction.history.processedRejected.date}</span>
-                    </div>
-                    <p className="transaction-timeline-description">{transaction.history.processedRejected.status}</p>
-                  </div>
-                </div>
-              )}
-              {transaction.history.captured && (
-                <div className="transaction-timeline-item">
-                  <div className="transaction-timeline-marker">
-                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
-                    <div className="transaction-timeline-line"></div>
-                  </div>
-                  <div className="transaction-timeline-content">
-                    <div className="transaction-timeline-header">
-                      <h4 className="transaction-timeline-title">Captured</h4>
-                      <span className="transaction-timeline-date">{transaction.history.captured.date}</span>
-                    </div>
-                    {transaction.history.captured.status && (
-                      <p className="transaction-timeline-description">{transaction.history.captured.status}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-              {transaction.history.authorized && (
-                <div className="transaction-timeline-item transaction-timeline-item--last">
-                  <div className="transaction-timeline-marker">
-                    <div className="transaction-timeline-dot transaction-timeline-dot--completed"></div>
-                  </div>
-                  <div className="transaction-timeline-content">
-                    <div className="transaction-timeline-header">
-                      <h4 className="transaction-timeline-title">Authorized</h4>
-                      <span className="transaction-timeline-date">{transaction.history.authorized.date}</span>
-                    </div>
-                    <p className="transaction-timeline-description">{transaction.history.authorized.status}</p>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Timeline
+              items={[
+                ...(transaction.history.settled
+                  ? [
+                      {
+                        id: 'settled',
+                        title: 'Settled',
+                        description: transaction.history.settled.status,
+                        timestamp: transaction.history.settled.date,
+                        status: 'success' as const,
+                      },
+                    ]
+                  : []),
+                ...(transaction.history.processedRejected
+                  ? [
+                      {
+                        id: 'processed',
+                        title: 'Processed or Rejected',
+                        description: transaction.history.processedRejected.status,
+                        timestamp: transaction.history.processedRejected.date,
+                        status: 'success' as const,
+                      },
+                    ]
+                  : []),
+                ...(transaction.history.captured
+                  ? [
+                      {
+                        id: 'captured',
+                        title: 'Captured',
+                        description: transaction.history.captured.status,
+                        timestamp: transaction.history.captured.date,
+                        status: 'success' as const,
+                      },
+                    ]
+                  : []),
+                ...(transaction.history.authorized
+                  ? [
+                      {
+                        id: 'authorized',
+                        title: 'Authorized',
+                        description: transaction.history.authorized.status,
+                        timestamp: transaction.history.authorized.date,
+                        status: 'success' as const,
+                      },
+                    ]
+                  : []),
+              ]}
+            />
           ) : (
             <Stepper activeStep={transaction.status === 'Paid' ? 4 : 2} orientation="vertical">
               <Step

@@ -14,6 +14,11 @@ const navCards = [
     desc: 'Preview the Worldline merchant onboarding experience',
     to: '/',
   },
+  {
+    title: 'Merchant Portal v2',
+    desc: 'Preview the updated Worldline merchant portal experience',
+    to: '/portal-v2',
+  },
 ]
 
 export default function LandingPage() {

@@ -7,9 +7,7 @@
 .progress-stepper__step-wrapper {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   gap: 16px;
-  position: relative;
 }
 
 .progress-stepper__step {
@@ -17,8 +15,7 @@
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  width: 24px;
-  position: relative;
+  align-self: stretch;
 }
 
 .progress-stepper__icon {
@@ -29,6 +26,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .progress-stepper__icon--complete {
@@ -59,7 +57,11 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 0 0 16px 0;
+  padding-bottom: var(--spacing-xl, 16px);
+}
+
+.progress-stepper__step-wrapper:last-child .progress-stepper__content {
+  padding-bottom: 0;
 }
 
 .progress-stepper__text {
@@ -95,9 +97,8 @@
 
 .progress-stepper__line {
   width: 2px;
-  position: absolute;
-  top: 28px;
-  bottom: -4px;
+  flex: 1;
+  min-height: 24px;
   transition: background-color 0.2s;
 }
 

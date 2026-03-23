@@ -163,3 +163,33 @@
 .landing-card:hover .landing-card-arrow {
   transform: translateX(3px);
 }
+
+/* Merchant Portal v2 - Blue variant */
+.landing-card:nth-child(3) {
+  background: var(--surface-brand-high, #2c6764);
+  border-color: var(--surface-brand-high, #2c6764);
+}
+
+.landing-card:nth-child(3):hover {
+  background: #245854;
+  border-color: #245854;
+}
+
+.landing-card:nth-child(3) .landing-card-title,
+.landing-card:nth-child(3) .landing-card-desc {
+  color: white;
+}
+
+.landing-card:nth-child(3) .landing-card-arrow {
+  color: white;
+}
+
+[data-theme="dark"] .landing-card:nth-child(3) {
+  background: #2c9d96;
+  border-color: #2c9d96;
+}
+
+[data-theme="dark"] .landing-card:nth-child(3):hover {
+  background: #3fbeb5;
+  border-color: #3fbeb5;
+}

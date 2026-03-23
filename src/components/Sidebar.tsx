@@ -14,6 +14,12 @@ const salesSubItems = [
   { id: 'disputes', label: 'Disputes' },
 ]
 
+const myBusinessSubItems = [
+  { id: 'payouts', label: 'Payouts' },
+  { id: 'invoices', label: 'Invoices' },
+  { id: 'documents', label: 'Documents' },
+]
+
 const settingsSubItems = [
   { id: 'overview', label: 'Overview', group: 'main' },
   { id: 'divider1', label: '', group: 'divider' },
@@ -55,7 +61,10 @@ interface SidebarProps {
   onSalesSubNavigate?: (id: string) => void
   activeSettingsSubItem?: string
   onSettingsSubNavigate?: (id: string) => void
+  activeMyBusinessSubItem?: string
+  onMyBusinessSubNavigate?: (id: string) => void
   onAIAssistantClick?: () => void
+  enableMyBusinessSubmenu?: boolean
 }
 
 export default function Sidebar({
@@ -65,7 +74,10 @@ export default function Sidebar({
   onSalesSubNavigate,
   activeSettingsSubItem = 'overview',
   onSettingsSubNavigate,
-  onAIAssistantClick
+  activeMyBusinessSubItem = 'payouts',
+  onMyBusinessSubNavigate,
+  onAIAssistantClick,
+  enableMyBusinessSubmenu = false
 }: SidebarProps) {
   const handleClick = (id: string) => {
     if (id === 'ai-assistant') {
@@ -83,6 +95,10 @@ export default function Sidebar({
     onSettingsSubNavigate?.(id)
   }
 
+  const handleMyBusinessSubClick = (id: string) => {
+    onMyBusinessSubNavigate?.(id)
+  }
+
   const renderIcon = (icon: IconName | string, size: number) => {
     if (typeof icon === 'string' && icon.startsWith('/assets/')) {
       return <img src={icon} alt="" width={size} height={size} style={{ display: 'block' }} />
@@ -92,14 +108,15 @@ export default function Sidebar({
 
   const isSalesActive = activeItem === 'sales'
   const isSettingsActive = activeItem === 'settings'
+  const isMyBusinessActive = activeItem === 'my-business' && enableMyBusinessSubmenu
 
-  const hasSubPanel = isSalesActive || isSettingsActive
+  const hasSubPanel = isSalesActive || isSettingsActive || isMyBusinessActive
 
   return (
     <nav className={`sidebar${hasSubPanel ? ' sidebar--sub-active' : ''}`} aria-label="Main navigation">
       {/* Main navigation — always on the left */}
       <div className={`sidebar__main${hasSubPanel ? ' sidebar__main--collapsed' : ''}`}>
-        <Link to="/menu" className="sidebar__logo" aria-label="Go to menu">
+        <Link to="/landing" className="sidebar__logo" aria-label="Go to landing">
           {hasSubPanel
             ? <WorldlineIconSvg aria-label="Worldline" className="sidebar__logo-icon" />
             : <WorldlineLogoSvg aria-label="Worldline" className="sidebar__logo-svg" />
@@ -173,9 +190,9 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Sub-navigation panel — appears to the right of the icon strip when Sales or Settings is active */}
+      {/* Sub-navigation panel — appears to the right of the icon strip when Sales, Settings, or My Business is active */}
       {hasSubPanel && (
-        <div className={`sidebar__sub-panel${isSalesActive ? ' sidebar__sub-panel--visible' : ''}${isSettingsActive ? ' sidebar__sub-panel--visible' : ''}`}>
+        <div className={`sidebar__sub-panel${isSalesActive ? ' sidebar__sub-panel--visible' : ''}${isSettingsActive ? ' sidebar__sub-panel--visible' : ''}${isMyBusinessActive ? ' sidebar__sub-panel--visible' : ''}`}>
           {isSalesActive && (
             <>
               <div className="sidebar__sub-panel-header">
@@ -216,6 +233,25 @@ export default function Sidebar({
                     </li>
                   )
                 })}
+              </ul>
+            </>
+          )}
+          {isMyBusinessActive && (
+            <>
+              <div className="sidebar__sub-panel-header">
+                <span className="sidebar__sub-panel-title">My business</span>
+              </div>
+              <ul className="sidebar__sub-panel-list" role="list">
+                {myBusinessSubItems.map(sub => (
+                  <li key={sub.id}>
+                    <button
+                      className={`sidebar__sub-panel-item${activeMyBusinessSubItem === sub.id ? ' sidebar__sub-panel-item--active' : ''}`}
+                      onClick={() => handleMyBusinessSubClick(sub.id)}
+                    >
+                      {sub.label}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </>
           )}

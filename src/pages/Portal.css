@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.portal--v2 {
+  background-color: #2563eb;
+}
+
 .portal::before {
   content: '';
   position: absolute;
@@ -42,6 +46,43 @@
 
 [data-theme="dark"] .portal {
   background-color: #121621;
+}
+
+[data-theme="dark"] .portal--v2 {
+  background-color: #1e3a8a;
+}
+
+/* V2 Banner */
+.portal__v2-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #0f766e 0%, #0d9488 100%);
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  font-family: var(--font-family-secondary, 'Inter', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1000;
+}
+
+[data-theme="dark"] .portal__v2-banner {
+  background: linear-gradient(90deg, #134e4a 0%, #115e59 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.portal--v2 .portal__page {
+  margin-top: 64px;
+}
+
+.portal--v2 .sidebar {
+  padding-top: 52px;
+  height: calc(100vh - 52px);
 }
 
 [data-theme="dark"] .portal::before {

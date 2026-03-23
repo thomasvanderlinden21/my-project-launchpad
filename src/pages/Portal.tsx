@@ -19,6 +19,7 @@ import DisputesPage from './DisputesPage'
 import TerminalsPage from './TerminalsPage'
 import TerminalDetailPage from './TerminalDetailPage'
 import SettingsPage from './SettingsPage'
+import PayoutsPage from './PayoutsPage'
 import './Portal.css'
 
 // Navigation item to label mapping
@@ -30,6 +31,9 @@ const navLabels: Record<string, string> = {
   invoices: 'Invoices',
   reports: 'Reports',
   disputes: 'Disputes',
+  // My Business sub-items
+  payouts: 'Payouts',
+  documents: 'Documents',
   // Settings sub-items
   overview: 'Settings overview',
   users: 'Users',
@@ -55,10 +59,15 @@ const navLabels: Record<string, string> = {
   'ai-assistant': 'AI Assistant',
 }
 
-export default function Portal() {
+interface PortalProps {
+  variant?: 'v1' | 'v2'
+}
+
+export default function Portal({ variant = 'v1' }: PortalProps) {
   const [activeNav, setActiveNav] = useState('home')
   const [activeSalesSubItem, setActiveSalesSubItem] = useState('transactions')
   const [activeSettingsSubItem, setActiveSettingsSubItem] = useState('overview')
+  const [activeMyBusinessSubItem, setActiveMyBusinessSubItem] = useState('payouts')
   const [selectedTerminalId, setSelectedTerminalId] = useState<string | null>(null)
   const [isSpotlightOpen, setIsSpotlightOpen] = useState(false)
   const [selectedShopIds, setSelectedShopIds] = useState(['2'])
@@ -87,6 +96,9 @@ export default function Portal() {
     }
     if (activeNav === 'settings') {
       return activeSettingsSubItem
+    }
+    if (activeNav === 'my-business') {
+      return activeMyBusinessSubItem
     }
     return activeNav
   }
@@ -123,6 +135,23 @@ export default function Portal() {
         {
           label: 'Settings',
           onClick: () => setActiveSettingsSubItem('overview')
+        },
+        {
+          label: navLabels[currentPage] || currentPage
+        }
+      ]
+    }
+
+    // My Business sub-pages should show "Home / My Business / Page Name"
+    if (activeNav === 'my-business') {
+      return [
+        {
+          label: 'Home',
+          onClick: () => setActiveNav('home')
+        },
+        {
+          label: 'My Business',
+          onClick: () => setActiveMyBusinessSubItem('payouts')
         },
         {
           label: navLabels[currentPage] || currentPage
@@ -181,6 +210,10 @@ export default function Portal() {
     if (navItem === 'settings') {
       setActiveSettingsSubItem('overview')
     }
+    // If navigating to my-business, show payouts by default
+    if (navItem === 'my-business') {
+      setActiveMyBusinessSubItem('payouts')
+    }
     // If navigating to terminals, clear selected terminal to show overview
     if (navItem === 'terminals') {
       setSelectedTerminalId(null)
@@ -232,7 +265,7 @@ export default function Portal() {
       pageData: {},
       availableActions: [],
     })
-  }, [activeNav, activeSalesSubItem, activeSettingsSubItem, updateContext])
+  }, [activeNav, activeSalesSubItem, activeSettingsSubItem, activeMyBusinessSubItem, updateContext])
 
   const currentPage = getCurrentPage()
 
@@ -278,7 +311,10 @@ export default function Portal() {
   ]
 
   return (
-    <div className="portal">
+    <div className={`portal ${variant === 'v2' ? 'portal--v2' : ''}`}>
+      {variant === 'v2' && (
+        <div className="portal__v2-banner">Portal V2</div>
+      )}
       <Sidebar
         activeItem={activeNav}
         onNavigate={handleNavigate}
@@ -286,7 +322,10 @@ export default function Portal() {
         onSalesSubNavigate={setActiveSalesSubItem}
         activeSettingsSubItem={activeSettingsSubItem}
         onSettingsSubNavigate={setActiveSettingsSubItem}
+        activeMyBusinessSubItem={activeMyBusinessSubItem}
+        onMyBusinessSubNavigate={setActiveMyBusinessSubItem}
         onAIAssistantClick={handleAIAssistantToggle}
+        enableMyBusinessSubmenu={variant === 'v2'}
       />
       <div className={`portal__page${isAIAssistantOpen ? ' portal__page--ai-open' : ''}`}>
         <TopToolbar
@@ -317,6 +356,47 @@ export default function Portal() {
             <DisputesPage onNavigateHome={() => setActiveNav('home')} />
           ) : activeNav === 'settings' ? (
             <SettingsPage activeSection={activeSettingsSubItem} onNavigate={setActiveSettingsSubItem} />
+          ) : activeNav === 'my-business' && variant === 'v2' && activeMyBusinessSubItem === 'payouts' ? (
+            <PayoutsPage />
+          ) : activeNav === 'my-business' && variant === 'v2' && activeMyBusinessSubItem === 'invoices' ? (
+            <div className="portal__empty-page">
+              <EmptyState
+                icon="receipt"
+                title="Invoices coming soon"
+                description="View and manage your business invoices. This feature will be available in an upcoming release."
+                variant="left-aligned"
+                action={{
+                  label: 'Go to Home',
+                  onClick: () => setActiveNav('home')
+                }}
+              />
+            </div>
+          ) : activeNav === 'my-business' && variant === 'v2' && activeMyBusinessSubItem === 'documents' ? (
+            <div className="portal__empty-page">
+              <EmptyState
+                icon="folder"
+                title="Documents coming soon"
+                description="Access your business documents and contracts. This feature will be available in an upcoming release."
+                variant="left-aligned"
+                action={{
+                  label: 'Go to Home',
+                  onClick: () => setActiveNav('home')
+                }}
+              />
+            </div>
+          ) : activeNav === 'my-business' ? (
+            <div className="portal__empty-page">
+              <EmptyState
+                icon="apartment"
+                title="My business coming soon"
+                description="View business insights, track performance metrics, manage locations, and access key business analytics. This feature will be available in an upcoming release."
+                variant="left-aligned"
+                action={{
+                  label: 'Go to Home',
+                  onClick: () => setActiveNav('home')
+                }}
+              />
+            </div>
           ) : activeNav === 'terminals' && selectedTerminalId ? (
             <TerminalDetailPage
               terminalId={selectedTerminalId}
