@@ -758,3 +758,18 @@
 [data-theme="dark"] .portal__chart-tooltip-value {
   color: #e4eaee;
 }
+
+[data-theme="dark"] .portal__notification-icon--success {
+  background-color: rgba(5, 51, 33, 0.5);
+  color: #47cd89;
+}
+
+[data-theme="dark"] .portal__notification-icon--info {
+  background-color: rgba(88, 66, 165, 0.2);
+  color: #c4b5fd;
+}
+
+[data-theme="dark"] .portal__notification-icon--warning {
+  background-color: rgba(180, 83, 9, 0.2);
+  color: #fbbf24;
+}
