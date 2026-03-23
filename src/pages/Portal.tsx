@@ -235,16 +235,8 @@ export default function Portal({ variant = 'v1' }: PortalProps) {
 
   const handleSignOut = () => {
     console.log('Navigating to /landing')
-    navigate('/landing')
+    navigate('/landing', { replace: true })
   }
-
-  // Sync with route changes - if we're on a route that shouldn't show Portal, navigate away
-  useEffect(() => {
-    console.log('Portal location:', location.pathname)
-    if (location.pathname === '/landing') {
-      console.log('Portal detected /landing route, this should not happen')
-    }
-  }, [location])
 
   const handleAddAccount = () => {
     console.log('Add account clicked')

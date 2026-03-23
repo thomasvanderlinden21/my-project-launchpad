@@ -7,12 +7,10 @@ import ComponentDetail from './pages/ComponentDetail'
 import Portal from './pages/Portal'
 
 function AppRoutes() {
-  const location = useLocation()
-
   return (
     <Routes>
-      <Route path="/"                  element={<Portal key={location.pathname} />} />
-      <Route path="/portal-v2"         element={<Portal key={location.pathname} variant="v2" />} />
+      <Route path="/"                  element={<Portal />} />
+      <Route path="/portal-v2"         element={<Portal variant="v2" />} />
       <Route path="/landing"           element={<LandingPage />} />
       <Route path="/components"        element={<ComponentOverview />} />
       <Route path="/components/button" element={<ComponentDetail />} />
