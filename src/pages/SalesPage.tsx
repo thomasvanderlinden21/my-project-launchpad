@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Tabs from '../components/Tabs'
 import type { TabItem } from '../components/Tabs'
 import TableCell from '../components/TableCell'
@@ -9,6 +9,7 @@ import TransactionDetailsModal from '../components/TransactionDetailsModal'
 import type { Transaction as TransactionDetails } from '../components/TransactionDetailsModal'
 import ColumnManagementModal from '../components/ColumnManagementModal'
 import type { ColumnConfig } from '../components/ColumnManagementModal'
+import TransactionActionsMenu from '../components/TransactionActionsMenu'
 import Button from '../components/Button'
 import Icon from '../components/Icon'
 import Snackbar from '../components/Snackbar'
@@ -292,6 +293,8 @@ export default function SalesPage() {
   const [dateSortOrder, setDateSortOrder] = useState<'asc' | 'desc' | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [openActionsMenuId, setOpenActionsMenuId] = useState<string | null>(null)
+  const actionButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
   const [columns, setColumns] = useState<ColumnConfig[]>([
     { id: 'id', label: 'Transaction ID', visible: true, locked: true, order: 0 },
     { id: 'card', label: 'Card number', visible: true, order: 1 },
@@ -879,7 +882,9 @@ export default function SalesPage() {
                       actions
                       onActionClick={(e) => {
                         e.stopPropagation()
-                        console.log('Actions for', tx.id)
+                        const button = e.currentTarget as HTMLButtonElement
+                        actionButtonRefs.current.set(tx.id, button)
+                        setOpenActionsMenuId(openActionsMenuId === tx.id ? null : tx.id)
                       }}
                     />
                   </tr>
@@ -887,6 +892,49 @@ export default function SalesPage() {
               })}
             </tbody>
           </table>
+
+          {/* Transaction Actions Menus */}
+          {filteredTransactions.map(tx => {
+            const buttonRef = { current: actionButtonRefs.current.get(tx.id) || null }
+            return (
+              <TransactionActionsMenu
+                key={`menu-${tx.id}`}
+                transactionId={tx.id}
+                isOpen={openActionsMenuId === tx.id}
+                onClose={() => setOpenActionsMenuId(null)}
+                triggerRef={buttonRef}
+                onRefund={(transactionId) => {
+                  // Save the previous state for undo
+                  const transactionToRefund = transactions.find(t => t.id === transactionId)
+                  if (transactionToRefund) {
+                    setPreviousTransactionState({ ...transactionToRefund })
+                    setRefundedTransactionId(transactionId)
+                  }
+
+                  // Update transaction status to Refunded
+                  setTransactions(prev =>
+                    prev.map(t =>
+                      t.id === transactionId ? { ...t, status: 'Refunded' as Status } : t
+                    )
+                  )
+
+                  // Update the selected transaction to reflect the new status
+                  if (selectedTransaction && selectedTransaction.id === transactionId) {
+                    setSelectedTransaction({
+                      ...selectedTransaction,
+                      status: 'Refunded'
+                    })
+                  }
+
+                  // Show snackbar
+                  setShowRefundSnackbar(true)
+                }}
+                onShowDetails={(transactionId) => {
+                  handleRowClick(transactionId)
+                }}
+              />
+            )
+          })}
         </div>
 
         {/* Enhanced Pagination */}

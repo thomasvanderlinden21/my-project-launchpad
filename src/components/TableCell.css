@@ -52,6 +52,11 @@
   line-height: var(--line-height-4xs, 18px);
 }
 
+/* Actions cell - needs relative positioning for menu */
+.table-cell:has(.table-cell__actions-btn) {
+  position: relative;
+}
+
 /* Actions button */
 .table-cell__actions-btn {
   display: flex;
