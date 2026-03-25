@@ -4,6 +4,18 @@
   position: fixed;
   z-index: 1000;
   min-width: 200px;
+  animation: menuFadeIn 0.15s ease-out;
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .transaction-actions-menu__container {
