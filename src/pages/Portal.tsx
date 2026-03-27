@@ -12,6 +12,8 @@ import type { ProgressStep } from '../components/ProgressStepper'
 import EmptyState from '../components/EmptyState'
 import Icon from '../components/Icon'
 import Chip from '../components/Chip'
+import PerformanceChart from '../components/PerformanceChart'
+import TransactionTypeChart from '../components/TransactionTypeChart'
 import SalesPage from './SalesPage'
 import OrdersPage from './OrdersPage'
 import InvoicesPage from './InvoicesPage'
@@ -581,150 +583,42 @@ export default function Portal({ variant = 'v1' }: PortalProps) {
                 <div className="portal__notifications-container">
                   <h3 className="portal__notifications-title">Notifications</h3>
                   <div className="portal__notifications-list">
-                  <div className="portal__notification-card">
-                    <div className="portal__notification-icon portal__notification-icon--success">
-                      <Icon name="check-circle" size={20} />
+                    <div className="portal__notification-card">
+                      <div className="portal__notification-icon portal__notification-icon--success">
+                        <Icon name="check-circle" size={20} />
+                      </div>
+                      <div className="portal__notification-content">
+                        <h4 className="portal__notification-title">Weekly goal achieved</h4>
+                        <p className="portal__notification-text">Transaction volume exceeded target by 12%</p>
+                      </div>
                     </div>
-                    <div className="portal__notification-content">
-                      <h4 className="portal__notification-title">Weekly goal achieved</h4>
-                      <p className="portal__notification-text">Transaction volume exceeded target by 12%</p>
-                    </div>
-                  </div>
 
-                  <div className="portal__notification-card">
-                    <div className="portal__notification-icon portal__notification-icon--info">
-                      <Icon name="bell" size={20} />
+                    <div className="portal__notification-card">
+                      <div className="portal__notification-icon portal__notification-icon--info">
+                        <Icon name="bell" size={20} />
+                      </div>
+                      <div className="portal__notification-content">
+                        <h4 className="portal__notification-title">New market opportunity</h4>
+                        <p className="portal__notification-text">Strong growth detected in European markets</p>
+                      </div>
                     </div>
-                    <div className="portal__notification-content">
-                      <h4 className="portal__notification-title">New market opportunity</h4>
-                      <p className="portal__notification-text">Strong growth detected in European markets</p>
-                    </div>
-                  </div>
 
-                  <div className="portal__notification-card">
-                    <div className="portal__notification-icon portal__notification-icon--warning">
-                      <Icon name="alert-circle" size={20} />
-                    </div>
-                    <div className="portal__notification-content">
-                      <h4 className="portal__notification-title">System maintenance</h4>
-                      <p className="portal__notification-text">Scheduled maintenance tonight at 2 AM UTC.</p>
+                    <div className="portal__notification-card">
+                      <div className="portal__notification-icon portal__notification-icon--warning">
+                        <Icon name="alert-circle" size={20} />
+                      </div>
+                      <div className="portal__notification-content">
+                        <h4 className="portal__notification-title">System maintenance</h4>
+                        <p className="portal__notification-text">Scheduled maintenance tonight at 2 AM UTC.</p>
+                      </div>
                     </div>
                   </div>
-                </div>
                 </div>
               </div>
 
-              <div className="portal__charts portal__charts--main">
-                <div className="portal__chart-card portal__chart-card--large">
-                  <div className="portal__chart-header">
-                    <h3 className="portal__chart-title">Performance overview</h3>
-                    <select className="portal__chart-dropdown">
-                      <option>Year</option>
-                    </select>
-                  </div>
-                  <div className="portal__chart-content" style={{ width: '100%', minWidth: 0 }}>
-                    <svg viewBox="0 0 600 220" className="portal__line-chart" style={{ width: '100%', minWidth: 0 }}>
-                      {/* Background grid lines */}
-                      <line x1="0" y1="40" x2="600" y2="40" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
-                      <line x1="0" y1="80" x2="600" y2="80" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
-                      <line x1="0" y1="120" x2="600" y2="120" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
-                      <line x1="0" y1="160" x2="600" y2="160" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
-                      <line x1="0" y1="200" x2="600" y2="200" stroke="#d5d7da" strokeWidth="1" opacity="0.5" />
-
-                      {/* Main teal line - aligned with months */}
-                      <path d="M 0 160 L 54.5 155 L 109 150 L 163.6 135 L 218.2 120 L 272.7 110 L 327.3 105 L 381.8 95 L 436.4 80 L 491 65 L 545.5 50 L 600 40"
-                        stroke="#2c9d96" strokeWidth="2" fill="none" />
-
-                      {/* Main orange line - aligned with months */}
-                      <path d="M 0 180 L 54.5 178 L 109 175 L 163.6 170 L 218.2 165 L 272.7 160 L 327.3 155 L 381.8 145 L 436.4 135 L 491 120 L 545.5 105 L 600 90"
-                        stroke="#d89d3f" strokeWidth="2" fill="none" />
-                    </svg>
-                    <div className="portal__chart-months">
-                      {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(month => (
-                        <span key={month} className="portal__chart-month">{month}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="portal__chart-legend">
-                    <div className="portal__legend-item">
-                      <span className="portal__legend-dot portal__legend-dot--teal"></span>
-                      <span className="portal__legend-label">Success rate</span>
-                    </div>
-                    <div className="portal__legend-item">
-                      <span className="portal__legend-dot portal__legend-dot--orange"></span>
-                      <span className="portal__legend-label">Daily transaction volume (EUR)</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="portal__chart-card">
-                  <div className="portal__chart-header">
-                    <button className="portal__chart-nav" aria-label="Previous">
-                      <Icon name="chevron-left" size={20} />
-                    </button>
-                    <h3 className="portal__chart-title">Transactions by type</h3>
-                    <button className="portal__chart-nav" aria-label="Next">
-                      <Icon name="chevron-right" size={20} />
-                    </button>
-                  </div>
-                  <div className="portal__chart-content portal__chart-content--center">
-                    <svg viewBox="0 0 380 200" className="portal__semicircular-chart">
-                      <g>
-                        {/* Generate radial dash segments */}
-                        {Array.from({ length: 72 }).map((_, i) => {
-                          const percentage = 0.85
-                          const angle = (i / 72) * 180 + 180 // Top half circle (180 to 360 degrees)
-                          const angleRad = (angle * Math.PI) / 180
-                          const cx = 190
-                          const cy = 185
-                          const r1 = 130
-                          const r2 = 155
-                          const x1 = cx + r1 * Math.cos(angleRad)
-                          const y1 = cy + r1 * Math.sin(angleRad)
-                          const x2 = cx + r2 * Math.cos(angleRad)
-                          const y2 = cy + r2 * Math.sin(angleRad)
-                          const isFilled = i < percentage * 72
-                          const color = isFilled ? '#2c9d96' : '#e6ebeb'
-
-                          return (
-                            <line
-                              key={i}
-                              x1={x1}
-                              y1={y1}
-                              x2={x2}
-                              y2={y2}
-                              stroke={color}
-                              strokeWidth="2"
-                              strokeLinecap="butt"
-                            />
-                          )
-                        })}
-                        {/* Additional line on the right side */}
-                        <line
-                          x1={190 + 130}
-                          y1={185}
-                          x2={190 + 155}
-                          y2={185}
-                          stroke="#e6ebeb"
-                          strokeWidth="2"
-                          strokeLinecap="butt"
-                        />
-                      </g>
-                      <text x="190" y="145" textAnchor="middle" className="portal__chart-percentage">85%</text>
-                      <text x="190" y="170" textAnchor="middle" className="portal__chart-label">Paid transaction</text>
-                    </svg>
-                  </div>
-                  <div className="portal__chart-legend portal__chart-legend--centered">
-                    <div className="portal__legend-item">
-                      <span className="portal__legend-dot portal__legend-dot--teal"></span>
-                      <span className="portal__legend-label">Sales</span>
-                    </div>
-                    <div className="portal__legend-item">
-                      <span className="portal__legend-dot portal__legend-dot--gray"></span>
-                      <span className="portal__legend-label">Chargebacks</span>
-                    </div>
-                  </div>
-                </div>
+              <div className="portal__charts-grid">
+                <PerformanceChart />
+                <TransactionTypeChart />
               </div>
             </div>
           )}

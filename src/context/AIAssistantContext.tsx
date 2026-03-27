@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
 import { useUserManagement } from './UserManagementContext'
 import { useFraudManagement } from './FraudManagementContext'
 
@@ -170,9 +170,9 @@ export function AIAssistantProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  const updateContext = (context: Partial<PageContext>) => {
+  const updateContext = useCallback((context: Partial<PageContext>) => {
     setCurrentContext(prev => ({ ...prev, ...context }))
-  }
+  }, [])
 
   const value: AIAssistantContextValue = {
     isOpen,
